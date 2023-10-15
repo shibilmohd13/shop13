@@ -9,7 +9,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">  <link rel="stylesheet" href="https://cdn.materialdesignicons.com/4.8.95/css/materialdesignicons.min.css">
   <link rel="stylesheet" href="https://cdn.materialdesignicons.com/4.8.95/css/materialdesignicons.min.css">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
-  <link rel="stylesheet" type="text/css" href="{% static 'css/login.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'userlogin/css/login.css' %}">
 </head>
 <body>
   <main>
@@ -17,25 +17,34 @@
       <div class="row">
         <div class="col-sm-6 login-section-wrapper">
           <div class="brand-wrapper">
-            <img src="{% static 'images/logo.png' %}" alt="logo" class='logo'>
+            <img src="{% static 'userlogin/images/logo.png' %}" alt="logo" class='logo'>
           </div>
           <div class="login-wrapper my-auto">
-            <h1 class="login-title">OTP</h1>
-            <p class="login-text">Please enter the 6 digit OTP that have been Send to your email</p>
+            <h1 class="login-title">Create Account</h1>
             <form action="" method='POST'>
               {% csrf_token %}
               <div class="form-group">
-                <label for="otp">OTP</label>
-                <input type="tel" pattern="[0-9]{6}" name="otp" id="otp" class="form-control" placeholder="Enter your 6 digit OTP">
+                <label for="text">Full Name</label>
+                <input type="text" name="fullname" id="fullname" class="form-control" placeholder="Full Name" required>
               </div>
-              <input name="verify" id="verify" class="btn btn-block login-btn" type="submit" value="Verify OTP">
+              <div class="form-group mb-4">
+                <label for="phone">Phone</label>
+                <input type="tel" pattern="[0-9]{10}" name="phone" id="phone" class="form-control" placeholder="Enter your Phone number" required>
+              </div>
+              <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" name="email" id="email" class="form-control" placeholder="Enter your email" required>
+              </div>
+              <div class="form-group mb-4">
+                <label for="password">Password</label>
+                <input type="password" name="password" id="password" class="form-control" placeholder="Enter your passsword" required>
+              </div>
+              <input name="signup" id="signup" class="btn btn-block login-btn" type="submit" value="Create account">
             </form>
-            <a href="#!" class="forgot-password-link">Resend OTP</a>
-            <p class="login-wrapper-footer-text">OTP will expire in <span class="otp-timer">00:59</span></p>
-          </div>
+            </div>
         </div>
         <div class="col-sm-6 px-0 d-none d-sm-block">
-          <img src="{% static 'images/otp.jpg' %}" alt="otp image" class="login-img">
+          <img src="{% static 'userlogin/images/signup.jpg' %}" alt="signup image" class="login-img">
         </div>
       </div>
     </div>

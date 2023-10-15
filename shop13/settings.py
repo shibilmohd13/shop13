@@ -143,8 +143,3 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # settings.py
 
 AUTH_USER_MODEL = 'userlogin.CustomUser'
-
-AUTHENTICATION_BACKENDS = [
-    'userlogin.backends.EmailBackend',
-    'django.contrib.auth.backends.ModelBackend',
-]
