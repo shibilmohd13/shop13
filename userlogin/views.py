@@ -27,7 +27,7 @@ def signup(request):
             request.session['phone'] = phone
             request.session['email'] = email
             request.session['password'] = password
-            return redirect('otp')
+            return redirect('send_otp')
 
 
     return render(request,'userlogin/signup.html')
@@ -52,7 +52,13 @@ def otp(request):
             return redirect('signin')
         else:
             messages.error(request, 'Invalid otp')
+            return redirect('otp')
+    return render(request,'userlogin/otp.html')
 
+def landing(request):
+    return render(request, 'userlogin/homepage.html')
+
+def send_otp(request):
     otp_sent = random.randint(100000,999999)
     request.session['otp'] = str(otp_sent)
     print(otp_sent)
@@ -63,11 +69,5 @@ def otp(request):
     connection.login(user=sender_email, password=sender_pass)
     connection.sendmail(from_addr=sender_email, to_addrs=request.session['email'],msg=f'Subject: OTP for register \n\n Here is your OTP for create account in SHOP13\n OTP:- {otp_sent}')
     connection.close()
-    return render(request,'userlogin/otp.html')
-
-def landing(request):
-    return render(request, 'userlogin/homepage.html')
-
-def send_otp(request):
-    return
+    return redirect('otp')
 
