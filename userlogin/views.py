@@ -71,3 +71,4 @@ def send_otp(request):
     connection.close()
     return redirect('otp')
 
+
