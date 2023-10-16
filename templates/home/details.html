@@ -1,0 +1,184 @@
+{% extends 'home/base.html' %}
+{% load static %}
+{% block title %}Product Details{% endblock title %}
+{% block css %}<link href="{% static 'home/css/detail.css' %}" rel="stylesheet" />{% endblock css %}
+
+{% block nav %}
+<section id="header" class="bg_light">
+    <nav class="navbar navbar-expand-md navbar-light pt-0 pb-0" id="navbar_sticky" >
+      <div class="container-fluid">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="collapse navbar-collapse  d-flex justify-content-center" id="navbarSupportedContent">
+          <ul class="navbar-nav mb-0">
+           <li class="nav-item">
+              <a class="nav-link" aria-current="page" href="{% url 'home' %}">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="{% url 'shop' %}">Shop </a>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+                aria-expanded="false">
+                Categories
+              </a>
+              <ul class="dropdown-menu drop_2 drop_cat" aria-labelledby="navbarDropdown">
+                <li>
+                  <a class="dropdown-item" href="product.html"><i class="fa fa-caret-right me-1 col_yell"></i>
+                    Men</a>
+                </li>
+                <li>
+                  <a class="dropdown-item border-0" href="detail.html"><i class="fa fa-caret-right me-1 col_yell"></i>
+                    Women</a>
+                </li>
+                <li>
+                  <a class="dropdown-item border-0" href="detail.html"><i class="fa fa-caret-right me-1 col_yell"></i>
+                    Kids</a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+                aria-expanded="false">
+                Brands
+              </a>
+              <ul class="dropdown-menu drop_2 drop_cat" aria-labelledby="navbarDropdown">
+                <li>
+                  <a class="dropdown-item" href="cart.html"><i class="fa fa-caret-right me-1 col_yell"></i>
+                    Timex</a>
+                </li>
+                <li>
+                  <a class="dropdown-item border-0" href="checkout.html"><i class="fa fa-caret-right me-1 col_yell"></i>
+                    Titan</a>
+                </li>
+                <li>
+                    <a class="dropdown-item border-0" href="checkout.html"><i class="fa fa-caret-right me-1 col_yell"></i>
+                      Rolex</a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item border-0" href="checkout.html"><i class="fa fa-caret-right me-1 col_yell"></i>
+                      Fasttrack</a>
+                  </li>
+              </ul>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" href="contact.html">Contact</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="about.html">About </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </section>
+  {% endblock nav %}
+
+  {% block content %}
+  
+  <section id="center" class="center_o pt-4 pb-4 bg-light">
+    <div class="container-xl">
+        <div class="row center_o1 text-center">
+            <div class="col-md-12">
+                <h1>PRODUCT DETAIL</h1>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="detail" class="pt-4 pb-5">
+    <div class="container-xl">
+        <div class="row detail_1">
+            <div class="col-md-6">
+                <div class="detail_1l">
+                    <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
+                        <div class="carousel-indicators">
+                            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0"
+                                class="active" aria-label="Slide 1"></button>
+                            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1"
+                                aria-label="Slide 2" class="" aria-current="true"></button>
+                            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2"
+                                aria-label="Slide 3"></button>
+                        </div>
+
+                        <div class="carousel-inner">
+                            <div class="carousel-item active">
+                                <img src="{% static 'home/image/36.jpg' %}" class="d-block w-100" alt="abc">
+
+                            </div>
+                            <div class="carousel-item">
+                                <img src="{% static 'home/image/37.jpg' %}" class="d-block w-100" alt="abc">
+
+                            </div>
+                            <div class="carousel-item">
+                                <img src="{% static 'home/image/38.jpg' %}" class="d-block w-100" alt="abc">
+
+                            </div>
+                        </div>
+                        <button class="carousel-control-prev" type="button"
+                            data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button"
+                            data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="detail_1r">
+                    <h6 class="d-inline-block bg_yell text-white font_12 ps-3 pe-3 pt-2 pb-2 rounded-1">In Stock
+                    </h6>
+                    <h4 class="mt-2">Lorem Ipsum Dolor</h4>
+                    <h6 class="font_14 mt-3">
+                        <span class="col_yell">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-sta-or"></i>
+                        </span>
+                        - 2 Customer Reviews
+                    </h6>
+                    <h4 class="mt-3"><span class="col_yell me-3">$69.00</span> <span
+                            class="font_14  text-decoration-line-through col_light">$78.00</span></h4>
+                    <p>Cramond Leopard & Pythong Print Anorak Jacket In Beige but also the leap into electronic
+                        typesetting, remaining</p>
+                    <!-- <h6><span class="me-2">Size :</span>
+                        <a class="font_14 col_light me-1" href="#">Guide</a> <a
+                            class="font_14 col_light" href="#">Can't Find Your Size?</a></h6> -->
+                    
+                    
+                    <div class="d-flex f-row">
+                        <h6 class="me-5 mt-4">Quantity : </h6>
+                        <input type="number" min="1" value="1" class="form-control mt-2" placeholder="Qty"
+                        style="width: 140px; height:50px; margin-right:10px; float:left;">
+                    </div>
+
+                    <div class="d-flex f-row">
+                    <h6 class="text-uppercase mt-4"><a class="button" href="#" style="color:#ffffff; background: rgb(0, 0, 94);">Buy Now</a></h6>
+                    <h6 class="text-uppercase ms-1 mt-4"><a class="button" href="#">Add to Cart</a></h6>
+                    </div>
+
+                    
+
+                    <h6 class="mt-4"><a href="#"><i class="fa fa-heart-o col_yell me-1"></i> Add To Wishlist</a>
+                    </h6>
+                    <hr>
+                    <h6 class="font_13 col_light">TAG : <a class="col_light" href="#">CLOTHING</a></h6>
+                    <h6 class="font_13 col_light mt-3 mb-0">CATEGORIES : <a class="col_light" href="#">WOMEN'S</a>,
+                        <a class="col_light" href="#">MEN'S</a>, <a class="col_light" href="#">CHILD'S</a></h6>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+  {% endblock content %}
+

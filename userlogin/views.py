@@ -38,7 +38,7 @@ def signin(request):
         password = request.POST['password']
         user = authenticate(request, username=email, password=password)
         if user is not None:
-            return redirect('landing')
+            return redirect('home')
         else:
             return redirect('signin')
     return render(request,'userlogin/index.html')

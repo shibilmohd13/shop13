@@ -1,0 +1,559 @@
+{% extends 'home/base.html' %}
+{% load static %}
+{% block title %}Shop{% endblock title %}
+{% block css %}<link href="{% static 'home/css/product.css' %}" rel="stylesheet" />{% endblock css %}
+
+
+{% block nav %}
+<section id="header" class="bg_light">
+    <nav class="navbar navbar-expand-md navbar-light pt-0 pb-0" id="navbar_sticky" >
+      <div class="container-fluid">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="collapse navbar-collapse  d-flex justify-content-center" id="navbarSupportedContent">
+          <ul class="navbar-nav mb-0">
+           <li class="nav-item">
+              <a class="nav-link" aria-current="page" href="{% url 'home' %}">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="#">Shop </a>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+                aria-expanded="false">
+                Categories
+              </a>
+              <ul class="dropdown-menu drop_2 drop_cat" aria-labelledby="navbarDropdown">
+                <li>
+                  <a class="dropdown-item" href="product.html"><i class="fa fa-caret-right me-1 col_yell"></i>
+                    Men</a>
+                </li>
+                <li>
+                  <a class="dropdown-item border-0" href="detail.html"><i class="fa fa-caret-right me-1 col_yell"></i>
+                    Women</a>
+                </li>
+                <li>
+                  <a class="dropdown-item border-0" href="detail.html"><i class="fa fa-caret-right me-1 col_yell"></i>
+                    Kids</a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+                aria-expanded="false">
+                Brands
+              </a>
+              <ul class="dropdown-menu drop_2 drop_cat" aria-labelledby="navbarDropdown">
+                <li>
+                  <a class="dropdown-item" href="cart.html"><i class="fa fa-caret-right me-1 col_yell"></i>
+                    Timex</a>
+                </li>
+                <li>
+                  <a class="dropdown-item border-0" href="checkout.html"><i class="fa fa-caret-right me-1 col_yell"></i>
+                    Titan</a>
+                </li>
+                <li>
+                    <a class="dropdown-item border-0" href="checkout.html"><i class="fa fa-caret-right me-1 col_yell"></i>
+                      Rolex</a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item border-0" href="checkout.html"><i class="fa fa-caret-right me-1 col_yell"></i>
+                      Fasttrack</a>
+                  </li>
+              </ul>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" href="contact.html">Contact</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="about.html">About </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </section>
+  {% endblock nav %}
+
+
+{% block content %}
+<section id="center" class="center_o pt-4 pb-4 bg-light">
+    <div class="container-xl">
+      <div class="row center_o1 text-center">
+       <div class="col-md-12">
+         <h1>SHOP</h1>
+       </div>
+      </div>
+    </div>
+  </section>
+  
+  <section id="prod_pg" class="pt-4 pb-4 bg_light_1">
+   <div class="container-fluid">
+    <div class="row prod_pg1">
+       <div class="col-md-12 col-lg-3">
+        <div class="prod_pg1l">
+          <div class="prod_pg1l1 bg-white p-4">
+            <h6 class="mb-3">PRODUCT CATEGORIES</h6>
+            <div class="prod_pg1l1i row">
+             <div class="col-md-10 col-10">
+              <div class="prod_pg1l1il">
+                <h6 class="font_14 fw-normal mt-1"><a href="detail.html"><i class="fa fa-circle-o me-1 col_yell"></i> Men</a></h6>
+              </div>
+             </div>
+             <div class="col-md-2 col-2">
+              <div class="prod_pg1l1ir text-end">
+               <h6 class="d-inline-block bg_light font_13">23</h6>
+              </div>  
+             </div>
+            </div>
+            <div class="prod_pg1l1i row mt-2">
+             <div class="col-md-10 col-10">
+              <div class="prod_pg1l1il">
+                <h6 class="font_14 fw-normal mt-1"><a href="detail.html"><i class="fa fa-circle-o me-1 col_yell"></i> Women</a></h6>
+              </div>
+             </div>
+             <div class="col-md-2 col-2">
+              <div class="prod_pg1l1ir text-end">
+               <h6 class="d-inline-block bg_light font_13">17</h6>
+              </div>  
+             </div>
+            </div>
+            <div class="prod_pg1l1i row mt-2">
+             <div class="col-md-10 col-10">
+              <div class="prod_pg1l1il">
+                <h6 class="font_14 fw-normal mt-1"><a href="detail.html"><i class="fa fa-circle-o me-1 col_yell"></i> Kids</a></h6>
+              </div>
+             </div>
+             <div class="col-md-2 col-2">
+              <div class="prod_pg1l1ir text-end">
+               <h6 class="d-inline-block bg_light font_13">6</h6>
+              </div>  
+             </div>
+            </div>
+
+          </div>
+          <div class="prod_pg1l1 bg-white p-4 mt-4">
+            <h6 class="mb-3">FILTER BY PRICE</h6>
+            <input type="range" class="form-range" id="customRange1">
+            <h6 class="mb-0 col_light font_13 mt-3">PRICE: $42 - $530</h6>
+          </div>
+          
+          <div class="prod_pg1l1 bg-white p-4 mt-4">
+            <h6 class="mb-3">PRODUCT BRAND</h6>
+            <div class="prod_pg1l1il">
+            <div class="row">
+              <h6 class="font_14 fw-normal col-lg-12 col-md-6  col-sm-6"><a href="detail.html"><i class="fa fa-circle-o me-1 col_yell"></i> Timex</a></h6>
+              <h6 class="font_14 fw-normal mt-3 col-lg-12 col-md-6  col-sm-6"><a href="detail.html"><i class="fa fa-circle-o me-1 col_yell"></i> Titan</a></h6>
+              <h6 class="font_14 fw-normal mt-3 col-lg-12 col-md-6  col-sm-6"><a href="detail.html"><i class="fa fa-circle-o me-1 col_yell"></i> Rolex</a></h6>
+              <h6 class="font_14 fw-normal mb-0 mt-3 col-lg-12 col-md-6  col-sm-6"><a href="detail.html"><i class="fa fa-circle-o me-1 col_yell"></i> Fasttrack</a></h6>
+            </div>
+              <hr>
+            </div>
+    
+            <hr>
+            <h6 class="mb-3">FILTER COLOR</h6>
+            <div class="row m-0">
+          <div class="form-check col-md-6 col-6 col-lg-12">
+          <input type="checkbox" class="form-check-input" id="customCheck1">
+          <label class="form-check-label" for="customCheck1"><a href="detail.html">Red (3)</a></label>
+          </div>
+          <div class="form-check col-md-6 col-6 col-lg-12 mt-2">
+          <input type="checkbox" class="form-check-input" id="customCheck1">
+          <label class="form-check-label" for="customCheck1"><a href="detail.html">Black (2)</a></label>
+          </div>
+          <div class="form-check col-md-6 col-6 col-lg-12 mt-2">
+          <input type="checkbox" class="form-check-input" id="customCheck1">
+          <label class="form-check-label" for="customCheck1"><a href="detail.html">Blue (4)</a></label>
+          </div>
+          <div class="form-check col-md-6 col-6 col-lg-12 mt-2">
+          <input type="checkbox" class="form-check-input" id="customCheck1">
+          <label class="form-check-label" for="customCheck1"><a href="detail.html">Yellow (5)</a></label>
+          </div>
+          <div class="form-check col-md-6 col-6 col-lg-12 mt-2">
+          <input type="checkbox" class="form-check-input" id="customCheck1">
+          <label class="form-check-label" for="customCheck1"><a href="detail.html">Brown (6)</a></label>
+          </div>
+          <div class="form-check col-md-6 col-6 col-lg-12 mt-2">
+          <input type="checkbox" class="form-check-input" id="customCheck1">
+          <label class="form-check-label" for="customCheck1"><a href="detail.html">Pink (9)</a></label>
+          </div>
+          </div>
+          </div>
+        </div>
+       </div>
+       <div class="col-md-12 col-lg-9">
+        <div class="prod_pg1r">
+          <div class="prod_pg1r2 mt-4 row">
+          <div class="col-md-4">
+           <div class="prodinm clearfix">
+             <div class="prod_2im position-relative clearfix">
+          <div class="prod_2i1 clearfix">
+          <div class="grid clearfix">
+                <figure class="effect-jazz mb-0">
+                  <a href="detail.html"><img src="{% static 'home/image/27.jpg' %}" class="w-100" alt="abc"></a>
+                </figure>
+            </div>
+          </div>
+          
+          <div class="prod_2i3 clearfix position-absolute w-100">
+          <h6 class="bg_yell d-inline-block pt-1 pb-1 font_13 text-white ps-3 pe-3">NEW</h6>
+          <h6 class="bg_yell d-inline-block pt-1 pb-1 font_13 text-white ps-3 pe-3 pull-right">40%</h6>
+          </div>
+          <div class="prod_2in clearfix position-absolute bg-light w-100 p-3 text-center">
+           <ul class="mb-0">
+            <li class="d-inline-block me-3"><a href="detail.html"><i class="fa fa-heart"></i></a></li>
+            <li class="d-inline-block me-3"><a href="detail.html"><i class="fa fa-shopping-cart"></i></a></li>
+            <li class="d-inline-block"><a href="detail.html"><i class="fa fa-eye"></i></a></li>
+           </ul>
+          </div>
+          </div>
+             <div class="prod_2i2 pt-4 pb-4 ps-3 pe-3 bg-white clearfix">
+             <span class="col_yell">
+               <i class="fa fa-star"></i>
+               <i class="fa fa-star"></i>
+               <i class="fa fa-star"></i>
+               <i class="fa fa-star"></i>
+               <i class="fa fa-star-half-o"></i>
+              </span>
+          <h6 class="mt-2"><a href="detail.html">Sed Cursus Ante</a></h6>
+          <h6 class="font_13"><a class="col_light" href="detail.html">Brand / Color</a></h6>
+          <hr>
+          <h6 class="fw-normal mb-0"><span class="text-decoration-line-through col_light">$79.00</span> <span class="pull-right fw-bold col_yell">$68.00</span></h6>
+          </div>
+           </div>
+          </div>
+          <div class="col-md-4">
+           <div class="prodinm clearfix">
+             <div class="prod_2im position-relative clearfix">
+          <div class="prod_2i1 clearfix">
+          <div class="grid clearfix">
+                <figure class="effect-jazz mb-0">
+                  <a href="detail.html"><img src="{% static 'home/image/28.jpg' %}" class="w-100" alt="abc"></a>
+                </figure>
+            </div>
+          </div>
+          
+          <div class="prod_2i3 clearfix position-absolute w-100">
+          <h6 class="bg_yell d-inline-block pt-1 pb-1 font_13 text-white ps-3 pe-3">NEW</h6>
+          <h6 class="bg_yell d-inline-block pt-1 pb-1 font_13 text-white ps-3 pe-3 pull-right">40%</h6>
+          </div>
+          <div class="prod_2in clearfix position-absolute bg-light w-100 p-3 text-center">
+           <ul class="mb-0">
+            <li class="d-inline-block me-3"><a href="detail.html"><i class="fa fa-heart"></i></a></li>
+            <li class="d-inline-block me-3"><a href="detail.html"><i class="fa fa-shopping-cart"></i></a></li>
+            <li class="d-inline-block"><a href="detail.html"><i class="fa fa-eye"></i></a></li>
+           </ul>
+          </div>
+          </div>
+             <div class="prod_2i2 pt-4 pb-4 ps-3 pe-3 bg-white clearfix">
+             <span class="col_yell">
+               <i class="fa fa-star"></i>
+               <i class="fa fa-star"></i>
+               <i class="fa fa-star"></i>
+               <i class="fa fa-star"></i>
+               <i class="fa fa-star-half-o"></i>
+              </span>
+          <h6 class="mt-2"><a href="detail.html">Nulla Quis Sem</a></h6>
+          <h6 class="font_13"><a class="col_light" href="detail.html">Brand / Color</a></h6>
+          <hr>
+          <h6 class="fw-normal mb-0"><span class="text-decoration-line-through col_light">$79.00</span> <span class="pull-right fw-bold col_yell">$68.00</span></h6>
+          </div>
+           </div>
+          </div>
+          <div class="col-md-4">
+           <div class="prodinm clearfix">
+             <div class="prod_2im position-relative clearfix">
+          <div class="prod_2i1 clearfix">
+          <div class="grid clearfix">
+                <figure class="effect-jazz mb-0">
+                  <a href="detail.html"><img src="{% static 'home/image/29.jpg' %}" class="w-100" alt="abc"></a>
+                </figure>
+            </div>
+          </div>
+          
+          <div class="prod_2i3 clearfix position-absolute w-100">
+          <h6 class="bg_yell d-inline-block pt-1 pb-1 font_13 text-white ps-3 pe-3">NEW</h6>
+          <h6 class="bg_yell d-inline-block pt-1 pb-1 font_13 text-white ps-3 pe-3 pull-right">40%</h6>
+          </div>
+          <div class="prod_2in clearfix position-absolute bg-light w-100 p-3 text-center">
+           <ul class="mb-0">
+            <li class="d-inline-block me-3"><a href="detail.html"><i class="fa fa-heart"></i></a></li>
+            <li class="d-inline-block me-3"><a href="detail.html"><i class="fa fa-shopping-cart"></i></a></li>
+            <li class="d-inline-block"><a href="detail.html"><i class="fa fa-eye"></i></a></li>
+           </ul>
+          </div>
+          </div>
+             <div class="prod_2i2 pt-4 pb-4 ps-3 pe-3 bg-white clearfix">
+             <span class="col_yell">
+               <i class="fa fa-star"></i>
+               <i class="fa fa-star"></i>
+               <i class="fa fa-star"></i>
+               <i class="fa fa-star"></i>
+               <i class="fa fa-star-half-o"></i>
+              </span>
+          <h6 class="mt-2"><a href="detail.html">Integer Nec Odio</a></h6>
+          <h6 class="font_13"><a class="col_light" href="detail.html">Brand / Color</a></h6>
+          <hr>
+          <h6 class="fw-normal mb-0"><span class="text-decoration-line-through col_light">$79.00</span> <span class="pull-right fw-bold col_yell">$68.00</span></h6>
+          </div>
+           </div>
+          </div>
+          
+        </div>
+        <div class="prod_pg1r2 mt-4 row">
+          <div class="col-md-4">
+           <div class="prodinm clearfix">
+             <div class="prod_2im position-relative clearfix">
+          <div class="prod_2i1 clearfix">
+          <div class="grid clearfix">
+                <figure class="effect-jazz mb-0">
+                  <a href="detail.html"><img src="{% static 'home/image/30.jpg' %}" class="w-100" alt="abc"></a>
+                </figure>
+            </div>
+          </div>
+          
+          <div class="prod_2i3 clearfix position-absolute w-100">
+          <h6 class="bg_yell d-inline-block pt-1 pb-1 font_13 text-white ps-3 pe-3">NEW</h6>
+          <h6 class="bg_yell d-inline-block pt-1 pb-1 font_13 text-white ps-3 pe-3 pull-right">40%</h6>
+          </div>
+          <div class="prod_2in clearfix position-absolute bg-light w-100 p-3 text-center">
+           <ul class="mb-0">
+            <li class="d-inline-block me-3"><a href="detail.html"><i class="fa fa-heart"></i></a></li>
+            <li class="d-inline-block me-3"><a href="detail.html"><i class="fa fa-shopping-cart"></i></a></li>
+            <li class="d-inline-block me-3"><a href="detail.html"><i class="fa fa-eye"></i></a></li>
+           </ul>
+          </div>
+          </div>
+             <div class="prod_2i2 pt-4 pb-4 ps-3 pe-3 bg-white clearfix">
+             <span class="col_yell">
+               <i class="fa fa-star"></i>
+               <i class="fa fa-star"></i>
+               <i class="fa fa-star"></i>
+               <i class="fa fa-star"></i>
+               <i class="fa fa-star-half-o"></i>
+              </span>
+          <h6 class="mt-2"><a href="detail.html">Sed Cursus Ante</a></h6>
+          <h6 class="font_13"><a class="col_light" href="detail.html">Brand / Color</a></h6>
+          <hr>
+          <h6 class="fw-normal mb-0"><span class="text-decoration-line-through col_light">$79.00</span> <span class="pull-right fw-bold col_yell">$68.00</span></h6>
+          </div>
+           </div>
+          </div>
+          <div class="col-md-4">
+           <div class="prodinm clearfix">
+             <div class="prod_2im position-relative clearfix">
+          <div class="prod_2i1 clearfix">
+          <div class="grid clearfix">
+                <figure class="effect-jazz mb-0">
+                  <a href="detail.html"><img src="{% static 'home/image/31.jpg' %}" class="w-100" alt="abc"></a>
+                </figure>
+            </div>
+          </div>
+          
+          <div class="prod_2i3 clearfix position-absolute w-100">
+          <h6 class="bg_yell d-inline-block pt-1 pb-1 font_13 text-white ps-3 pe-3">NEW</h6>
+          <h6 class="bg_yell d-inline-block pt-1 pb-1 font_13 text-white ps-3 pe-3 pull-right">40%</h6>
+          </div>
+          <div class="prod_2in clearfix position-absolute bg-light w-100 p-3 text-center">
+           <ul class="mb-0">
+            <li class="d-inline-block me-3"><a href="detail.html"><i class="fa fa-heart"></i></a></li>
+            <li class="d-inline-block me-3"><a href="detail.html"><i class="fa fa-shopping-cart"></i></a></li>
+            <li class="d-inline-block"><a href="detail.html"><i class="fa fa-eye"></i></a></li>
+           </ul>
+          </div>
+          </div>
+             <div class="prod_2i2 pt-4 pb-4 ps-3 pe-3 bg-white clearfix">
+             <span class="col_yell">
+               <i class="fa fa-star"></i>
+               <i class="fa fa-star"></i>
+               <i class="fa fa-star"></i>
+               <i class="fa fa-star"></i>
+               <i class="fa fa-star-half-o"></i>
+              </span>
+          <h6 class="mt-2"><a href="detail.html">Nulla Quis Sem</a></h6>
+          <h6 class="font_13"><a class="col_light" href="detail.html">Brand / Color</a></h6>
+          <hr>
+          <h6 class="fw-normal mb-0"><span class="text-decoration-line-through col_light">$79.00</span> <span class="pull-right fw-bold col_yell">$68.00</span></h6>
+          </div>
+           </div>
+          </div>
+          <div class="col-md-4">
+           <div class="prodinm clearfix">
+             <div class="prod_2im position-relative clearfix">
+          <div class="prod_2i1 clearfix">
+          <div class="grid clearfix">
+                <figure class="effect-jazz mb-0">
+                  <a href="detail.html"><img src="{% static 'home/image/32.jpg' %}" class="w-100" alt="abc"></a>
+                </figure>
+            </div>
+          </div>
+          
+          <div class="prod_2i3 clearfix position-absolute w-100">
+          <h6 class="bg_yell d-inline-block pt-1 pb-1 font_13 text-white ps-3 pe-3">NEW</h6>
+          <h6 class="bg_yell d-inline-block pt-1 pb-1 font_13 text-white ps-3 pe-3 pull-right">40%</h6>
+          </div>
+          <div class="prod_2in clearfix position-absolute bg-light w-100 p-3 text-center">
+           <ul class="mb-0">
+            <li class="d-inline-block me-3"><a href="detail.html"><i class="fa fa-heart"></i></a></li>
+            <li class="d-inline-block me-3"><a href="detail.html"><i class="fa fa-shopping-cart"></i></a></li>
+            <li class="d-inline-block"><a href="detail.html"><i class="fa fa-eye"></i></a></li>
+           </ul>
+          </div>
+          </div>
+             <div class="prod_2i2 pt-4 pb-4 ps-3 pe-3 bg-white clearfix">
+             <span class="col_yell">
+               <i class="fa fa-star"></i>
+               <i class="fa fa-star"></i>
+               <i class="fa fa-star"></i>
+               <i class="fa fa-star"></i>
+               <i class="fa fa-star-half-o"></i>
+              </span>
+          <h6 class="mt-2"><a href="detail.html">Integer Nec Odio</a></h6>
+          <h6 class="font_13"><a class="col_light" href="detail.html">Brand / Color</a></h6>
+          <hr>
+          <h6 class="fw-normal mb-0"><span class="text-decoration-line-through col_light">$79.00</span> <span class="pull-right fw-bold col_yell">$68.00</span></h6>
+          </div>
+           </div>
+          </div>
+          
+        </div>
+        <div class="prod_pg1r2 mt-4 row">
+          <div class="col-md-4">
+           <div class="prodinm clearfix">
+             <div class="prod_2im position-relative clearfix">
+          <div class="prod_2i1 clearfix">
+          <div class="grid clearfix">
+                <figure class="effect-jazz mb-0">
+                  <a href="detail.html"><img src="{% static 'home/image/33.jpg' %}" class="w-100" alt="abc"></a>
+                </figure>
+            </div>
+          </div>
+          
+          <div class="prod_2i3 clearfix position-absolute w-100">
+          <h6 class="bg_yell d-inline-block pt-1 pb-1 font_13 text-white ps-3 pe-3">NEW</h6>
+          <h6 class="bg_yell d-inline-block pt-1 pb-1 font_13 text-white ps-3 pe-3 pull-right">40%</h6>
+          </div>
+          <div class="prod_2in clearfix position-absolute bg-light w-100 p-3 text-center">
+           <ul class="mb-0">
+            <li class="d-inline-block me-3"><a href="detail.html"><i class="fa fa-heart"></i></a></li>
+            <li class="d-inline-block me-3"><a href="detail.html"><i class="fa fa-shopping-cart"></i></a></li>
+            <li class="d-inline-block"><a href="detail.html"><i class="fa fa-eye"></i></a></li>
+           </ul>
+          </div>
+          </div>
+             <div class="prod_2i2 pt-4 pb-4 ps-3 pe-3 bg-white clearfix">
+             <span class="col_yell">
+               <i class="fa fa-star"></i>
+               <i class="fa fa-star"></i>
+               <i class="fa fa-star"></i>
+               <i class="fa fa-star"></i>
+               <i class="fa fa-star-half-o"></i>
+              </span>
+          <h6 class="mt-2"><a href="detail.html">Sed Cursus Ante</a></h6>
+          <h6 class="font_13"><a class="col_light" href="detail.html">Brand / Color</a></h6>
+          <hr>
+          <h6 class="fw-normal mb-0"><span class="text-decoration-line-through col_light">$79.00</span> <span class="pull-right fw-bold col_yell">$68.00</span></h6>
+          </div>
+           </div>
+          </div>
+          <div class="col-md-4">
+           <div class="prodinm clearfix">
+             <div class="prod_2im position-relative clearfix">
+          <div class="prod_2i1 clearfix">
+          <div class="grid clearfix">
+                <figure class="effect-jazz mb-0">
+                  <a href="detail.html"><img src="{% static 'home/image/34.jpg' %}" class="w-100" alt="abc"></a>
+                </figure>
+            </div>
+          </div>
+          
+          <div class="prod_2i3 clearfix position-absolute w-100">
+          <h6 class="bg_yell d-inline-block pt-1 pb-1 font_13 text-white ps-3 pe-3">NEW</h6>
+          <h6 class="bg_yell d-inline-block pt-1 pb-1 font_13 text-white ps-3 pe-3 pull-right">40%</h6>
+          </div>
+          <div class="prod_2in clearfix position-absolute bg-light w-100 p-3 text-center">
+           <ul class="mb-0">
+            <li class="d-inline-block me-3"><a href="detail.html"><i class="fa fa-heart"></i></a></li>
+            <li class="d-inline-block me-3"><a href="detail.html"><i class="fa fa-shopping-cart"></i></a></li>
+            <li class="d-inline-block"><a href="detail.html"><i class="fa fa-eye"></i></a></li>
+           </ul>
+          </div>
+          </div>
+             <div class="prod_2i2 pt-4 pb-4 ps-3 pe-3 bg-white clearfix">
+             <span class="col_yell">
+               <i class="fa fa-star"></i>
+               <i class="fa fa-star"></i>
+               <i class="fa fa-star"></i>
+               <i class="fa fa-star"></i>
+               <i class="fa fa-star-half-o"></i>
+              </span>
+          <h6 class="mt-2"><a href="detail.html">Nulla Quis Sem</a></h6>
+          <h6 class="font_13"><a class="col_light" href="detail.html">Brand / Color</a></h6>
+          <hr>
+          <h6 class="fw-normal mb-0"><span class="text-decoration-line-through col_light">$79.00</span> <span class="pull-right fw-bold col_yell">$68.00</span></h6>
+          </div>
+           </div>
+          </div>
+          <div class="col-md-4">
+           <div class="prodinm clearfix">
+             <div class="prod_2im position-relative clearfix">
+          <div class="prod_2i1 clearfix">
+          <div class="grid clearfix">
+                <figure class="effect-jazz mb-0">
+                  <a href="detail.html"><img src="{% static 'home/image/35.jpg' %}" class="w-100" alt="abc"></a>
+                </figure>
+            </div>
+          </div>
+          
+          <div class="prod_2i3 clearfix position-absolute w-100">
+          <h6 class="bg_yell d-inline-block pt-1 pb-1 font_13 text-white ps-3 pe-3">NEW</h6>
+          <h6 class="bg_yell d-inline-block pt-1 pb-1 font_13 text-white ps-3 pe-3 pull-right">40%</h6>
+          </div>
+          <div class="prod_2in clearfix position-absolute bg-light w-100 p-3 text-center">
+           <ul class="mb-0">
+            <li class="d-inline-block me-3"><a href="detail.html"><i class="fa fa-heart"></i></a></li>
+            <li class="d-inline-block me-3"><a href="detail.html"><i class="fa fa-shopping-cart"></i></a></li>
+            <li class="d-inline-block"><a href="detail.html"><i class="fa fa-eye"></i></a></li>
+           </ul>
+          </div>
+          </div>
+             <div class="prod_2i2 pt-4 pb-4 ps-3 pe-3 bg-white clearfix">
+             <span class="col_yell">
+               <i class="fa fa-star"></i>
+               <i class="fa fa-star"></i>
+               <i class="fa fa-star"></i>
+               <i class="fa fa-star"></i>
+               <i class="fa fa-star-half-o"></i>
+              </span>
+          <h6 class="mt-2"><a href="detail.html">Integer Nec Odio</a></h6>
+          <h6 class="font_13"><a class="col_light" href="detail.html">Brand / Color</a></h6>
+          <hr>
+          <h6 class="fw-normal mb-0"><span class="text-decoration-line-through col_light">$79.00</span> <span class="pull-right fw-bold col_yell">$68.00</span></h6>
+          </div>
+           </div>
+          </div>
+          
+        </div>
+        <div class="pages mt-4 row text-center bg_light ms-0 me-0 pt-4 pb-4">
+           <div class="col-md-12">
+             <ul class="mb-0">
+              <li><a href="detail.html"><i class="fa fa-chevron-left"></i></a></li>
+              <li class="act"><a href="detail.html">1</a></li>
+              <li><a href="detail.html">2</a></li>
+              <li><a href="detail.html">3</a></li>
+              <li><a href="detail.html">4</a></li>
+              <li><a href="detail.html">5</a></li>
+              <li><a href="detail.html">6</a></li>
+              <li><a href="detail.html"><i class="fa fa-chevron-right"></i></a></li>
+             </ul>
+           </div>
+       </div>
+        </div>
+       </div>
+    </div>
+   </div>
+  </section>
+{% endblock content %}  

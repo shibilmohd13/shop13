@@ -1,12 +1,11 @@
 {% load static %}
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>SHOP13 - {% block title %}{% endblock title %}</title>
+  <title>Shop13 - {% block title %}{% endblock title %}</title>
   <link href=" {% static 'home/css/bootstrap.min.css' %}"  rel="stylesheet" />
   <link href="{% static 'home/css/font-awesome.min.css' %} " rel="stylesheet" />
   <link href="{% static 'home/css/global.css' %} " rel="stylesheet" />
@@ -49,16 +48,20 @@
                 <a class="text-light" href="#"><i class="fa-solid fa-cart-shopping header-icons" style="color: #f7ba01 ;"></i></a>
               </li>
               <li class="nav-item  d-inline-block font_13 border-0 d-flex f-row">
-            <a class="nav-link dropdown-toggle p-0 text-black" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+            <a class="nav-link dropdown-toggle p-0 text-black d-flex f-row align-items-center" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
                 aria-expanded="false">
                 <i class="fa-solid fa-user header-icons" style="color: #f7ba01;"></i>
-                Username
+                <label class="">Username</label>
             </a>
               <ul class="dropdown-menu drop_2 drop_cat" aria-labelledby="navbarDropdown">
                 <li>
                     <a class="dropdown-item" href="{% url 'signin' %}"><i class="fa fa-caret-right me-1 col_yell"></i>
                       Login Account</a>
                 </li>
+                <li>
+                  <a class="dropdown-item" href="#"><i class="fa fa-caret-right me-1 col_yell"></i>
+                    Profile</a>
+              </li>
                 <li>
                   <a class="dropdown-item" href="product.html"><i class="fa fa-caret-right me-1 col_yell"></i>
                     My orders</a>
