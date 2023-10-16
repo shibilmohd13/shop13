@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'userlogin',
     'home',
+    'admin_panel',
 ]
 
 MIDDLEWARE = [
@@ -135,6 +136,8 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'userlogin/static'),
     os.path.join(BASE_DIR, 'home/static'),
+    os.path.join(BASE_DIR, 'admin_panel/static'),
+
 
 ]
 

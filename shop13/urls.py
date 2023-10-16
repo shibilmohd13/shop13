@@ -23,6 +23,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/',include('userlogin.urls')),
     path('',include('home.urls')),
+    path('admin_panel/',include('admin_panel.urls')),
+    
 ]
 
 # Serve static files during development
