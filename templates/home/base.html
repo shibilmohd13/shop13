@@ -1,0 +1,241 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Eco Mart</title>
+  <link href=" {% static 'css/bootstrap.min.css' %}"  rel="stylesheet" />
+  <link href="{% static 'css/font-awesome.min.css' %} " rel="stylesheet" />
+  <link href="{% static 'css/global.css' %} " rel="stylesheet" />
+  {% block css %}{% endblock css %}
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300&display=swap" rel="stylesheet" />
+  <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+  <script src="https://kit.fontawesome.com/d059fb7515.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <section id="header_top" class="pt-4 pb-4">
+    <div class="container-fluid">
+      <div class="row header_top1">
+        <div class="col-md-3">
+          <div class="header_top1l">
+            <img src="{% static 'image/Shop 13 logo.png' %}" alt="" height="35px" style="margin-left: 15px;">
+          </div>
+        </div>
+        <div class="col-md-5">
+          <div class="header_top1m">
+            
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Search for your item" />
+              <span class="input-group-btn">
+                <button class="btn btn-primary bg_yell" type="button">
+                  <i class="fa fa-search"></i>
+                </button>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="header_top1r pull-right">
+            <ul class="mb-0 d-flex f-row">
+              <li class="nav-item d-inline-block">
+                <a href="#"><i class="fa-solid fa-heart header-icons" style="color: #f7ba01;"></i></a>
+              </li>
+              <li class="nav-item  d-inline-block font_13 me-2">
+                <a class="text-light" href="#"><i class="fa-solid fa-cart-shopping header-icons" style="color: #f7ba01 ;"></i></a>
+              </li>
+              <li class="nav-item  d-inline-block font_13 border-0 d-flex f-row">
+            <a class="nav-link dropdown-toggle p-0 text-black" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+                aria-expanded="false">
+                <i class="fa-solid fa-user header-icons" style="color: #f7ba01;"></i>
+                Username
+            </a>
+              <ul class="dropdown-menu drop_2 drop_cat" aria-labelledby="navbarDropdown">
+                <li>
+                    <a class="dropdown-item" href="{% url 'signin' %}"><i class="fa fa-caret-right me-1 col_yell"></i>
+                      Login Account</a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="product.html"><i class="fa fa-caret-right me-1 col_yell"></i>
+                    My orders</a>
+                </li>
+                <li>
+                  <a class="dropdown-item border-0" href="detail.html"><i class="fa fa-caret-right me-1 col_yell"></i>
+                    Logout</a>
+                </li>
+              </ul>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {% block nav %}{% endblock nav %}
+
+  {% block content %}{% endblock content %}  
+
+  <section id="subs" class="pt-5 pb-5 bg_blue">
+    <div class="container-xl">
+      <div class="row subs_1">
+        <div class="col-md-6">
+          <div class="subs_1l">
+            <span class="d-inline-block col_yell font_50 float-start me-3"><i class="fa fa-envelope-o"></i></span>
+            <h4 class="text-white">Newsletter & Get Updates</h4>
+            <p class="mb-0 text-light">
+              Sign up for our newsletter to get up-to-date from us
+            </p>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="subs_1r">
+            <div class="input-group p-2">
+              <input type="text" class="form-control border-0 bg-transparent" placeholder="Enter Your Email" />
+              <span class="input-group-btn">
+                <button class="btn btn-primary bg_yell border-0 fs-6" type="button">
+                  SUBSCRIBE
+                </button>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="footer" class="pt-4 pb-4 bg_light">
+    <div class="container-xl">
+      <div class="row footer_1">
+        <div class="col-md-4">
+          <div class="footer_1i">
+            <h3>
+              <img src="{% static 'image/Shop 13 logo.png' %}" class="m-0" alt="" height="35px" style="margin-left: 15px;">
+            </h3>
+            <p class="mt-3">
+                Your premier destination for exquisite timepieces.
+                Explore our curated collection of watches that blend
+                timeless elegance with modern craftsmanship.
+            </p>
+            <ul class="social-network social-circle mb-0 mt-3">
+              <li>
+                <a href="#" class="icoRss" title="Rss"><i class="fa fa-github"></i></a>
+              </li>
+              <li>
+                <a href="#" class="icoFacebook" title="Facebook"><i class="fa fa-facebook"></i></a>
+              </li>
+              <li>
+                <a href="#" class="icoTwitter" title="Twitter"><i class="fa fa-twitter"></i></a>
+              </li>
+              <li>
+                <a href="#" class="icoGoogle" title="Google +"><i class="fa fa-instagram"></i></a>
+              </li>
+              <li>
+                <a href="#" class="icoLinkedin" title="Linkedin"><i class="fa fa-linkedin"></i></a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="footer_1i">
+            <h5 class="fs-6 mb-4">QUICK LINKS</h5>
+            <div class="row">
+              <h6 class="font_14 fw-normal mb-3 col-md-12 col-6">
+                <a href="#">Cart</a>
+              </h6>
+              <h6 class="font_14 fw-normal mb-3 col-md-12 col-6">
+                <a href="#">My orders</a>
+              </h6>
+              <h6 class="font_14 fw-normal mb-3 col-md-12 col-6">
+                <a href="#">User Profile</a>
+              </h6>
+              <h6 class="font_14 fw-normal mb-3 col-md-12 col-6">
+                <a href="#">About us</a>
+              </h6>
+              <h6 class="font_14 fw-normal mb-0 col-md-12 col-6">
+                <a href="#">Contact Us</a>
+              </h6>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="footer_1i">
+            <h5 class="fs-6 mb-4">CONTACT US</h5>
+            <div class="footer_1i1 row">
+              <div class="col-lg-1 col-md-2 col-1">
+                <span class="col_yell fs-5"><i class="fa fa-map-marker"></i></span>
+              </div>
+              <div class="col-md-10 col-lg-11 col-11">
+                <p class="mb-0">
+                  Malappuram , Kerala, India, 676505
+                </p>
+              </div>
+            </div>
+            <div class="footer_1i1 row mt-3">
+              <div class="col-lg-1 col-md-2 col-1">
+                <span class="col_yell fs-5"><i class="fa fa-headphones"></i></span>
+              </div>
+              <div class="col-md-10 col-lg-11 col-11">
+                <p class="mb-0">+91 773 649 5004</p>
+              </div>
+            </div>
+            <div class="footer_1i1 row mt-3">
+              <div class="col-lg-1 col-md-2 col-1">
+                <span class="col_yell fs-5"><i class="fa fa-envelope"></i></span>
+              </div>
+              <div class="col-md-10 col-lg-11 col-11">
+                <p class="mb-0">shop13ecommerce@gmail.com</p>
+              </div>
+            </div>
+            <div class="footer_1i1 row mt-3">
+              <div class="col-lg-1 col-md-2 col-1">
+                <span class="col_yell fs-5"><i class="fa fa-phone"></i></span>
+              </div>
+              <div class="col-md-10 col-lg-11 col-11">
+                <p class="mb-0">+91 773 649 5004</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="footer_b" class="bg_blue">
+    <div class="container-xl">
+      <div class="row footer_b1 text-center">
+        <div class="col-md-12">
+          <p class="mb-0 text-light">
+            © 2023 Shop13 Watch store. All Rights Reserved | Design by
+            <a class="col_yell fw-bold" href="http://www.templateonweb.com">ShibilMohd13</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    window.onscroll = function () {
+      myFunction();
+    };
+
+    var navbar_sticky = document.getElementById("navbar_sticky");
+    var sticky = navbar_sticky.offsetTop;
+    var navbar_height = document.querySelector(".navbar").offsetHeight;
+
+    function myFunction() {
+      if (window.pageYOffset >= sticky + navbar_height) {
+        navbar_sticky.classList.add("sticky");
+        document.body.style.paddingTop = navbar_height + "px";
+      } else {
+        navbar_sticky.classList.remove("sticky");
+        document.body.style.paddingTop = "0";
+      }
+    }
+  </script>
+</body>
+
+</html>

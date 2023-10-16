@@ -1,47 +1,26 @@
-var count_timer;
-var minutes;
-var seconds;
-
 function startTimer() {
-    if (localStorage.getItem("count_timer")) {
-        count_timer = localStorage.getItem("count_timer");
-    } else {
-        count_timer = 59; // Start from 59 seconds
-    }
+      var timerDisplay = document.getElementById('total-time-left');
+      var time = 59; // Set the initial time to 59 seconds
 
-    minutes = parseInt(count_timer / 60);
-    seconds = parseInt(count_timer % 60);
-    updateTimerDisplay();
+      function updateTimer() {
+        var minutes = Math.floor(time / 60);
+        var seconds = time % 60;
 
-    function countDownTimer() {
-        if (seconds < 10) {
-            seconds = "0" + seconds;
-        }
-        if (minutes < 10) {
-            minutes = "0" + minutes;
-        }
+        // Format the time as "mm:ss"
+        var timeString = (minutes < 10 ? '0' : '') + minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
+        timerDisplay.textContent = timeString;
 
-        updateTimerDisplay();
-
-        if (count_timer <= 0) {
-            localStorage.removeItem("count_timer");
+        if (time <= 0) {
+          // Timer has reached 00:00, you can add code to handle this event
+          timerDisplay.textContent = '00:00';
+          clearInterval(timerInterval);
         } else {
-            count_timer = count_timer - 1;
-            minutes = parseInt(count_timer / 60);
-            seconds = parseInt(count_timer % 60);
-            localStorage.setItem("count_timer", count_timer);
-            setTimeout(countDownTimer, 1000);
+          time--; // Decrease the time by 1 second
         }
+      }
+
+      updateTimer(); // Call the function immediately to display the initial time
+      var timerInterval = setInterval(updateTimer, 1000); // Update the timer every 1 second
     }
 
-    setTimeout(countDownTimer, 1000);
-}
-
-function updateTimerDisplay() {
-    document.getElementById("total-time-left").innerHTML = minutes + ":" + seconds;
-}
-
-function refreshTimer() {
-    localStorage.removeItem("count_timer"); // Remove the timer from local storage
-    startTimer(); // Start the timer again
-}
+    startTimer();

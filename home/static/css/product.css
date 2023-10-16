@@ -1,0 +1,112 @@
+/*
+Template Name: Eco Mart
+File: Layout CSS
+Author: TemplatesOnWeb
+Author URI: https://www.templateonweb.com/
+Licence: <a href="https://www.templateonweb.com/license">Website Template Licence</a>
+*/
+
+/*********************product****************/
+.prod_pg1l1il h6 i{
+font-size:10px; 
+ }
+.prod_pg1l1ir h6{
+width:30px;
+height:25px;
+border-radius:5px;
+line-height:25px;
+text-align:center;
+ }
+.prod_pg1l1 ul li a{
+display:block;
+border:3px solid #f7ba0121;
+width:35px;
+height:35px;
+line-height:31px;
+text-align:center;
+ }
+.prod_pg1l1 ul li a:hover{
+background:#f7ba01;
+border-color:#f7ba01;
+color:#fff;
+ }
+.prod_2im{
+box-shadow:none; 
+ }
+
+/*********************product_end****************/
+
+
+@media screen and (max-width : 767px){
+.prod_pg1l1 h6{
+text-align:center; 
+ }
+.prod_pg1l1il h6{
+text-align:left; 
+ }
+.prod_pg1l2ir h6{
+text-align:left; 
+ }
+.prod_pg1l1 ul{
+text-align:center; 
+ }
+.form-check {
+margin-top:10px!important; 
+ }
+.prod_pg1r1r{
+margin-top:15px; 
+ }
+.prodinm{
+margin-bottom:15px;  
+ }
+.prod_2im{
+margin-bottom:0; 
+ }
+ }
+
+
+@media (min-width:576px) and (max-width:767px) {
+.prod_pg1l1il h6{
+margin-top:0!important; 
+ }
+ }
+@media (min-width:768px) and (max-width:991px) {
+.prod_pg1l1il h6{
+margin-top:0!important; 
+ }
+.form-check {
+margin-top:10px!important; 
+ }
+.prod_pg1r{
+margin-top:15px; 
+ }
+.prod_pg1l1 h6{
+text-align:center; 
+ }
+.prod_pg1l1il h6{
+text-align:left; 
+ }
+.prod_pg1l2ir h6{
+text-align:left; 
+ }
+.prod_pg1l1 ul{
+text-align:center; 
+ }
+ }
+
+@media (min-width:992px) and (max-width:1200px) {
+.prod_pg1l1{
+padding:10px!important; 
+ }
+.prod_pg1l1ir h6 {
+width: 15px;
+height: 15px;
+line-height: 15px;
+font-size:10px;
+}
+ }
+@media (min-width:1201px) and (max-width:1235px) {
+
+ }
+
+

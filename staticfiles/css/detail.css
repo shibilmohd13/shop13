@@ -1,0 +1,166 @@
+/*
+Template Name: Eco Mart
+File: Layout CSS
+Author: TemplatesOnWeb
+Author URI: https://www.templateonweb.com/
+Licence: <a href="https://www.templateonweb.com/license">Website Template Licence</a>
+*/
+
+/*********************detail****************/
+.carousel-indicators {
+bottom:-50px;
+}
+.detail_1l .carousel-indicators [data-bs-target] {
+background-color: #f7ba01;
+}
+.detail_1r ul li a{
+display:block;
+border:3px solid #f7ba0121;
+width:35px;
+height:35px;
+line-height:31px;
+text-align:center;
+ }
+.detail_1r ul li a:hover{
+background:#f7ba01;
+border-color:#f7ba01;
+color:#fff;
+ }
+.detail_2{
+margin-top:70px; 
+ }
+ 
+.detail_2 .nav-tabs  {
+border-color:#f7ba0121;
+}
+.detail_2 .nav-tabs  .nav-link.active {
+border:none;
+border-bottom:1px solid #f7ba01;
+color:#f7ba01;
+background:none;
+}
+.detail_2 .nav-tabs .nav-link {
+border-radius:0;
+border:none;
+padding:0;
+margin-left:25px;
+margin-right:25px;
+padding-bottom:15px;
+color:#000;
+border-bottom:1px solid transparent;
+font-weight:bold;
+}
+.detail_2 .nav-tabs .nav-link:hover {
+border-bottom:1px solid #f7ba01;
+color:#f7ba01;
+}
+.tab_ir h6 i{
+font-size:7px; 
+ }
+.detail_5li{
+border-bottom:1px solid #f7ba0121;
+padding-bottom:10px; 
+ }
+.detail_5r{
+margin-top:40px;
+padding-left:15px;
+padding-right:15px; 
+ }
+.detail_5r .form-control{
+height:48px; 
+ }
+.detail_5r .form_area{
+height:140px; 
+ }
+
+
+/*********************detail_end****************/
+
+
+@media screen and (max-width : 767px){
+.detail_1r{
+margin-top:50px; 
+ }
+.detail_1r .form-control{
+width:100px!important;
+ }
+.detail_2  .nav-tabs{
+justify-content: left!important;
+ }
+.detail_2 .nav-tabs .nav-link {
+margin-left: 10px;
+margin-right: 10px;
+margin-bottom:10px;
+}
+.tab_ir{
+margin-top:15px;
+ }
+.tab_ir h6{
+text-align:center; 
+ }
+.tab_ir .font_14{
+text-align:left; 
+ }
+.detail_4{
+text-align:center; 
+ }
+.prodinm{
+margin-bottom:15px; 
+ }
+.prod_2im{
+margin-bottom:0; 
+ }
+.detail_5lil img{
+width:auto!important; 
+ }
+.detail_5lil{
+text-align:center;
+margin-bottom:15px;
+ }
+.detail_5r .form-control{
+margin-bottom:15px; 
+ }
+.detail_5r{
+text-align:center; 
+ }
+.detail_5r p{
+text-align:left; 
+ }
+ }
+
+
+@media (min-width:576px) and (max-width:767px) {
+.detail_5lil img{
+width:100%!important; 
+ }
+.detail_5lil{
+text-align:left;
+margin-bottom:0;
+ }
+ }
+@media (min-width:768px) and (max-width:991px) {
+.detail_1l img{
+min-height:520px; 
+ }
+.tab_il img{
+min-height:350px; 
+ }
+.prodinm{
+margin-bottom:15px; 
+ }
+
+ }
+
+@media (min-width:992px) and (max-width:1200px) {
+.detail_1l img{
+min-height:520px; 
+ }
+.tab_il img{
+min-height:350px; 
+ }
+ }
+@media (min-width:1201px) and (max-width:1235px) {
+
+ }
+
+

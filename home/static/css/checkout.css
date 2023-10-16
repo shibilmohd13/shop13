@@ -1,0 +1,71 @@
+/*
+Template Name: Eco Mart
+File: Layout CSS
+Author: TemplatesOnWeb
+Author URI: https://www.templateonweb.com/
+Licence: <a href="https://www.templateonweb.com/license">Website Template Licence</a>
+*/
+/*********************checkout****************/
+#checkout{
+padding-top:20px;
+padding-bottom:20px; 
+ }
+.checkout_1l1 .form-control{
+ height:45px;
+ margin-top:15px;
+ margin-bottom:15px;
+ border-radius:0;
+ font-size:13px;
+ }
+.checkout_1l1 .form-select{
+height:45px;
+ margin-top:15px;
+ margin-bottom:15px;
+ border-radius:0;
+ font-size:13px;
+ }
+
+.checkout_1r .button {
+display:block;
+text-align:center;
+}
+.checkout_1r{
+border:1px solid #f7ba0121;
+padding:25px 15px 30px 15px; 
+ }
+ 
+.checkout_1l1{
+margin-left:0;
+margin-right:0 
+ }
+.checkout_1r label {
+font-size: 12px;
+}
+/*********************checkout_end****************/
+
+
+@media screen and (max-width : 767px){
+.checkout_1l h5{
+text-align:center; 
+ }
+.checkout_1r{
+margin-top:15px; 
+ }
+.checkout_1r h5{
+text-align:center; 
+ }
+.checkout_1l1 h6{
+text-align:center;  
+ }
+}
+
+@media (min-width:576px) and (max-width:767px) {
+
+ }
+
+@media (min-width:768px) and (max-width:991px) {
+
+ }
+@media (min-width:992px) and (max-width:1200px) {
+
+  }

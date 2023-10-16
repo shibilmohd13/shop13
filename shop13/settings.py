@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'userlogin',
+    'home',
 ]
 
 MIDDLEWARE = [
@@ -133,6 +134,8 @@ STATIC_URL = '/static/'
 # Define the locations where Django should search for static files.
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'userlogin/static'),
+    os.path.join(BASE_DIR, 'home/static'),
+
 ]
 
 # Default primary key field type

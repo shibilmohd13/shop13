@@ -1,0 +1,225 @@
+/*
+Template Name: Eco Mart
+File: Layout CSS
+Author: TemplatesOnWeb
+Author URI: https://www.templateonweb.com/
+Licence: <a href="https://www.templateonweb.com/license">Website Template Licence</a>
+*/
+
+/*********************center_home****************/
+.carousel-caption{
+text-align:left;
+background:#0000005e;
+padding:30px 30px;
+bottom: 9rem;
+left: 10%;
+width:40%;
+color:#fff;
+ }
+.carousel-indicators{
+bottom:0; 
+ }
+.center_home .carousel-indicators [data-bs-target] {
+ background-color: #f7ba01;
+}
+/*********************center_home_end****************/
+
+/*********************prod****************/
+
+#deal .carousel-indicators {
+bottom: -50px;
+}
+#deal .carousel-indicators [data-bs-target] {
+background-color: #f7ba01;
+}
+#deal {
+padding-bottom:50px;
+}
+.deal_1r2im2{
+border-top:1px solid #f7ba0121;
+margin-top:20px;
+padding-top:15px; 
+ }
+.deal_1r2im2 .progress-bar {
+background: #ebebeb; 
+border-radius: 30px;
+}
+.deal_1r2im2 .progress {
+background-color: #f7ba01;
+height: 8px;
+overflow: hidden;
+border-radius: 30px;
+}
+.deal_1r2im2 ul li{
+background:#000;
+width:45px;
+height:45px;
+line-height:1.2em;
+border-radius:3px;
+padding-top:8px;
+font-size:12px;
+ }
+.deal_1r2{
+border-top:1px solid #f7ba0121;
+margin-top:20px;
+padding-top:20px; 
+ }
+ 
+.deal_1li1{
+background:#1d428994;
+top:0;
+padding:50px 0px 0px 30px; 
+ }
+.deal_1li2{
+top:0;
+right:0;
+padding:130px 30px 0px 0px;
+ }
+.deal_1li2 h6{
+width:110px;
+height:110px;
+line-height:1.2em;
+border-radius:50%;
+padding-top:40px;
+ }
+/*********************prod_end****************/
+
+/*********************prod_o****************/
+.prod_o1 .nav-tabs{
+width:50%;
+margin-left:auto;
+margin-right:auto;
+padding-top:15px;
+padding-bottom:15px;
+border-radius:50px;
+ }
+.prod_o1 .nav-link{
+border:none; 
+font-weight:bold;
+color:#000;
+background:none;
+border-radius:0;
+padding-left:25px;
+padding-right:25px;
+font-size:15px;
+ }
+.prod_o1 .nav-link:hover{
+color:#f7ba01!important; 
+ }
+.prod_o1 .active{
+color:#f7ba01!important; 
+background:none!important;
+border-radius:0;
+ }
+ 
+.arrive {
+background-image: url(../img/23.jpg);
+background-position: center;
+}
+.arrive_m{
+background:#0000005e;
+padding-top:100px;
+padding-bottom:100px; 
+ }
+/*********************prod_o_end****************/
+
+
+@media screen and (max-width : 767px){
+.center_home img{
+min-height:300px; 
+ }
+.carousel-caption {
+text-align: center;
+left:0;
+width:100%;
+bottom:50px;
+padding:10px;
+}
+.carousel-caption .font_50{
+font-size:26px; 
+ }
+.carousel-caption br{
+display:none;
+ }
+.deal_1li2 {
+top: 0;
+right: 0;
+padding: 200px 30px 0px 0px;
+}
+.deal_1r1l{
+text-align:center;
+margin-top:15px;
+margin-bottom:15px; 
+ }
+.deal_1r1r{
+text-align:center!important; 
+ }
+.deal_1r2im {
+margin-bottom:15px; 
+ }
+.prod_o1 .nav-tabs{
+width:100%; 
+ }
+.prod_o1 .nav-link {
+padding-left: 10px;
+padding-right: 10px;
+}
+.blog_h1i {
+text-align:center;
+margin-bottom:15px;
+ }
+.blog_h1i p{
+ text-align:left;
+ }
+ }
+
+
+@media (min-width:576px) and (max-width:767px) {
+
+ }
+@media (min-width:768px) and (max-width:991px) {
+.center_home img{
+min-height:500px; 
+ }
+.carousel-caption .font_50{
+font-size:38px; 
+ }
+.carousel-caption{
+width:50%;
+ }
+.carousel-caption br{
+display:none;
+ }
+.prod_2i2 h6{
+font-size:12px; 
+ }
+.deal_1r{
+margin-top:15px; 
+ }
+.prod_o1 .nav-tabs{
+width:70%; 
+ }
+ }
+
+@media (min-width:992px) and (max-width:1200px) {
+.carousel-caption .font_50{
+font-size:38px; 
+ }
+.deal_1r2im2 ul li{
+margin-bottom:5px; 
+ }
+.deal_1li2 {
+padding: 200px 30px 0px 0px;
+}
+.prod_o1 .nav-tabs{
+width:60%; 
+ }
+ }
+@media (min-width:1201px) and (max-width:1255px) {
+.carousel-caption .font_50{
+font-size:45px; 
+ }
+ }
+
+
+

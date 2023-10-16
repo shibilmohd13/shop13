@@ -49,7 +49,7 @@ def otp(request):
         if entered_otp == request.session['otp']:
             user = CustomUser.objects.create_user(username=request.session['email'], phone=request.session['phone'], email=request.session['email'], password=request.session['password'],fullname=request.session['fullname'])
             user.save()
-            return redirect('signin')
+            return redirect('home')
         else:
             messages.error(request, 'Invalid otp')
             return redirect('otp')

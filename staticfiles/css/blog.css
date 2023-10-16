@@ -1,0 +1,146 @@
+/*
+Template Name: Eco Mart
+File: Layout CSS
+Author: TemplatesOnWeb
+Author URI: https://www.templateonweb.com/
+Licence: <a href="https://www.templateonweb.com/license">Website Template Licence</a>
+*/
+
+/*********************blog****************/
+.blog_1r1 .input-group {
+border: 1px solid #f7ba0121;
+}
+.blog_1r1 ul li a{
+background:#ebebeb;
+display:block;
+padding: 8px 12px;  
+ }
+.blog_1r1 ul li a:hover{
+background:#f7ba01;
+color:#fff; 
+ }
+.blog_1r1 ul li {
+margin-left: 4px;
+margin-right: 4px;
+margin-bottom: 8px;
+}
+
+.blockquote {
+border-left: 5px solid #f7ba01;
+}
+.blog_dt1il ul li a{
+background:#ebebeb;
+display:block;
+padding: 8px 12px; 
+ }
+.blog_dt1il ul li a:hover{
+background:#f7ba01;
+color:#fff; 
+ }
+.blog_dt1ir ul li a {
+background:#ebebeb;
+}
+.blog_dt1ir ul li a i {
+color:#000;
+}
+
+.blog_dt4 .form-control{
+height:48px;
+background:#ebebeb;
+border:none;
+ }
+.blog_dt4 .form_area{
+height:140px; 
+ }
+/*********************blog_end****************/
+
+
+@media screen and (max-width : 767px){
+.blog_1l1{
+text-align:center; 
+ }
+.blog_1l1 p{
+text-align:left; 
+ }
+.blog_1l1ir{
+text-align:left!important; 
+margin-top:15px; 
+ }
+.blog_1r{
+margin-top:15px; 
+ }
+.blog_1r1 h5{
+text-align:center; 
+ }
+.blog_1r1 h6{
+text-align:center; 
+ }
+.blog_1r1 .font_13{
+text-align:left; 
+ }
+.blog_1r1ir h6{
+text-align:left; 
+ }
+.blog_dt1il{
+text-align:center; 
+margin-top:15px;  
+ }
+.blog_dt1ir{
+text-align:center!important; 
+margin-top:15px;  
+ }
+.blog_dt2{
+text-align:center; 
+ }
+.blog_h1i {
+text-align:center;
+margin-bottom:15px;
+ }
+.blog_h1i p{
+ text-align:left;
+ }
+.blog_dt3l img{
+width:auto!important;
+ }
+.blog_dt3l{
+margin-bottom:15px;
+text-align:center; 
+ }
+.blog_dt3{
+padding-left:0!important; 
+ }
+.blog_dt4 h6{
+text-align:center; 
+ }
+.blog_dt4 .form-control{
+margin-bottom:15px;
+ }
+ }
+
+
+@media (min-width:576px) and (max-width:767px) {
+.blog_dt3l img{
+width:100%!important;
+ }
+.blog_dt3l{
+margin-bottom:0;
+text-align:left; 
+ }
+ }
+@media (min-width:768px) and (max-width:991px) {
+.blog_1l1i h6{
+font-size:12px!important; 
+ }
+.blog_dt1il ul li {
+margin-bottom:5px;
+}
+ }
+
+@media (min-width:992px) and (max-width:1200px) {
+
+ }
+@media (min-width:1201px) and (max-width:1235px) {
+
+ }
+
+
