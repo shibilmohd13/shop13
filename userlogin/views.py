@@ -38,6 +38,8 @@ def signin(request):
         password = request.POST['password']
         user = authenticate(request, username=email, password=password)
         if user is not None:
+            print(user.fullname)
+            request.session['fullname'] = user.fullname
             return redirect('home')
         else:
             return redirect('signin')

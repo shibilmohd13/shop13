@@ -51,7 +51,12 @@
             <a class="nav-link dropdown-toggle p-0 text-black d-flex f-row align-items-center" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
                 aria-expanded="false">
                 <i class="fa-solid fa-user header-icons" style="color: #f7ba01;"></i>
-                <label class="">Username</label>
+                {% if user %}
+                <label class="">{{ user }}</label>
+                {% else %}
+                <label class="">Login Now</label>
+                {% endif %}
+                
             </a>
               <ul class="dropdown-menu drop_2 drop_cat" aria-labelledby="navbarDropdown">
                 <li>
@@ -67,7 +72,7 @@
                     My orders</a>
                 </li>
                 <li>
-                  <a class="dropdown-item border-0" href="detail.html"><i class="fa fa-caret-right me-1 col_yell"></i>
+                  <a class="dropdown-item border-0" href="{% url 'logout' %}"><i class="fa fa-caret-right me-1 col_yell"></i>
                     Logout</a>
                 </li>
               </ul>
@@ -79,7 +84,77 @@
     </div>
   </section>
 
-  {% block nav %}{% endblock nav %}
+  <section id="header" class="bg_light">
+    <nav class="navbar navbar-expand-md navbar-light pt-0 pb-0" id="navbar_sticky" >
+      <div class="container-fluid">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="collapse navbar-collapse  d-flex justify-content-center" id="navbarSupportedContent">
+          <ul class="navbar-nav mb-0">
+           <li class="nav-item">
+              <a class="nav-link {% block home %}{% endblock home %}" aria-current="page" href="{% url 'home' %}">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link {% block shop %}{% endblock shop %}" href="{% url 'shop' %}">Shop </a>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+                aria-expanded="false">
+                Categories
+              </a>
+              <ul class="dropdown-menu drop_2 drop_cat" aria-labelledby="navbarDropdown">
+                <li>
+                  <a class="dropdown-item" href="product.html"><i class="fa fa-caret-right me-1 col_yell"></i>
+                    Men</a>
+                </li>
+                <li>
+                  <a class="dropdown-item border-0" href="detail.html"><i class="fa fa-caret-right me-1 col_yell"></i>
+                    Women</a>
+                </li>
+                <li>
+                  <a class="dropdown-item border-0" href="detail.html"><i class="fa fa-caret-right me-1 col_yell"></i>
+                    Kids</a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+                aria-expanded="false">
+                Brands
+              </a>
+              <ul class="dropdown-menu drop_2 drop_cat" aria-labelledby="navbarDropdown">
+                <li>
+                  <a class="dropdown-item" href="cart.html"><i class="fa fa-caret-right me-1 col_yell"></i>
+                    Timex</a>
+                </li>
+                <li>
+                  <a class="dropdown-item border-0" href="checkout.html"><i class="fa fa-caret-right me-1 col_yell"></i>
+                    Titan</a>
+                </li>
+                <li>
+                    <a class="dropdown-item border-0" href="checkout.html"><i class="fa fa-caret-right me-1 col_yell"></i>
+                      Rolex</a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item border-0" href="checkout.html"><i class="fa fa-caret-right me-1 col_yell"></i>
+                      Fasttrack</a>
+                  </li>
+              </ul>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link {% block contact %}{% endblock contact %}" href="contact.html">Contact</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link {% block about %}{% endblock about %}" href="about.html">About </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </section>
 
   {% block content %}{% endblock content %}  
 

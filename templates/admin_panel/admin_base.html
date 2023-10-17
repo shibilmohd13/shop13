@@ -1,0 +1,177 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Shop13 - Admin{% block title %}{% endblock title %}</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="{% static 'home/image/13_favicon_logo.jpg' %}" rel="icon">
+  <link href="{% static 'home/image/13_favicon_logo.jpg' %}" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.gstatic.com" rel="preconnect">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="{% static 'admin_panel/assets/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static 'admin_panel/assets/vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+  <link href="{% static 'admin_panel/assets/vendor/boxicons/css/boxicons.min.css' %}" rel="stylesheet">
+  <link href="{% static 'admin_panel/assets/vendor/quill/quill.snow.css' %}" rel="stylesheet">
+  <link href="{% static 'admin_panel/assets/vendor/quill/quill.bubble.css' %}" rel="stylesheet">
+  <link href="{% static 'admin_panel/assets/vendor/remixicon/remixicon.css' %}" rel="stylesheet">
+  <link href="{% static 'admin_panel/assets/vendor/simple-datatables/style.css' %}" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="{% static 'admin_panel/assets/css/style.css' %}" rel="stylesheet">
+
+
+</head>
+
+<body>
+
+  <!-- ======= Header ======= -->
+  <header id="header" class="header fixed-top d-flex align-items-center">
+
+    <div class="d-flex align-items-center justify-content-between">
+      <a href="admin_panel/index.html" class="logo d-flex align-items-center">
+        <img src="{% static 'admin_panel/assets/img/shop13.png' %}" alt="">
+      </a>
+      <i class="bi bi-list toggle-sidebar-btn"></i>
+    </div><!-- End Logo -->
+
+    <div class="search-bar">
+      <form class="search-form d-flex align-items-center" method="POST" action="#">
+        <input type="text" name="query" placeholder="Search" title="Enter search keyword">
+        <button type="submit" title="Search"><i class="bi bi-search"></i></button>
+      </form>
+    </div><!-- End Search Bar -->
+
+    <nav class="header-nav ms-auto">
+      <ul class="d-flex align-items-center">
+
+        <li class="nav-item d-block d-lg-none">
+          <a class="nav-link nav-icon search-bar-toggle " href="#">
+            <i class="bi bi-search"></i>
+          </a>
+        </li><!-- End Search Icon-->
+
+        <li class="nav-item  pe-3">
+          <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" >
+            <i class="bx bx-exit" style="font-size: 25px;"></i>
+          </a><!-- End Profile Iamge Icon -->
+        </li><!-- End Profile Nav -->
+        <li class="nav-item  pe-3">
+          <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" >
+            <span class="d-none d-md-block ps-2">K. Anderson</span>
+          </a><!-- End Profile Iamge Icon -->
+        </li><!-- End Profile Nav -->
+
+      </ul>
+    </nav><!-- End Icons Navigation -->
+
+  </header><!-- End Header -->
+
+  
+  <!-- ======= Sidebar ======= -->
+  <aside id="sidebar" class="sidebar">
+
+    <ul class="sidebar-nav" id="sidebar-nav">
+
+      <li class="nav-item ">
+        <a class="nav-link {% block dashboard %}collapsed{% endblock dashboard %}" href="{% url 'admin_dash' %} ">
+          <i class="bi bi-grid"></i>
+          <span>Dashboard</span>
+        </a>
+      </li><!-- End Dashboard Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link {% block users %}collapsed{% endblock users %}" href="{% url 'users' %}">
+          <i class="bi bi-person"></i>
+          <span>Users</span>
+        </a>
+      </li><!-- End Users Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link {% block products %}collapsed{% endblock products %}" href="admin_panel/users-profile.html">
+          <i class="bi bi-list-task"></i>
+          <span>Products</span>
+        </a>
+      </li><!-- End Products Page Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link {% block categories %}collapsed{% endblock categories %}" href="admin_panel/users-profile.html">
+          <i class="bi bi-inboxes-fill"></i>
+          <span>Categories</span>
+        </a>
+      </li><!-- End Categories Page Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link {% block brands %}collapsed{% endblock brands %}" href="admin_panel/users-profile.html">
+          <i class="bi bi-intersect"></i>
+          <span>Brands</span>
+        </a>
+      </li><!-- End Brands Page Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link {% block orders %}collapsed{% endblock orders %}" href="admin_panel/users-profile.html">
+          <i class="bi bi-cart-fill"></i>
+          <span>Orders</span>
+        </a>
+      </li><!-- End Orders Page Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link {% block coupons %}collapsed{% endblock coupons %}" href="admin_panel/users-profile.html">
+          <i class="bi bi-receipt"></i>
+          <span>Coupons</span>
+        </a>
+      </li><!-- End Coupons Page Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link {% block banners %}collapsed{% endblock banners %}" href="admin_panel/users-profile.html">
+          <i class="bi bi-card-image"></i>
+          <span>Banners</span>
+        </a>
+      </li><!-- End Banners Page Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link {% block offers %}collapsed{% endblock offers %}" href="admin_panel/users-profile.html">
+          <i class="bi bi-percent"></i>
+          <span>Offers</span>
+        </a>
+      </li><!-- End Offers Page Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="admin_panel/users-profile.html">
+          <i class="bi bi-credit-card-fill"></i>
+          <span>Payments</span>
+        </a>
+      </li><!-- End Payments Page Nav -->
+
+      
+    </ul>
+  </aside><!-- End Sidebar-->
+
+
+  {% block content %}{% endblock content %}
+
+
+  <!-- Vendor JS Files -->
+  <script src="{% static 'admin_panel/assets/vendor/apexcharts/apexcharts.min.js' %}"></script>
+  <script src="{% static 'admin_panel/assets/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'admin_panel/assets/vendor/chart.js/chart.umd.js' %}"></script>
+  <script src="{% static 'admin_panel/assets/vendor/echarts/echarts.min.js' %}"></script>
+  <script src="{% static 'admin_panel/assets/vendor/quill/quill.min.js' %}"></script>
+  <script src="{% static 'admin_panel/assets/vendor/simple-datatables/simple-datatables.js' %}"></script>
+  <script src="{% static 'admin_panel/assets/vendor/tinymce/tinymce.min.js' %}"></script>
+  <script src="{% static 'admin_panel/assets/vendor/php-email-form/validate.js' %}"></script>
+
+  <!-- Template Main JS File -->
+  <script src="{% static 'admin_panel/assets/js/main.js' %}"></script>
+
+</body>
+
+</html>
