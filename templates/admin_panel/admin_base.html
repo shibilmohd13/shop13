@@ -37,7 +37,7 @@
   <header id="header" class="header fixed-top d-flex align-items-center">
 
     <div class="d-flex align-items-center justify-content-between">
-      <a href="admin_panel/index.html" class="logo d-flex align-items-center">
+      <a href="admin_dash" class="logo d-flex align-items-center">
         <img src="{% static 'admin_panel/assets/img/shop13.png' %}" alt="">
       </a>
       <i class="bi bi-list toggle-sidebar-btn"></i>
@@ -62,11 +62,11 @@
         <li class="nav-item  pe-3">
           <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" >
             <i class="bx bx-exit" style="font-size: 25px;"></i>
-          </a><!-- End Profile Iamge Icon -->
+          </a><!-- End Profile image Icon -->
         </li><!-- End Profile Nav -->
         <li class="nav-item  pe-3">
           <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" >
-            <span class="d-none d-md-block ps-2">K. Anderson</span>
+            <span class="d-none d-md-block ps-2">Admin</span>
           </a><!-- End Profile Iamge Icon -->
         </li><!-- End Profile Nav -->
 
@@ -103,56 +103,56 @@
       </li><!-- End Products Page Nav -->
 
       <li class="nav-item">
-        <a class="nav-link {% block categories %}collapsed{% endblock categories %}" href="admin_panel/users-profile.html">
+        <a class="nav-link {% block categories %}collapsed{% endblock categories %}" href="{% url 'categories' %}">
           <i class="bi bi-inboxes-fill"></i>
           <span>Categories</span>
         </a>
       </li><!-- End Categories Page Nav -->
 
       <li class="nav-item">
-        <a class="nav-link {% block brands %}collapsed{% endblock brands %}" href="admin_panel/users-profile.html">
+        <a class="nav-link {% block brands %}collapsed{% endblock brands %}" href="{% url 'brands' %}">
           <i class="bi bi-intersect"></i>
           <span>Brands</span>
         </a>
       </li><!-- End Brands Page Nav -->
 
       <li class="nav-item">
-        <a class="nav-link {% block colors %}collapsed{% endblock colors %}" href="admin_panel/users-profile.html">
+        <a class="nav-link {% block colors %}collapsed{% endblock colors %}" href="{% url 'colors' %}">
           <i class="bi bi-palette-fill"></i>
           <span>Colors</span>
         </a>
       </li><!-- End Orders Page Nav -->
 
       <li class="nav-item">
-        <a class="nav-link {% block orders %}collapsed{% endblock orders %}" href="admin_panel/users-profile.html">
+        <a class="nav-link {% block orders %}collapsed{% endblock orders %}" href="#">
           <i class="bi bi-cart-fill"></i>
           <span>Orders</span>
         </a>
       </li><!-- End Orders Page Nav -->
 
       <li class="nav-item">
-        <a class="nav-link {% block coupons %}collapsed{% endblock coupons %}" href="admin_panel/users-profile.html">
+        <a class="nav-link {% block coupons %}collapsed{% endblock coupons %}" href="#">
           <i class="bi bi-receipt"></i>
           <span>Coupons</span>
         </a>
       </li><!-- End Coupons Page Nav -->
 
       <li class="nav-item">
-        <a class="nav-link {% block banners %}collapsed{% endblock banners %}" href="admin_panel/users-profile.html">
+        <a class="nav-link {% block banners %}collapsed{% endblock banners %}" href="#">
           <i class="bi bi-card-image"></i>
           <span>Banners</span>
         </a>
       </li><!-- End Banners Page Nav -->
 
       <li class="nav-item">
-        <a class="nav-link {% block offers %}collapsed{% endblock offers %}" href="admin_panel/users-profile.html">
+        <a class="nav-link {% block offers %}collapsed{% endblock offers %}" href="#">
           <i class="bi bi-percent"></i>
           <span>Offers</span>
         </a>
       </li><!-- End Offers Page Nav -->
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="admin_panel/users-profile.html">
+        <a class="nav-link {% block payments %}collapsed{% endblock payments %}" href="#">
           <i class="bi bi-credit-card-fill"></i>
           <span>Payments</span>
         </a>
