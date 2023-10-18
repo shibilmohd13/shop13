@@ -9,7 +9,11 @@ def home(request):
         return render(request, 'home/home.html', {'user' : 'Login Now'})
 
 def shop(request):
-    return render(request, 'home/shop.html')
+    try: 
+        user = request.session['fullname']
+        return render(request, 'home/shop.html', {'user' : user})
+    except:
+        return render(request, 'home/shop.html', {'user' : 'Login Now'})
 
 def product_details(request):
     return render(request, "home/details.html")
