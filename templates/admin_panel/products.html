@@ -25,14 +25,28 @@
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Fullname</th>
-                                <th>Email</th>
-                                <th>Phone</th>
-                                <th>Address</th>
-                                <th>Block / Unblock</th>
+                                <th>Prod Name</th>
+                                <th>Category</th>
+                                <th>Brand</th>
+                                <th>Price</th>
+                                <th>Quantity</th>
+                                <th>List / Unlist</th>
+                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
+
+                            <tr>
+                                <td>05</td>
+                                <td>MadMax Furious</td>
+                                <td>Men</td>
+                                <td>Titan</td>
+                                <td>&#8377;5000</td>
+                                <td>12</td>
+                                <td><span class="badge bg-success">Unblock</span></td>
+                                <td style='font-size:20px'><i class="bi bi-pencil-square text-warning">&nbsp;&nbsp;&nbsp;</i><i class="bi bi-trash-fill text-danger"></i></td>
+                                
+                            </tr>
             
                         {% for user in users %}
                             <tr>
@@ -47,7 +61,7 @@
                                 <td><a href='user_status/{{user.id}}'><span class="badge bg-success">Unblock</span></a></td>
                                 {% endif %}
                             </tr>
-                        
+
                         
                         {% endfor %}
 
