@@ -21,6 +21,16 @@ def admin_dash(request):
     return render(request, 'admin_panel/admin_dash.html')
 
 def users(request):
-    users = CustomUser.objects.all().exclude(is_superuser=True)
+    users = CustomUser.objects.all().exclude(is_superuser=True).order_by('id')
     context = { 'users' : users}
     return render(request, 'admin_panel/users.html', context)
+
+def user_status(request, id):
+    user = CustomUser.objects.filter(id=id).first()
+    if user.is_active == True:
+        user.is_active = False
+        user.save()
+    else:
+        user.is_active = True
+        user.save()
+    return redirect('users')

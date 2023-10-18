@@ -38,13 +38,13 @@
                             <tr>
                                 <td>{{user.id}}</td>
                                 <td>{{user.fullname}}</td>
-                                <td><a href="#" class="text-primary">{{user.email}}</a></td>
+                                <td>{{user.email}}</td>
                                 <td>{{user.phone}}</td>
                                 <td>Malappuram, Kerala, India</td>
                                 {% if user.is_active %}
-                                <td><span class="badge bg-danger">Block</span></td>
+                                <td><a href='user_status/{{user.id}}'><span class="badge bg-danger">Block</span></a></td>
                                 {% else %}
-                                <td><span class="badge bg-success">Unblock</span></td>
+                                <td><a href='user_status/{{user.id}}'><span class="badge bg-success">Unblock</span></a></td>
                                 {% endif %}
                             </tr>
                         
