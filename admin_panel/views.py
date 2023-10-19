@@ -37,4 +37,4 @@ def user_status(request, id):
 
 def admin_logout(request):
     request.session.flush()
-    return redirect('')
+    return redirect('admin_login')
