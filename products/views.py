@@ -21,39 +21,54 @@ def product_status(request, id):
     return redirect('products')
 
 def add_products(request):
-    if request.method == 'POST':
-        prod = Product()
-        prod.name = request.POST.get('name')
-        prod.description = request.POST.get('description')
-        prod.price = request.POST.get('price')
-        prod.discount = request.POST.get('discount')
-        prod.quantity = request.POST.get('quantity')
-        prod.category = request.POST.get('category')
-        prod.brands = request.POST.get('brand')
-        prod.color = request.POST.get('color')
-        prod.is_listed = request.POST.get('is_listed')
+    # if request.method == 'POST':
+    #     prod = Product()
+    #     prod.name = request.POST.get('name')
+    #     prod.description = request.POST.get('description')
+    #     prod.price = request.POST.get('price')
+    #     prod.discount = request.POST.get('discount')
+    #     prod.quantity = request.POST.get('quantity')
+    #     prod.category = request.POST.get('category')
+    #     prod.brands = request.POST.get('brand')
+    #     prod.color = request.POST.get('color')
+    #     prod.is_listed = request.POST.get('is_listed')
 
-        if len(request.FILES) != 0 :
-            prod.image1 = request.FILES['image1']
+    #     if len(request.FILES) != 0 :
+    #         prod.image1 = request.FILES['image1']
 
-        if len(request.FILES) != 0 :
-            prod.image2 = request.FILES['image2']
+    #     if len(request.FILES) != 0 :
+    #         prod.image2 = request.FILES['image2']
         
-        if len(request.FILES) != 0 :
-            prod.image3 = request.FILES['image3']
+    #     if len(request.FILES) != 0 :
+    #         prod.image3 = request.FILES['image3']
 
-        prod.save()
-        return redirect('add_products')
+    #     prod.save()
+    #     return redirect('add_products')
 
     return render(request, 'admin_panel/add_products.html')
 
 def add_categories(request):
+    if request.method == "POST":
+        name = request.POST.get('name')
+        cat = Category(name=name,is_listed=True)
+        cat.save()
+        return redirect("categories")
     return render(request, 'admin_panel/add_categories.html')
 
 def add_brands(request):
+    if request.method == "POST":
+        name = request.POST.get('name')
+        brand = Brand(name=name,is_listed=True)
+        brand.save()
+        return redirect("brands")
     return render(request, 'admin_panel/add_brands.html')
 
 def add_colors(request):
+    if request.method == "POST":
+        name = request.POST.get('name')
+        clr = Color(name=name,is_listed=True)
+        clr.save()
+        return redirect("colors")
     return render(request, 'admin_panel/add_colors.html')
 
 
