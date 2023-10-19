@@ -87,7 +87,9 @@
         </div>
       </div>
       <div class="row prod_2 text-center">
-        <div class="col-md-3">
+
+{% comment %} 
+        <div class="col-md-3 mt-4">
           <div class="prod_2im position-relative clearfix">
             <div class="prod_2i1 clearfix">
               <div class="grid clearfix">
@@ -108,8 +110,39 @@
               </h6>
             </div>
           </div>
+        </div> 
+    {% endcomment %}
+
+        {% for item in obj %}
+        
+        <div class="col-md-3 mt-4">
+          <div class="prod_2im position-relative clearfix">
+            <div class="prod_2i1 clearfix">
+              <div class="grid clearfix">
+                <figure class="effect-jazz mb-0">
+                  <a href="detail.html"><img src="{% get_media_prefix %}{{item.image1}}"  alt="abc" width="300px" height="300px"/></a>
+                </figure>
+              </div>
+            </div>
+            <div class="prod_2i2 pb-2 clearfix">
+              <h6 class="mt-3"><a href="detail.html">{{item.name}}</a></h6>
+              <h6 class="fw-normal mt-2">
+                RS $ {{item.price}} <span class="me-2 ms-2">|</span> {{item.discount}}% off 
+              </h6>
+            </div>
+            <div class="prod_2i3 clearfix position-absolute">
+              <h6 class="bg_yell d-inline-block pt-1 pb-1 font_13 text-white ps-3 pe-3">
+                NEW
+              </h6>
+            </div>
+          </div>
         </div>
-        <div class="col-md-3">
+        
+        {% endfor %}
+
+{% comment %} 
+
+        <div class="col-md-3 mt-4">
           <div class="prod_2im position-relative clearfix">
             <div class="prod_2i1 clearfix">
               <div class="grid clearfix">
@@ -131,7 +164,7 @@
             </div>
           </div>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-3 mt-4">
           <div class="prod_2im position-relative clearfix">
             <div class="prod_2i1 clearfix">
               <div class="grid clearfix">
@@ -155,7 +188,7 @@
             </div>
           </div>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-3 mt-4">
           <div class="prod_2im position-relative clearfix">
             <div class="prod_2i1 clearfix">
               <div class="grid clearfix">
@@ -177,9 +210,7 @@
             </div>
           </div>
         </div>
-      </div>
-      <div class="row prod_2 text-center mt-4">
-        <div class="col-md-3">
+        <div class="col-md-3 mt-4">
           <div class="prod_2im position-relative clearfix">
             <div class="prod_2i1 clearfix">
               <div class="grid clearfix">
@@ -201,7 +232,7 @@
             </div>
           </div>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-3 mt-4">
           <div class="prod_2im position-relative clearfix">
             <div class="prod_2i1 clearfix">
               <div class="grid clearfix">
@@ -223,7 +254,7 @@
             </div>
           </div>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-3 mt-4">
           <div class="prod_2im position-relative clearfix">
             <div class="prod_2i1 clearfix">
               <div class="grid clearfix">
@@ -247,7 +278,7 @@
             </div>
           </div>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-3 mt-4">
           <div class="prod_2im position-relative clearfix">
             <div class="prod_2i1 clearfix">
               <div class="grid clearfix">
@@ -270,6 +301,7 @@
           </div>
         </div>
 
+ {% endcomment %}
 
       </div>
     </div>
