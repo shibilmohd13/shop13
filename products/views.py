@@ -20,6 +20,43 @@ def product_status(request, id):
         prod.save()
     return redirect('products')
 
+def add_products(request):
+    if request.method == 'POST':
+        prod = Product()
+        prod.name = request.POST.get('name')
+        prod.description = request.POST.get('description')
+        prod.price = request.POST.get('price')
+        prod.discount = request.POST.get('discount')
+        prod.quantity = request.POST.get('quantity')
+        prod.category = request.POST.get('category')
+        prod.brands = request.POST.get('brand')
+        prod.color = request.POST.get('color')
+        prod.is_listed = request.POST.get('is_listed')
+
+        if len(request.FILES) != 0 :
+            prod.image1 = request.FILES['image1']
+
+        if len(request.FILES) != 0 :
+            prod.image2 = request.FILES['image2']
+        
+        if len(request.FILES) != 0 :
+            prod.image3 = request.FILES['image3']
+
+        prod.save()
+        return redirect('add_products')
+
+    return render(request, 'admin_panel/add_products.html')
+
+def add_categories(request):
+    return render(request, 'admin_panel/add_categories.html')
+
+def add_brands(request):
+    return render(request, 'admin_panel/add_brands.html')
+
+def add_colors(request):
+    return render(request, 'admin_panel/add_colors.html')
+
+
 def categories(request):
     cat = Category.objects.all().order_by('id')
     context = {

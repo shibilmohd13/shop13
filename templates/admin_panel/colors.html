@@ -5,7 +5,7 @@
 {% block content %}
 
 <main id="main" class="main">
-
+    <div class="d-flex justify-content-between">
         <div class="pagetitle">
             <h1>Colors</h1>
             <nav>
@@ -15,7 +15,8 @@
                 </ol>
             </nav>
         </div><!-- End Page Title -->
-
+        <a href="{% url 'add_colors' %}" class="btn btn-primary btn-rounded h-50">Add Colors</a>
+    </div>
         <!-- Recent Sales -->
         <div class="col-12">
             <div class="card recent-sales overflow-auto">
@@ -25,7 +26,7 @@
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Brand</th>
+                                <th>Color</th>
                                 <th>List / Unlist</th>
                                 <th>Actions</th>
                             </tr>

@@ -1,0 +1,139 @@
+{% extends 'admin_panel/admin_base.html' %}
+{% load static %}
+{% block title %} Add Product{% endblock title %}
+{% block products %}{% endblock products %}
+{% block content %}
+
+<main id="main" class="main">
+
+  <div class="d-flex justify-content-between">
+    <div class="pagetitle">
+        <h1>Add Products</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">Admin</li>
+                <li class="breadcrumb-item">Products</li>
+                <li class="breadcrumb-item active">Add Product</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+    <a href="{% url 'products' %}" class="btn btn-danger btn-rounded h-50">Cancel</a>
+</div>
+
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Add a new Product to the database</h5>
+
+        <!-- General Form Elements -->
+        <form action='' method='POST'>
+          {% csrf_token %}
+            <div class="row mb-3">
+              <label for="inputText" class="col-sm-2 col-form-label">Product Name</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" name="name">
+              </div>
+            </div>
+            <div class="row mb-3">
+                <label for="inputPassword" class="col-sm-2 col-form-label">Description</label>
+                <div class="col-sm-10">
+                  <textarea class="form-control" style="height: 100px" name="description"></textarea>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label for="inputNumber" class="col-sm-2 col-form-label">Price</label>
+                <div class="col-sm-10 col-md-4">
+                  <input type="number" class="form-control" width="100px" name="price">
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label for="inputNumber" class="col-sm-2 col-form-label">Discount</label>
+                <div class="col-sm-10 col-md-4">
+                  <input type="number" class="form-control" width="100px"  name="discount">
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label for="inputNumber" class="col-sm-2 col-form-label">Quantity</label>
+                <div class="col-sm-10 col-md-4">
+                  <input type="number" class="form-control" width="100px" name="quantity">
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label class="col-sm-2 col-form-label">Category</label>
+                <div class="col-sm-10">
+                  <select class="form-select" aria-label="Default select example" name="category">
+                    <option selected disabled>Select Category</option>
+                    <option value="1">One</option>
+                    <option value="2">Two</option>
+                    <option value="3">Three</option>
+                  </select>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label class="col-sm-2 col-form-label">Brand</label>
+                <div class="col-sm-10">
+                  <select class="form-select" aria-label="Default select example" name="brand">
+                    <option selected></option>
+                    <option value="1">One</option>
+                    <option value="2">Two</option>
+                    <option value="3">Three</option>
+                  </select>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label class="col-sm-2 col-form-label">Color</label>
+                <div class="col-sm-10">
+                  <select class="form-select" aria-label="Default select example" name="color">
+                    <option selected></option>
+                    <option value="1">One</option>
+                    <option value="2">Two</option>
+                    <option value="3">Three</option>
+                  </select>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label for="inputNumber" class="col-sm-2 col-form-label">Image 1</label>
+                <div class="col-sm-10">
+                  <input class="form-control" type="file" id="formFile" name="image1">
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label for="inputNumber" class="col-sm-2 col-form-label">Image 2</label>
+                <div class="col-sm-10">
+                  <input class="form-control" type="file" id="formFile" name="image2">
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label for="inputNumber" class="col-sm-2 col-form-label">Image 3</label>
+                <div class="col-sm-10">
+                  <input class="form-control" type="file" id="formFile" name="image3">
+                </div>
+            </div>
+            <div class="row mb-3">
+                <legend class="col-form-label col-sm-2 pt-0">Status</legend>
+                <div class="col-sm-10">
+  
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="gridCheck1" name="is_listed">
+                    <label class="form-check-label" for="gridCheck1">
+                      is listed
+                    </label>
+                  </div>
+            </div>
+            <br><br>
+            <div class="row mb-3">
+              <label class="col-sm-2 col-form-label">Submit</label>
+              <div class="col-sm-10">
+                <button type="submit" class="btn btn-primary">Add Product</button>
+              </div>
+            </div>
+
+          </form><!-- End General Form Elements -->
+
+        </div>
+      </div>
+
+    </div>
+
+
+    </main><!-- End #main -->
+{% endblock content %}

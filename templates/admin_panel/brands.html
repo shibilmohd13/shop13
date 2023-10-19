@@ -6,6 +6,7 @@
 
 <main id="main" class="main">
 
+    <div class="d-flex justify-content-between">
         <div class="pagetitle">
             <h1>Brands</h1>
             <nav>
@@ -15,6 +16,8 @@
                 </ol>
             </nav>
         </div><!-- End Page Title -->
+        <a href="{% url 'add_brands' %}" class="btn btn-primary btn-rounded h-50">Add Brand</a>
+    </div>
 
         <!-- Recent Sales -->
         <div class="col-12">
@@ -41,7 +44,8 @@
                                 {% else %}
                                 <td><a href='brand_status/{{brand.id}}'><span class="badge bg-success">List</span></a></td>
                                 {% endif %}
-                                <td style='font-size:20px'><i class="bi bi-pencil-square text-warning">&nbsp;&nbsp;&nbsp;</i><i class="bi bi-trash-fill text-danger"></i></td>
+                                {% comment %} <td style='font-size:20px'><i class="bi bi-pencil-square text-warning">&nbsp;&nbsp;&nbsp;</i><i class="bi bi-trash-fill text-danger"></i></td> {% endcomment %}
+                                <td style='font-size:20px'>&nbsp;&nbsp;&nbsp;&nbsp;<i class="bi bi-pencil-square text-warning"></i></td>
                             </tr>
 
                         

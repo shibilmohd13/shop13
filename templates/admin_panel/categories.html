@@ -6,6 +6,7 @@
 
 <main id="main" class="main">
 
+    <div class="d-flex justify-content-between">
         <div class="pagetitle">
             <h1>Categories</h1>
             <nav>
@@ -15,6 +16,8 @@
                 </ol>
             </nav>
         </div><!-- End Page Title -->
+        <a href="{% url 'add_categories' %}" class="btn btn-primary btn-rounded h-50">Add Categories</a>
+    </div>
 
         <!-- Recent Sales -->
         <div class="col-12">
