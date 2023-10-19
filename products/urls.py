@@ -15,6 +15,12 @@ urlpatterns = [
     path('colors', views.colors, name='colors'),
     path('color_status/<str:id>', views.color_status, name='color_status'),
     path('add_colors', views.add_colors,name='add_colors'),
+    path('edit_categories/<str:id>', views.edit_categories,name='edit_categories'),
+    path('edit_brands/<str:id>', views.edit_brands,name='edit_brands'),
+    path('edit_colors/<str:id>', views.edit_colors,name='edit_colors'),
+
+
+
 
 
 

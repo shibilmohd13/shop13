@@ -72,6 +72,30 @@ def add_colors(request):
     return render(request, 'admin_panel/add_colors.html')
 
 
+def edit_categories(request, id):
+    cat = Category.objects.get(id=id)
+    if request.method == 'POST':
+        cat.name = request.POST.get('name')
+        cat.save()
+        return redirect('categories')
+    return render(request, 'admin_panel/edit_categories.html',{'cat':cat})
+
+def edit_brands(request,id):
+    brand = Brand.objects.get(id=id)
+    if request.method == 'POST':
+        brand.name = request.POST.get('name')
+        brand.save()
+        return redirect('brands')
+    return render(request, 'admin_panel/edit_brands.html',{'brand': brand})
+
+def edit_colors(request, id):
+    clr = Color.objects.get(id=id)
+    if request.method == 'POST':
+        clr.name = request.POST.get('name')
+        clr.save()
+        return redirect('colors')
+    return render(request, 'admin_panel/edit_colors.html',{'clr':clr})
+
 def categories(request):
     cat = Category.objects.all().order_by('id')
     context = {

@@ -34,3 +34,7 @@ def user_status(request, id):
         user.is_active = True
         user.save()
     return redirect('users')
+
+def admin_logout(request):
+    request.session.flush()
+    return redirect('')
