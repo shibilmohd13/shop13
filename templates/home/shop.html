@@ -14,61 +14,32 @@
   </div>
 </section>
 
-<section id="prod_pg" class="pt-4 pb-4 bg_light_1">
+<section id="prod_pg" class="pb-4 bg_light_1">
   <div class="container-fluid">
     <div class="row prod_pg1">
       <div class="col-md-12 col-lg-3">
         <div class="prod_pg1l">
           <div class="prod_pg1l1 bg-white p-4">
             <h6 class="mb-3">PRODUCT CATEGORIES</h6>
-            <div class="prod_pg1l1i row">
+            {% for item in categories_nav %}
+            <div class="prod_pg1l1i row mt-2">
               <div class="col-md-10 col-10">
                 <div class="prod_pg1l1il">
                   <h6 class="font_14 fw-normal mt-1">
-                    <a href="detail.html"
-                      ><i class="fa fa-circle-o me-1 col_yell"></i> Men</a
+                    <a href="#"
+                      ><i class="fa fa-circle-o me-1 col_yell"></i> {{item.name}}</a
                     >
                   </h6>
                 </div>
               </div>
-              <div class="col-md-2 col-2">
+              {% comment %} <div class="col-md-2 col-2">
                 <div class="prod_pg1l1ir text-end">
                   <h6 class="d-inline-block bg_light font_13">23</h6>
                 </div>
-              </div>
+              </div> {% endcomment %}
             </div>
-            <div class="prod_pg1l1i row mt-2">
-              <div class="col-md-10 col-10">
-                <div class="prod_pg1l1il">
-                  <h6 class="font_14 fw-normal mt-1">
-                    <a href="detail.html"
-                      ><i class="fa fa-circle-o me-1 col_yell"></i> Women</a
-                    >
-                  </h6>
-                </div>
-              </div>
-              <div class="col-md-2 col-2">
-                <div class="prod_pg1l1ir text-end">
-                  <h6 class="d-inline-block bg_light font_13">17</h6>
-                </div>
-              </div>
-            </div>
-            <div class="prod_pg1l1i row mt-2">
-              <div class="col-md-10 col-10">
-                <div class="prod_pg1l1il">
-                  <h6 class="font_14 fw-normal mt-1">
-                    <a href="detail.html"
-                      ><i class="fa fa-circle-o me-1 col_yell"></i> Kids</a
-                    >
-                  </h6>
-                </div>
-              </div>
-              <div class="col-md-2 col-2">
-                <div class="prod_pg1l1ir text-end">
-                  <h6 class="d-inline-block bg_light font_13">6</h6>
-                </div>
-              </div>
-            </div>
+            {% endfor %}
+            
           </div>
           <div class="prod_pg1l1 bg-white p-4 mt-4">
             <h6 class="mb-3">FILTER BY PRICE</h6>
@@ -80,28 +51,14 @@
             <h6 class="mb-3">PRODUCT BRAND</h6>
             <div class="prod_pg1l1il">
               <div class="row">
-                <h6 class="font_14 fw-normal col-lg-12 col-md-6 col-sm-6">
-                  <a href="detail.html"
-                    ><i class="fa fa-circle-o me-1 col_yell"></i> Timex</a
-                  >
-                </h6>
+                {% for item in brands_nav %}
                 <h6 class="font_14 fw-normal mt-3 col-lg-12 col-md-6 col-sm-6">
-                  <a href="detail.html"
-                    ><i class="fa fa-circle-o me-1 col_yell"></i> Titan</a
+                  <a href="#"
+                    ><i class="fa fa-circle-o me-1 col_yell"></i> {{item.name}}</a
                   >
                 </h6>
-                <h6 class="font_14 fw-normal mt-3 col-lg-12 col-md-6 col-sm-6">
-                  <a href="detail.html"
-                    ><i class="fa fa-circle-o me-1 col_yell"></i> Rolex</a
-                  >
-                </h6>
-                <h6
-                  class="font_14 fw-normal mb-0 mt-3 col-lg-12 col-md-6 col-sm-6"
-                >
-                  <a href="detail.html"
-                    ><i class="fa fa-circle-o me-1 col_yell"></i> Fasttrack</a
-                  >
-                </h6>
+                {% endfor %}
+                
               </div>
               <hr />
             </div>
@@ -109,16 +66,7 @@
             <hr />
             <h6 class="mb-3">FILTER COLOR</h6>
             <div class="row m-0">
-              <div class="form-check col-md-6 col-6 col-lg-12">
-                <input
-                  type="checkbox"
-                  class="form-check-input"
-                  id="customCheck1"
-                />
-                <label class="form-check-label" for="customCheck1"
-                  ><a href="detail.html">Red (3)</a></label
-                >
-              </div>
+              {% for item in colors_nav %}
               <div class="form-check col-md-6 col-6 col-lg-12 mt-2">
                 <input
                   type="checkbox"
@@ -126,58 +74,18 @@
                   id="customCheck1"
                 />
                 <label class="form-check-label" for="customCheck1"
-                  ><a href="detail.html">Black (2)</a></label
+                  ><a href="#">{{item.name}}</a></label
                 >
               </div>
-              <div class="form-check col-md-6 col-6 col-lg-12 mt-2">
-                <input
-                  type="checkbox"
-                  class="form-check-input"
-                  id="customCheck1"
-                />
-                <label class="form-check-label" for="customCheck1"
-                  ><a href="detail.html">Blue (4)</a></label
-                >
-              </div>
-              <div class="form-check col-md-6 col-6 col-lg-12 mt-2">
-                <input
-                  type="checkbox"
-                  class="form-check-input"
-                  id="customCheck1"
-                />
-                <label class="form-check-label" for="customCheck1"
-                  ><a href="detail.html">Yellow (5)</a></label
-                >
-              </div>
-              <div class="form-check col-md-6 col-6 col-lg-12 mt-2">
-                <input
-                  type="checkbox"
-                  class="form-check-input"
-                  id="customCheck1"
-                />
-                <label class="form-check-label" for="customCheck1"
-                  ><a href="detail.html">Brown (6)</a></label
-                >
-              </div>
-              <div class="form-check col-md-6 col-6 col-lg-12 mt-2">
-                <input
-                  type="checkbox"
-                  class="form-check-input"
-                  id="customCheck1"
-                />
-                <label class="form-check-label" for="customCheck1"
-                  ><a href="detail.html">Pink (9)</a></label
-                >
-              </div>
+              {% endfor %}
+
             </div>
           </div>
         </div>
       </div>
       <div class="col-md-12 col-lg-9">
         <div class="prod_pg1r">
-          <div class="prod_pg1r2 mt-4 row">
-
-
+          <div class="prod_pg1r2 row">
             {% for item in obj %}
             <div class="col-md-4 mt-4">
               <div class="prodinm clearfix">
@@ -243,7 +151,7 @@
                   <hr />
                   <h6 class="fw-normal mb-0">
                     <span class="text-decoration-line-through col_light"
-                      >	&#8377;{{item.discount}}</span
+                      >	&#8377;{{item.price}}</span
                     >
                     <span class="pull-right fw-bold col_yell">&#8377;{{item.price}}</span>
                   </h6>
@@ -252,146 +160,6 @@
             </div>
             {% endfor %}
 
-{% comment %} 
-            <div class="col-md-4 mt-4">
-              <div class="prodinm clearfix">
-                <div class="prod_2im position-relative clearfix">
-                  <div class="prod_2i1 clearfix">
-                    <div class="grid clearfix">
-                      <figure class="effect-jazz mb-0">
-                        <a href="detail.html"
-                          ><img
-                            src="{% static 'home/image/28.jpg' %}"
-                            class="w-100"
-                            alt="abc"
-                        /></a>
-                      </figure>
-                    </div>
-                  </div>
-
-                  <div class="prod_2i3 clearfix position-absolute w-100">
-                    <h6
-                      class="bg_yell d-inline-block pt-1 pb-1 font_13 text-white ps-3 pe-3"
-                    >
-                      NEW
-                    </h6>
-                    <h6
-                      class="bg_yell d-inline-block pt-1 pb-1 font_13 text-white ps-3 pe-3 pull-right"
-                    >
-                      40%
-                    </h6>
-                  </div>
-                  <div
-                    class="prod_2in clearfix position-absolute bg-light w-100 p-3 text-center"
-                  >
-                    <ul class="mb-0">
-                      <li class="d-inline-block me-3">
-                        <a href="detail.html"><i class="fa fa-heart"></i></a>
-                      </li>
-                      <li class="d-inline-block me-3">
-                        <a href="detail.html"
-                          ><i class="fa fa-shopping-cart"></i
-                        ></a>
-                      </li>
-                      <li class="d-inline-block">
-                        <a href="detail.html"><i class="fa fa-eye"></i></a>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-                <div class="prod_2i2 pt-4 pb-4 ps-3 pe-3 bg-white clearfix">
-                  <span class="col_yell">
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star-half-o"></i>
-                  </span>
-                  <h6 class="mt-2"><a href="detail.html">Nulla Quis Sem</a></h6>
-                  <h6 class="font_13">
-                    <a class="col_light" href="detail.html">Brand / Color</a>
-                  </h6>
-                  <hr />
-                  <h6 class="fw-normal mb-0">
-                    <span class="text-decoration-line-through col_light"
-                      >$79.00</span
-                    >
-                    <span class="pull-right fw-bold col_yell">$68.00</span>
-                  </h6>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-4 mt-4">
-              <div class="prodinm clearfix">
-                <div class="prod_2im position-relative clearfix">
-                  <div class="prod_2i1 clearfix">
-                    <div class="grid clearfix">
-                      <figure class="effect-jazz mb-0">
-                        <a href="detail.html"
-                          ><img
-                            src="{% static 'home/image/29.jpg' %}"
-                            class="w-100"
-                            alt="abc"
-                        /></a>
-                      </figure>
-                    </div>
-                  </div>
-
-                  <div class="prod_2i3 clearfix position-absolute w-100">
-                    <h6
-                      class="bg_yell d-inline-block pt-1 pb-1 font_13 text-white ps-3 pe-3"
-                    >
-                      NEW
-                    </h6>
-                    <h6
-                      class="bg_yell d-inline-block pt-1 pb-1 font_13 text-white ps-3 pe-3 pull-right"
-                    >
-                      40%
-                    </h6>
-                  </div>
-                  <div
-                    class="prod_2in clearfix position-absolute bg-light w-100 p-3 text-center"
-                  >
-                    <ul class="mb-0">
-                      <li class="d-inline-block me-3">
-                        <a href="detail.html"><i class="fa fa-heart"></i></a>
-                      </li>
-                      <li class="d-inline-block me-3">
-                        <a href="detail.html"
-                          ><i class="fa fa-shopping-cart"></i
-                        ></a>
-                      </li>
-                      <li class="d-inline-block">
-                        <a href="detail.html"><i class="fa fa-eye"></i></a>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-                <div class="prod_2i2 pt-4 pb-4 ps-3 pe-3 bg-white clearfix">
-                  <span class="col_yell">
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star-half-o"></i>
-                  </span>
-                  <h6 class="mt-2">
-                    <a href="detail.html">Integer Nec Odio</a>
-                  </h6>
-                  <h6 class="font_13">
-                    <a class="col_light" href="detail.html">Brand / Color</a>
-                  </h6>
-                  <hr />
-                  <h6 class="fw-normal mb-0">
-                    <span class="text-decoration-line-through col_light"
-                      >$79.00</span
-                    >
-                    <span class="pull-right fw-bold col_yell">$68.00</span>
-                  </h6>
-                </div>
-              </div>
-            </div>
-{% endcomment %}
           </div>
 
           <div class="pages mt-4 row text-center bg_light ms-0 me-0 pt-4 pb-4">

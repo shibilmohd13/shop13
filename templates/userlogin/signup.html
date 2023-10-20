@@ -40,12 +40,16 @@
                 <label for="password">Password</label>
                 <input type="password" name="password" id="password" class="form-control" placeholder="Enter your passsword" required>
               </div>
+              <div class="form-group mb-4">
+                <label for="password">Re-enter Password</label>
+                <input type="password" name="confirm_password" id="confirm_password" class="form-control" placeholder="Confirm your passsword" required>
+              </div>
               <input name="signup" id="signup" class="btn btn-block login-btn" type="submit" value="Create account">
             </form>
             </div>
         </div>
         <div class="col-sm-6 px-0 d-none d-sm-block">
-          <img src="{% static 'userlogin/images/signup.jpg' %}" alt="signup image" class="login-img">
+          <img src="{% static 'userlogin/images/signup.jpg' %}" alt="signup image" class="login-img h-100">
         </div>
       </div>
     </div>

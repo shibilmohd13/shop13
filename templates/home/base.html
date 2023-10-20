@@ -70,7 +70,7 @@
                     Profile</a>
               </li>
                 <li>
-                  <a class="dropdown-item" href="product.html"><i class="fa fa-caret-right me-1 col_yell"></i>
+                  <a class="dropdown-item" href="#"><i class="fa fa-caret-right me-1 col_yell"></i>
                     My orders</a>
                 </li>
                 <li>
@@ -107,18 +107,13 @@
                 Categories
               </a>
               <ul class="dropdown-menu drop_2 drop_cat" aria-labelledby="navbarDropdown">
+                {% for item in categories_nav %}
                 <li>
-                  <a class="dropdown-item" href="product.html"><i class="fa fa-caret-right me-1 col_yell"></i>
-                    Men</a>
+                  <a class="dropdown-item" href="#"><i class="fa fa-caret-right me-1 col_yell"></i>
+                    {{item.name}}</a>
                 </li>
-                <li>
-                  <a class="dropdown-item border-0" href="detail.html"><i class="fa fa-caret-right me-1 col_yell"></i>
-                    Women</a>
-                </li>
-                <li>
-                  <a class="dropdown-item border-0" href="detail.html"><i class="fa fa-caret-right me-1 col_yell"></i>
-                    Kids</a>
-                </li>
+                {% endfor %}
+
               </ul>
             </li>
             <li class="nav-item dropdown">
@@ -127,22 +122,13 @@
                 Brands
               </a>
               <ul class="dropdown-menu drop_2 drop_cat" aria-labelledby="navbarDropdown">
+                {% for item in brands_nav %}
                 <li>
-                  <a class="dropdown-item" href="cart.html"><i class="fa fa-caret-right me-1 col_yell"></i>
-                    Timex</a>
+                  <a class="dropdown-item" href="#"><i class="fa fa-caret-right me-1 col_yell"></i>
+                    {{item.name}}</a>
                 </li>
-                <li>
-                  <a class="dropdown-item border-0" href="checkout.html"><i class="fa fa-caret-right me-1 col_yell"></i>
-                    Titan</a>
-                </li>
-                <li>
-                    <a class="dropdown-item border-0" href="checkout.html"><i class="fa fa-caret-right me-1 col_yell"></i>
-                      Rolex</a>
-                  </li>
-                  <li>
-                    <a class="dropdown-item border-0" href="checkout.html"><i class="fa fa-caret-right me-1 col_yell"></i>
-                      Fasttrack</a>
-                  </li>
+                {% endfor %}
+                
               </ul>
             </li>
 
