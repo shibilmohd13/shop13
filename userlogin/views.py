@@ -1,5 +1,3 @@
-from msilib.schema import CustomAction
-import re
 from django.shortcuts import render,redirect
 from django.contrib.auth.models import User
 from django.contrib import messages
@@ -51,7 +49,8 @@ def otp(request):
         if entered_otp == request.session['otp']:
             user = CustomUser.objects.create_user(username=request.session['email'], phone=request.session['phone'], email=request.session['email'], password=request.session['password'],fullname=request.session['fullname'])
             user.save()
-            return redirect('home')
+            request.session.flush()
+            return redirect('signin')
         else:
             messages.error(request, 'Invalid otp')
             return redirect('otp')

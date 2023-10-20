@@ -28,7 +28,7 @@
                                 <th>Fullname</th>
                                 <th>Email</th>
                                 <th>Phone</th>
-                                <th>Address</th>
+                                <th>Joined On</th>
                                 <th>Block / Unblock</th>
                             </tr>
                         </thead>
@@ -40,7 +40,7 @@
                                 <td>{{user.fullname}}</td>
                                 <td>{{user.email}}</td>
                                 <td>{{user.phone}}</td>
-                                <td>Malappuram, Kerala, India</td>
+                                <td>{{user.date_joined}}</td>
                                 {% if user.is_active %}
                                 <td><a href='user_status/{{user.id}}'><span class="badge bg-danger">Block</span></a></td>
                                 {% else %}
