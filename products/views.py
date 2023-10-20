@@ -79,9 +79,53 @@ def add_products(request):
 
         product.save()
 
-        return redirect('add_products')
+        return redirect('products')
 
     return render(request, 'admin_panel/add_products.html', context)
+
+
+def edit_products(request, id):
+    category_list = Category.objects.all()
+    brands_list = Brand.objects.all()
+    color_list = Color.objects.all()
+    prod = Product.objects.get(id=id)
+    context = {
+        'cat' : category_list,
+        'bnd' : brands_list,
+        'clr' : color_list,
+        'prod' : prod
+    }
+    if request.method == 'POST':
+        prod.name = request.POST.get('name')
+        prod.description = request.POST.get('description')
+        prod.price = request.POST.get('price')
+        prod.discount = request.POST.get('discount')
+        prod.quantity = request.POST.get('quantity')
+        prod.category_id = request.POST.get('category')
+        prod.brand_id = request.POST.get('brand')
+        prod.color_id = request.POST.get('color')
+        prod.save()
+
+        image1 = request.FILES.get('image1')
+        image2 = request.FILES.get('image2')
+        image3 = request.FILES.get('image3')
+
+        # Function to save an uploaded image to the 'media' directory
+        def save_image(image, filename):
+            path = default_storage.save(filename, ContentFile(image.read()))
+            return path
+
+        # Save the uploaded images
+        if image1:
+            prod.image1 = save_image(image1,f'{image1.name}')
+        if image2:
+            prod.image2 = save_image(image2,f'{image2.name}')
+        if image3:
+            prod.image3 = save_image(image3,f'{image3.name}')
+
+        prod.save()
+        return redirect('products')
+    return render(request, 'admin_panel/edit_products.html',context)
 
 def add_categories(request):
     if request.method == "POST":
@@ -108,18 +152,6 @@ def add_colors(request):
     return render(request, 'admin_panel/add_colors.html')
 
 
-def edit_products(request, id):
-    category_list = Category.objects.all()
-    brands_list = Brand.objects.all()
-    color_list = Color.objects.all()
-    prod = Product.objects.get(id=id)
-    context = {
-        'cat' : category_list,
-        'bnd' : brands_list,
-        'clr' : color_list,
-        'prod' : prod
-    }
-    return render(request, 'admin_panel/edit_products.html',context)
 
 
 def edit_categories(request, id):
