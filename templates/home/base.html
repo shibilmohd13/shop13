@@ -22,7 +22,9 @@
       <div class="row header_top1">
         <div class="col-md-3">
           <div class="header_top1l">
+            <a href="{% url 'home' %}">
             <img src="{% static 'home/image/Shop 13 logo.png' %}" alt="" height="35px" style="margin-left: 15px;">
+            </a>
           </div>
         </div>
         <div class="col-md-5">
@@ -145,10 +147,10 @@
             </li>
 
             <li class="nav-item">
-              <a class="nav-link {% block contact %}{% endblock contact %}" href="contact.html">Contact</a>
+              <a class="nav-link {% block contact %}{% endblock contact %}" href="{% url 'contact' %}">Contact</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link {% block about %}{% endblock about %}" href="about.html">About </a>
+              <a class="nav-link {% block about %}{% endblock about %}" href="{% url 'about' %}">About </a>
             </li>
           </ul>
         </div>

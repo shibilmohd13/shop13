@@ -3,21 +3,21 @@ from django.db import models
 
 class Category(models.Model):
     name = models.CharField(max_length=50)
-    is_listed = models.BooleanField()
+    is_listed = models.BooleanField(default=True)
 
     def __str__(self):
         return self.name
 
 class Brand(models.Model):
     name = models.CharField(max_length=50)
-    is_listed = models.BooleanField()
+    is_listed = models.BooleanField(default=True)
 
     def __str__(self):
         return self.name
 
 class Color(models.Model):
     name = models.CharField(max_length=50)
-    is_listed = models.BooleanField()
+    is_listed = models.BooleanField(default=True)
 
     def __str__(self):
         return self.name
@@ -34,7 +34,7 @@ class Product(models.Model):
     image1 = models.ImageField(upload_to='products')
     image2 = models.ImageField(upload_to='products')
     image3 = models.ImageField(upload_to='products')
-    is_listed = models.BooleanField()
+    is_listed = models.BooleanField(default=True)
 
     def __str__(self):
         return self.name

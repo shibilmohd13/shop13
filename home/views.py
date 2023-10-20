@@ -20,9 +20,27 @@ def shop(request):
 
 def product_details(request,id):
     obj = Product.objects.filter(id=id)[0]
-    context = {'item' : obj}
-    return render(request, "home/details.html",context)
+    try: 
+        user = request.session['fullname']
+        return render(request, 'home/details.html', {'user' : user, 'item': obj})
+    except:
+        return render(request, 'home/details.html', {'user' : 'Login Now', 'item': obj})
+
 
 def logout(request):
     request.session.flush()
     return redirect('home')
+
+def about(request):
+    try: 
+        user = request.session['fullname']
+        return render(request, 'home/about.html', {'user' : user})
+    except:
+        return render(request, 'home/about.html', {'user' : 'Login Now'})
+
+def contact(request):
+    try: 
+        user = request.session['fullname']
+        return render(request, 'home/contact.html', {'user' : user})
+    except:
+        return render(request, 'home/contact.html', {'user' : 'Login Now'})

@@ -68,9 +68,9 @@ text-align:left;
 
  }
 @media (min-width:768px) and (max-width:991px) {
-.about_pg_1l img{
+/* .about_pg_1l img{
 min-height:450px; 
- }
+ } */
 .about_pg_1ri1 .span_1 {
 font-size:24px!important;
 }
@@ -81,9 +81,9 @@ font-size:20px!important;
  }
 
 @media (min-width:992px) and (max-width:1200px) {
-.about_pg_1l img{
+/* .about_pg_1l img{
 min-height:450px; 
- }
+ } */
  }
 @media (min-width:1201px) and (max-width:1235px) {
 

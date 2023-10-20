@@ -31,7 +31,6 @@ def add_products(request):
     #     prod.category = request.POST.get('category')
     #     prod.brands = request.POST.get('brand')
     #     prod.color = request.POST.get('color')
-    #     prod.is_listed = request.POST.get('is_listed')
 
     #     if len(request.FILES) != 0 :
     #         prod.image1 = request.FILES['image1']
