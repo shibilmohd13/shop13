@@ -33,6 +33,7 @@
               <div class="form-group mb-4">
                 <label for="password">Password</label>
                 <input type="password" name="password" id="password" class="form-control" placeholder="Enter your passsword" required>
+                <div id="error" class="error-message text-danger mt-2">{% if messages %}{% for message in messages %}{% if message.tags == 'error' %}{{message}}{% endif %}{% endfor %}{% endif %}</div>
               </div>
               <input name="login" id="login" class="btn btn-block login-btn" type="submit" value="Login">
             </form>

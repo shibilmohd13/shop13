@@ -1,6 +1,8 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth import authenticate
 from userlogin.models import CustomUser
+from django.contrib import messages
+
 # Create your views here.
 
 def admin_login(request):
@@ -12,8 +14,10 @@ def admin_login(request):
             if user.is_superuser:
                 return redirect('admin_dash')
             else:
+                messages.error(request, "User has No access to Admin panel")
                 return redirect('admin_login')
         else:
+            messages.error(request, "Invalid user")
             return redirect('admin_login')
     return render(request, 'admin_panel/admin_login.html')
 

@@ -1,5 +1,5 @@
-{% load static %}
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -7,10 +7,11 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Shop13 - Signup</title>
   <link rel="icon" type="image/x-icon" href="{% static 'home/image/13_favicon_logo.jpg' %}">
-  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">  <link rel="stylesheet" href="https://cdn.materialdesignicons.com/4.8.95/css/materialdesignicons.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.materialdesignicons.com/4.8.95/css/materialdesignicons.min.css">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
   <link rel="stylesheet" type="text/css" href="{% static 'userlogin/css/login.css' %}">
+  <!-- Add your head content, including CSS links -->
 </head>
 <body>
   <main>
@@ -18,35 +19,41 @@
       <div class="row">
         <div class="col-sm-6 login-section-wrapper">
           <div class="brand-wrapper">
-            <img src="{% static 'userlogin/images/logo.png' %}" alt="logo" class='logo'>
+            <img src="{% static 'userlogin/images/logo.png' %}" alt="logo" class="logo">
           </div>
           <div class="login-wrapper my-auto">
             <h1 class="login-title">Create Account</h1>
-            <form action="" method='POST'>
+            <form action="" method='POST' onsubmit="return validateForm()" id='form'>
               {% csrf_token %}
               <div class="form-group">
-                <label for="text">Full Name</label>
-                <input type="text" name="fullname" id="fullname" class="form-control" placeholder="Full Name" required>
+                <label for="fullname">Full Name</label>
+                <input type="text" name="fullname" id="fullname" class="form-control" placeholder="Full Name">
+                <span id="fullname-error" class="error-message text-danger"></span>
+
               </div>
               <div class="form-group mb-4">
                 <label for="phone">Phone</label>
-                <input type="tel" pattern="[0-9]{10}" name="phone" id="phone" class="form-control" placeholder="Enter your Phone number" required>
+                <input type="number" name="phone" id="phone" class="form-control" placeholder="Enter your Phone number">
+                <span id="phone-error" class="error-message text-danger">{% if messages %}{% for message in messages %}{% if message.tags == 'warning' %}{{message}}{% endif %}{% endfor %}{% endif %}</span>
               </div>
               <div class="form-group">
                 <label for="email">Email</label>
-                <input type="email" name="email" id="email" class="form-control" placeholder="Enter your email" required>
+                <input type="email" name="email" id="email" class="form-control" placeholder="Enter your email">
+                <span id="email-error" class="error-message text-danger">{% if messages %}{% for message in messages %}{% if message.tags == 'error' %}{{message}}{% endif %}{% endfor %}{% endif %}</span>
               </div>
               <div class="form-group mb-4">
                 <label for="password">Password</label>
-                <input type="password" name="password" id="password" class="form-control" placeholder="Enter your passsword" required>
+                <input type="password" name="password" id="password" class="form-control" placeholder="Enter your password">
+                <span id="password-error" class="error-message text-danger"></span>
               </div>
               <div class="form-group mb-4">
-                <label for="password">Re-enter Password</label>
-                <input type="password" name="confirm_password" id="confirm_password" class="form-control" placeholder="Confirm your passsword" required>
+                <label for="confirm_password">Re-enter Password</label>
+                <input type="password" name="confirm_password" id="confirm_password" class="form-control" placeholder="Confirm your password">
+                <span id="confirm_password-error" class="error-message text-danger"></span>
               </div>
               <input name="signup" id="signup" class="btn btn-block login-btn" type="submit" value="Create account">
             </form>
-            </div>
+          </div>
         </div>
         <div class="col-sm-6 px-0 d-none d-sm-block">
           <img src="{% static 'userlogin/images/signup.jpg' %}" alt="signup image" class="login-img h-100">
@@ -54,8 +61,252 @@
       </div>
     </div>
   </main>
-  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+
+{% comment %} 
+<script>
+
+    function validateFullName(fullname) {
+      // Full Name validation logic (it should contain at least one non-space character)
+      return fullname.trim().length > 0 && /[^\s]/.test(fullname);
+    }
+
+    function validatePhone(phone) {
+      // Phone number validation logic (e.g., using regular expression)
+      return /^[0-9]{10}$/.test(phone);
+    }
+
+    function validateEmail(email) {
+      // Email validation logic (you can use a regular expression)
+      return /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(email);
+    }
+
+    function validatePassword(password, confirmPassword) {
+      // Password validation logic (e.g., minimum length)
+      return password.length >= 8 && password === confirmPassword;
+    }
+
+    function displayError(field, message) {
+      // Display an error message for a specific field
+      document.getElementById(field + "-error").textContent = message;
+    }
+
+    function clearErrors() {
+      // Clear all error messages
+      document.getElementById("email-error").textContent = "";
+      document.getElementById("password-error").textContent = "";
+    }
+
+    function validateForm() {
+      clearErrors(); // Clear any previous error messages
+
+      const emailInput = document.getElementById("email");
+      const passwordInput = document.getElementById("password");
+      const confirmPasswordInput = document.getElementById("confirm_password");
+      const phoneInput = document.getElementById("phone");
+      const fullnameInput = document.getElementById("fullname");
+      
+      const fullname = fullnameInput.value;
+      const phone = phoneInput.value;
+      const email = emailInput.value;
+      const password = passwordInput.value;
+      const confirmPassword = confirmPasswordInput.value;
+
+      let hasErrors = false; // Flag to track errors
+
+      // Validate email
+      if (!validateFullName(fullname)) {
+        displayError("fullname", "Full Name should contain at least one non-space character");
+        hasErrors = true;
+      }
+
+      if (!validateEmail(email)) {
+        displayError("email", "Invalid email address");
+        hasErrors = true;
+      }
+
+      // Validate password
+      if (!validatePassword(password, confirmPassword)) {
+        displayError("password", "Password must be at least 8 characters long and match");
+        hasErrors = true;
+      }
+
+      // Validate phone number
+      if (!validatePhone(phone)) {
+        displayError("phone", "Invalid phone number");
+        hasErrors = true;
+      }
+
+
+      // You can add more validation for other fields here
+
+      // Prevent form submission if there are errors
+      if (hasErrors) {
+        return false; // Prevent form submission
+      }
+
+      // If no errors, the form will be submitted
+      return true;
+    }
+</script>
+   {% endcomment %}
+
+   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+{% comment %}    
+   <script>
+       $(document).ready(function() {
+           $('#form').submit(function(e) {
+               e.preventDefault();
+               $('.error').html('');
+   
+               var fullname = $('#fullname').val();
+               var email = $('#email').val();
+               var phonenumber = $('#phonenumber').val();
+               var password = $('#password').val();
+               var confirm_password = $('#confirm_password').val();
+   
+               // Define validation rules here
+               var isValid = true;
+   
+
+               if (fullname === '') {
+                   isValid = false;
+                   $('#fullname').next('.error').html('Full Name is required.');
+               }
+   
+               if (email === '') {
+                   isValid = false;
+                   $('#email').next('.error').html('Email is required.');
+               } else if (!isValidEmail(email)) {
+                   isValid = false;
+                   $('#email').next('.error').html('Invalid email format.');
+               }
+   
+               if (phonenumber === '') {
+                   isValid = false;
+                   $('#phonenumber').next('.error').html('Phone Number is required.');
+               } else if (!isValidPhoneNumber(phonenumber)) {
+                   isValid = false;
+                   $('#phonenumber').next('.error').html('Invalid phone number format. Please enter 10 digits.');
+               }
+   
+               if (password === '') {
+                   isValid = false;
+                   $('#password').next('.error').html('Password is required.');
+               } else if (!isValidPassword(password)) {
+                   isValid = false;
+                   $('#password').next('.error').html('Password must be at least 8 characters long, contain at least one uppercase letter, one lowercase letter, one number, and one special character.');
+               }
+   
+               if (confirm_password === '') {
+                   isValid = false;
+                   $('#confirm_password').next('.error').html('Confirm Password is required.');
+               } else if (password !== confirm_password) {
+                   isValid = false;
+                   $('#confirm_password').next('.error').html('Passwords do not match.');
+               }
+   
+               if (isValid) {
+                   // Form is valid, you can submit the data or take further actions here
+                   $('#form')[0].submit();
+               }
+           });
+   
+           function isValidEmail(email) {
+               // You can implement a regular expression for email validation here.
+               // For a simple example, you can use the following regex:
+               var emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/;
+               return emailRegex.test(email);
+           }
+   
+           function isValidPhoneNumber(phone) {
+               // Use a regular expression to check for exactly 10 digits
+               var phoneRegex = /^\d{10}$/;
+               return phoneRegex.test(phone);
+           }
+   
+           function isValidPassword(password) {
+               // Use a regular expression to check for a high-secure password
+               var passwordRegex = /^(?=.[a-z])(?=.[A-Z])(?=.\d)(?=.[@$!%?&])[A-Za-z\d@$!%?&]{8,}$/;
+               return passwordRegex.test(password);
+           }
+       });
+   </script> 
+   {% endcomment %}
+
+   <script>
+    $(document).ready(function() {
+      $('#form').submit(function(e) {
+        e.preventDefault();
+        $('.error-message').html(''); // Clear error messages
+  
+        var fullname = $('#fullname').val();
+        var email = $('#email').val();
+        var phone = $('#phone').val();
+        var password = $('#password').val();
+        var confirm_password = $('#confirm_password').val();
+        var isValid = true;
+  
+        if (fullname === '') {
+          isValid = false;
+          $('#fullname-error').html('Full Name is required.');
+        }
+  
+        if (email === '') {
+          isValid = false;
+          $('#email-error').html('Email is required.');
+        } else if (!isValidEmail(email)) {
+          isValid = false;
+          $('#email-error').html('Invalid email format.');
+        }
+  
+        if (phone === '') {
+          isValid = false;
+          $('#phone-error').html('Phone Number is required.');
+        } else if (!isValidPhoneNumber(phone)) {
+          isValid = false;
+          $('#phone-error').html('Invalid phone number format. Please enter 10 digits.');
+        }
+  
+        if (password === '') {
+          isValid = false;
+          $('#password-error').html('Password is required.');
+        } else if (!isValidPassword(password)) {
+          isValid = false;
+          $('#password-error').html('Password must be at least 8 characters long, contain at least one uppercase letter, one lowercase letter, one number, and one special character.');
+        }
+  
+        if (confirm_password === '') {
+          isValid = false;
+          $('#confirm_password-error').html('Confirm Password is required.');
+        } else if (password !== confirm_password) {
+          isValid = false;
+          $('#confirm_password-error').html('Passwords do not match.');
+        }
+  
+        if (isValid) {
+          // Form is valid, you can submit the data or take further actions here
+          $('#form')[0].submit();
+        }
+      });
+  
+      function isValidEmail(email) {
+        var emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/;
+        return emailRegex.test(email);
+      }
+  
+      function isValidPhoneNumber(phone) {
+        var phoneRegex = /^\d{10}$/;
+        return phoneRegex.test(phone);
+      }
+  
+      function isValidPassword(password) {
+        var passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%?&])[A-Za-z\d@$!%?&]{8,}$/;
+        return passwordRegex.test(password);
+      }
+    });
+  </script>
+  
+
+  <!-- Include your other script and jQuery libraries here -->
 </body>
 </html>

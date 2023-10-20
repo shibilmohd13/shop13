@@ -25,21 +25,21 @@
         <div class="contact_1i text-center  bg-white">
          <span class="bg_yell text-white fs-2 span_1"><i class="fa fa-map-marker"></i></span>
          <h5 class="mt-3">Our Location</h5>
-         <p class="mb-0 mt-3">X892 YTower Stat, Suite 36 Knockland,<br>  DB 6228 United Kingdom</p>
+         <p class="mb-0 mt-3">3rd Floor, Kinfra New tower, Kinfra Techno park,<br> Kakkanchery  Malappuram, Kerala, India</p>
         </div>
        </div>
        <div class="col-md-4">
         <div class="contact_1i text-center  bg-white">
          <span class="bg_yell text-white fs-2 span_1"><i class="fa fa-envelope"></i></span>
          <h5 class="mt-3">Our Email</h5>
-         <p class="mb-0 mt-3"><span class="fw-bold">Email Us:</span> info@gmail.Com<br>  info@gmail.Com</p>
+         <p class="mb-0 mt-3"><span class="fw-bold">Email Us:</span> shop13ecommerce@gmail.Com<br>  shibilmhdjr13@gmail.Com</p>
         </div>
        </div>
        <div class="col-md-4">
         <div class="contact_1i text-center  bg-white">
          <span class="bg_yell text-white fs-2 span_1"><i class="fa fa-phone"></i></span>
          <h5 class="mt-3">Phone Number</h5>
-         <p class="mb-0 mt-3"><span class="fw-bold">Contacr Numbers:</span> +123 123 456<br>  +123 123 456</p>
+         <p class="mb-0 mt-3"><span class="fw-bold">Contacr Numbers:</span> +91 773 649 5004<br> +91 999 777 8000</p>
         </div>
        </div>
     </div>
@@ -51,10 +51,12 @@
      <div class="row prod_1 mb-4 text-center">
        <div class="col-md-12">
         <h6 class="h_line font_13">LET’S TALK</h6>
-        <h2 class="col_yell mt-3">SEND US A MASSAGE</h2>
+        <h2 class="col_yell mt-3">SEND US A MESSAGE</h2>
         <p class="mb-0">We are always happy to talk with you. Be sure to write to us if you have any <br> questions or need help and support.</p>
        </div>
     </div>
+    <form method='POST' action=''>
+      {% csrf_token %}
      <div class="row contact_o1">
          <div class="col-md-12">
           <div class="contact_o1l">
@@ -62,7 +64,7 @@
             <div class="col-md-6">
              <div class="contact_o1lil">
                <div class="input-group p-2 bg_light">
-                  <input type="text" class="form-control border-0 bg-transparent" placeholder="First Name*">
+                  <input type="text" name="first_name" class="form-control border-0 bg-transparent" placeholder="First Name*" required>
                   <span class="input-group-btn">
                       <button class="btn btn-primary bg-transparent border-0 fs-6" type="button">
                           <i class="fa fa-user col_light"></i> </button>
@@ -73,7 +75,7 @@
             <div class="col-md-6">
              <div class="contact_o1lil">
                <div class="input-group p-2 bg_light">
-                  <input type="text" class="form-control border-0 bg-transparent" placeholder="Last Name*">
+                  <input type="text"  name="last_name" class="form-control border-0 bg-transparent" placeholder="Last Name*" required>
                   <span class="input-group-btn">
                       <button class="btn btn-primary bg-transparent border-0 fs-6" type="button">
                           <i class="fa fa-user col_light"></i> </button>
@@ -86,7 +88,7 @@
             <div class="col-md-6">
              <div class="contact_o1lil">
                <div class="input-group p-2 bg_light">
-                  <input type="text" class="form-control border-0 bg-transparent" placeholder="Your Email*">
+                  <input type="email" name="email" class="form-control border-0 bg-transparent" placeholder="Your Email*" required>
                   <span class="input-group-btn">
                       <button class="btn btn-primary bg-transparent border-0 fs-6" type="button">
                           <i class="fa fa-envelope col_light"></i> </button>
@@ -97,7 +99,7 @@
             <div class="col-md-6">
              <div class="contact_o1lil">
                <div class="input-group p-2 bg_light">
-                  <input type="text" class="form-control border-0 bg-transparent" placeholder="Phone*">
+                  <input type="number" class="form-control border-0 bg-transparent" placeholder="Phone*"  required>
                   <span class="input-group-btn">
                       <button class="btn btn-primary bg-transparent border-0 fs-6" type="button">
                           <i class="fa fa-phone col_light"></i> </button>
@@ -109,20 +111,16 @@
            <div class="contact_o1li row mt-3">
             <div class="col-md-12">
              <div class="contact_o1lil">
-               <textarea placeholder="Enter Your Message" class="form-control bg_light border-0 form_area"></textarea>
-               <h6 class="mb-0 mt-4"><a class="button" href="#">SUBMIT</a></h6>
+               <textarea placeholder="Enter Your Message" class="form-control bg_light border-0 form_area" name='message'  required></textarea>
+               <button type="submit" style="border:none" class="button mb-0 mt-4">SUBMIT</button>
              </div>
             </div>
-            
+        
            </div>
           </div>
          </div>
-         {% comment %} <div class="col-md-6">
-          <div class="contact_o1r">
-            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d114964.53925916665!2d-80.29949920266738!3d25.782390733064336!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x88d9b0a20ec8c111%3A0xff96f271ddad4f65!2sMiami%2C+FL%2C+USA!5e0!3m2!1sen!2sin!4v1530774403788" height="380" style="border:0; width:100%;" allowfullscreen=""></iframe>
-          </div>
-         </div> {% endcomment %}
     </div>
+    <form>
    </div>
   </section>
   

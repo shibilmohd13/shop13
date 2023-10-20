@@ -14,12 +14,19 @@ def signup(request):
         email = request.POST['email']
         password = request.POST['password']
 
+        is_valid = 1
+
         if CustomUser.objects.filter(phone=phone).exists():
-            messages.error(request, 'Phone number is taken')
-            return redirect('signup')
-        elif CustomUser.objects.filter(email=email).exists():
+            is_valid = 0
+            messages.warning(request, 'Phone number is taken')
+            
+        if CustomUser.objects.filter(email=email).exists():
+            is_valid = 0
             messages.error(request, 'Email is taken')
+
+        if is_valid==0:
             return redirect('signup')
+
         else:
             request.session['fullname'] = fullname
             request.session['phone'] = phone
@@ -40,6 +47,7 @@ def signin(request):
             request.session['fullname'] = user.fullname
             return redirect('home')
         else:
+            messages.error(request, "Invalid Username or Password")
             return redirect('signin')
     return render(request,'userlogin/index.html')
 
