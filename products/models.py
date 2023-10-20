@@ -31,9 +31,9 @@ class Product(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     brands = models.ForeignKey(Brand, on_delete=models.CASCADE)
     color = models.ForeignKey(Color, on_delete=models.CASCADE)
-    image1 = models.ImageField(upload_to='products')
-    image2 = models.ImageField(upload_to='products')
-    image3 = models.ImageField(upload_to='products')
+    image1 = models.ImageField()
+    image2 = models.ImageField()
+    image3 = models.ImageField()
     is_listed = models.BooleanField(default=True)
 
     def __str__(self):

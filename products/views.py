@@ -1,5 +1,7 @@
 from django.shortcuts import render,redirect
 from .models import *
+from django.core.files.storage import default_storage
+from django.core.files.base import ContentFile
 
 # Create your views here.
 
@@ -21,30 +23,65 @@ def product_status(request, id):
     return redirect('products')
 
 def add_products(request):
-    # if request.method == 'POST':
-    #     prod = Product()
-    #     prod.name = request.POST.get('name')
-    #     prod.description = request.POST.get('description')
-    #     prod.price = request.POST.get('price')
-    #     prod.discount = request.POST.get('discount')
-    #     prod.quantity = request.POST.get('quantity')
-    #     prod.category = request.POST.get('category')
-    #     prod.brands = request.POST.get('brand')
-    #     prod.color = request.POST.get('color')
+    category_list = Category.objects.all()
+    brands_list = Brand.objects.all()
+    color_list = Color.objects.all()
+    context = {
+        'cat' : category_list,
+        'bnd' : brands_list,
+        'clr' : color_list
+    }
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        description = request.POST.get('description')
+        price = request.POST.get('price')
+        discount = request.POST.get('discount')
+        quantity = request.POST.get('quantity')
+        category_id = request.POST.get('category')
+        brand_id = request.POST.get('brand')
+        color_id = request.POST.get('color')
+        image1 = request.FILES.get('image1')
+        image2 = request.FILES.get('image2')
+        image3 = request.FILES.get('image3')
 
-    #     if len(request.FILES) != 0 :
-    #         prod.image1 = request.FILES['image1']
 
-    #     if len(request.FILES) != 0 :
-    #         prod.image2 = request.FILES['image2']
-        
-    #     if len(request.FILES) != 0 :
-    #         prod.image3 = request.FILES['image3']
+        category = Category.objects.get(id=category_id)
+        brand = Brand.objects.get(id=brand_id)
+        color = Color.objects.get(id=color_id)
 
-    #     prod.save()
-    #     return redirect('add_products')
+        product = Product(
+            name=name,
+            description=description,
+            price=price,
+            discount=discount,
+            quantity=quantity,
+            category=category,
+            brands=brand,
+            color=color,
+            image1=image1,
+            image2=image2,
+            image3=image3,
+        )
+        product.save()
 
-    return render(request, 'admin_panel/add_products.html')
+        # Function to save an uploaded image to the 'media' directory
+        def save_image(image, filename):
+            path = default_storage.save(filename, ContentFile(image.read()))
+            return path
+
+        # Save the uploaded images
+        if image1:
+            product.image1 = save_image(image1,f'{image1.name}')
+        if image2:
+            product.image2 = save_image(image2,f'{image2.name}')
+        if image3:
+            product.image3 = save_image(image3,f'{image3.name}')
+
+        product.save()
+
+        return redirect('add_products')
+
+    return render(request, 'admin_panel/add_products.html', context)
 
 def add_categories(request):
     if request.method == "POST":
