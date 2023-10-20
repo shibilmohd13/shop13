@@ -108,6 +108,20 @@ def add_colors(request):
     return render(request, 'admin_panel/add_colors.html')
 
 
+def edit_products(request, id):
+    category_list = Category.objects.all()
+    brands_list = Brand.objects.all()
+    color_list = Color.objects.all()
+    prod = Product.objects.get(id=id)
+    context = {
+        'cat' : category_list,
+        'bnd' : brands_list,
+        'clr' : color_list,
+        'prod' : prod
+    }
+    return render(request, 'admin_panel/edit_products.html',context)
+
+
 def edit_categories(request, id):
     cat = Category.objects.get(id=id)
     if request.method == 'POST':
