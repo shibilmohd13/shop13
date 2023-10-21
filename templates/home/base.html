@@ -28,17 +28,18 @@
           </div>
         </div>
         <div class="col-md-5">
+        <form method="GET" action="../..{% url "search" %}">
           <div class="header_top1m">
-            
             <div class="input-group">
-              <input type="text" class="form-control" placeholder="Search for your item" />
+              <input type="text" class="form-control" name="search" placeholder="Search for your item" />
               <span class="input-group-btn">
-                <button class="btn btn-primary bg_yell" type="button">
+                <button class="btn btn-primary bg_yell" type="submit">
                   <i class="fa fa-search"></i>
                 </button>
               </span>
             </div>
           </div>
+        </form>
         </div>
         <div class="col-md-4">
           <div class="header_top1r pull-right">

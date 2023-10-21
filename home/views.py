@@ -37,3 +37,8 @@ def contact(request):
         connection.close()
         return redirect("contact")
     return render(request, 'home/contact.html')
+
+def search(request):
+    search_query = request.GET['search']
+    products_match = Product.objects.filter(name__icontains=search_query,is_listed=True)
+    return render(request, "home/shop.html" , {'obj': products_match})
