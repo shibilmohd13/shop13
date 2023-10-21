@@ -120,14 +120,14 @@
             <div class="prod_2i1 clearfix">
               <div class="grid clearfix">
                 <figure class="effect-jazz mb-0">
-                  <a href="../shop/product_details/{{item.id}}"><img src="{% get_media_prefix %}{{item.image1}}"  alt="abc" width="300px" height="300px"/></a>
+                  <a href="../shop/product_details/{{item.id}}"><img src="{% get_media_prefix %}{{item.image1}}"  alt="abc" width="" height="300px"/></a>
                 </figure>
               </div>
             </div>
             <div class="prod_2i2 pb-2 clearfix">
               <h6 class="mt-3"><a href="../shop/product_details/{{item.id}}">{{item.name}}</a></h6>
               <h6 class="fw-normal mt-2">
-                RS $ {{item.price}} <span class="me-2 ms-2">|</span> {{item.discount}}% off 
+                RS {{item.price}} <span class="me-2 ms-2">|</span> {{item.discount}}% off 
               </h6>
             </div>
             <div class="prod_2i3 clearfix position-absolute">

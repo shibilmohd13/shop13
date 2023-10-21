@@ -27,8 +27,8 @@
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Prod Name</th>
-                                <th>Category</th>
+                                <th>Product Image</th>
+                                <th>Product Name</th>
                                 <th>Brand</th>
                                 <th>Price</th>
                                 <th>Quantity</th>
@@ -40,18 +40,18 @@
             
                         {% for prod in products %}
                             <tr>
-                                <td>{{prod.id}}</td>
-                                <td>{{prod.name}}</td>
-                                <td>{{prod.category.name}}</td>
-                                <td>{{prod.brands.name}}</td>
-                                <td>&#8377;{{prod.price}}</td>
-                                <td>{{prod.quantity}}</td>
+                                <td class="align-middle">{{prod.id}}</td>
+                                <td><center><img src="{% get_media_prefix %}{{prod.image1}}" height="80px"/><center></td>
+                                <td class="align-middle">{{prod.name}}</td>
+                                <td class="align-middle">{{prod.brands.name}}</td>
+                                <td class="align-middle">&#8377;{{prod.price}}</td>
+                                <td class="align-middle">{{prod.quantity}}</td>
                                 {% if prod.is_listed %}
-                                <td><a href='product_status/{{prod.id}}'><span class="badge bg-danger">Unlist</span></a></td>
+                                <td class="align-middle"><a href='product_status/{{prod.id}}'><span class="badge bg-danger">Unlist</span></a></td>
                                 {% else %}
-                                <td><a href='product_status/{{prod.id}}'><span class="badge bg-success">List</span></a></td>
+                                <td class="align-middle"><a href='product_status/{{prod.id}}'><span class="badge bg-success">List</span></a></td>
                                 {% endif %}
-                                <td style='font-size:20px'>&nbsp;&nbsp;&nbsp;&nbsp;<a href="edit_products/{{prod.id}}"><i class="bi bi-pencil-square text-warning"></i></a></td>
+                                <td class="align-middle" style='font-size:20px'>&nbsp;&nbsp;&nbsp;&nbsp;<a href="edit_products/{{prod.id}}"><i class="bi bi-pencil-square text-warning"></i></a></td>
 
                             </tr>
 

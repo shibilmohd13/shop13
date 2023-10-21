@@ -47,7 +47,7 @@ def signin(request):
             request.session['fullname'] = user.fullname
             return redirect('home')
         else:
-            messages.error(request, "Invalid Username or Password")
+            messages.error(request, "Invalid User")
             return redirect('signin')
     return render(request,'userlogin/index.html')
 

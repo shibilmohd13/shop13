@@ -4,12 +4,12 @@ import smtplib
 
 # Create your views here.
 def home(request):
-    obj = Product.objects.all()[:8]
+    obj = Product.objects.exclude(is_listed=False)[:8]
     return render(request, 'home/home.html', {'obj': obj})
 
 def shop(request):
-    obj = Product.objects.all()
-    clr = Color.objects.all()
+    obj = Product.objects.exclude(is_listed=False)
+    clr = Color.objects.exclude(is_listed=False)
     return render(request, 'home/shop.html', {'obj': obj , 'colors_nav': clr})
 
 def product_details(request,id):

@@ -1,11 +1,11 @@
 from products.models import *
 
 def navbar_elements(request):
-    categories_nav = Category.objects.all()
-    brands_nav = Brand.objects.all()
-
+    categories_nav = Category.objects.exclude(is_listed=False)
+    brands_nav = Brand.objects.exclude(is_listed=False)
+    
     try: 
         user = request.session['fullname']
-        return {'user' : user, 'categories_nav' : categories_nav , 'brands_nav' :brands_nav}
+        return {'users' : user, 'categories_nav' : categories_nav , 'brands_nav' :brands_nav}
     except:
-        return {'user' : 'Login Now', 'categories_nav' : categories_nav , 'brands_nav' :brands_nav}
+        return {'users' : 'Login Now', 'categories_nav' : categories_nav , 'brands_nav' :brands_nav}

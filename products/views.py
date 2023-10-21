@@ -2,9 +2,13 @@ from django.shortcuts import render,redirect
 from .models import *
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
+from django.contrib.auth.decorators import user_passes_test
+from django.views.decorators.cache import cache_control
+
 
 # Create your views here.
-
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@user_passes_test(lambda u:u.is_superuser, login_url='admin_login')
 def products(request):
     prod = Product.objects.all().order_by('id')
     context = {
@@ -12,6 +16,8 @@ def products(request):
     }
     return render(request, 'admin_panel/products.html', context)
 
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@user_passes_test(lambda u:u.is_superuser, login_url='admin_login')
 def product_status(request, id):
     prod = Product.objects.filter(id=id).first()
     if prod.is_listed == True:
@@ -22,6 +28,8 @@ def product_status(request, id):
         prod.save()
     return redirect('products')
 
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@user_passes_test(lambda u:u.is_superuser, login_url='admin_login')
 def add_products(request):
     category_list = Category.objects.all()
     brands_list = Brand.objects.all()
@@ -84,6 +92,8 @@ def add_products(request):
     return render(request, 'admin_panel/add_products.html', context)
 
 
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@user_passes_test(lambda u:u.is_superuser, login_url='admin_login')
 def edit_products(request, id):
     category_list = Category.objects.all()
     brands_list = Brand.objects.all()
@@ -127,6 +137,8 @@ def edit_products(request, id):
         return redirect('products')
     return render(request, 'admin_panel/edit_products.html',context)
 
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@user_passes_test(lambda u:u.is_superuser, login_url='admin_login')
 def add_categories(request):
     if request.method == "POST":
         name = request.POST.get('name')
@@ -135,6 +147,8 @@ def add_categories(request):
         return redirect("categories")
     return render(request, 'admin_panel/add_categories.html')
 
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@user_passes_test(lambda u:u.is_superuser, login_url='admin_login')
 def add_brands(request):
     if request.method == "POST":
         name = request.POST.get('name')
@@ -143,6 +157,8 @@ def add_brands(request):
         return redirect("brands")
     return render(request, 'admin_panel/add_brands.html')
 
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@user_passes_test(lambda u:u.is_superuser, login_url='admin_login')
 def add_colors(request):
     if request.method == "POST":
         name = request.POST.get('name')
@@ -152,8 +168,8 @@ def add_colors(request):
     return render(request, 'admin_panel/add_colors.html')
 
 
-
-
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@user_passes_test(lambda u:u.is_superuser, login_url='admin_login')
 def edit_categories(request, id):
     cat = Category.objects.get(id=id)
     if request.method == 'POST':
@@ -162,6 +178,8 @@ def edit_categories(request, id):
         return redirect('categories')
     return render(request, 'admin_panel/edit_categories.html',{'cat':cat})
 
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@user_passes_test(lambda u:u.is_superuser, login_url='admin_login')
 def edit_brands(request,id):
     brand = Brand.objects.get(id=id)
     if request.method == 'POST':
@@ -170,6 +188,8 @@ def edit_brands(request,id):
         return redirect('brands')
     return render(request, 'admin_panel/edit_brands.html',{'brand': brand})
 
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@user_passes_test(lambda u:u.is_superuser, login_url='admin_login')
 def edit_colors(request, id):
     clr = Color.objects.get(id=id)
     if request.method == 'POST':
@@ -178,6 +198,8 @@ def edit_colors(request, id):
         return redirect('colors')
     return render(request, 'admin_panel/edit_colors.html',{'clr':clr})
 
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@user_passes_test(lambda u:u.is_superuser, login_url='admin_login')
 def categories(request):
     cat = Category.objects.all().order_by('id')
     context = {
@@ -185,6 +207,8 @@ def categories(request):
     }
     return render(request, 'admin_panel/categories.html', context)
 
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@user_passes_test(lambda u:u.is_superuser, login_url='admin_login')
 def category_status(request, id):
     cat = Category.objects.filter(id=id).first()
     if cat.is_listed == True:
@@ -196,6 +220,8 @@ def category_status(request, id):
     return redirect('categories')
 
 
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@user_passes_test(lambda u:u.is_superuser, login_url='admin_login')
 def brands(request):
     brand = Brand.objects.all().order_by('id')
     context = {
@@ -203,6 +229,8 @@ def brands(request):
     }
     return render(request, 'admin_panel/brands.html', context)
 
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@user_passes_test(lambda u:u.is_superuser, login_url='admin_login')
 def brand_status(request, id):
     brand = Brand.objects.filter(id=id).first()
     if brand.is_listed == True:
@@ -214,7 +242,8 @@ def brand_status(request, id):
     return redirect('brands')
 
 
-
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@user_passes_test(lambda u:u.is_superuser, login_url='admin_login')
 def colors(request):
     color = Color.objects.all().order_by('id')
     context = {
@@ -222,6 +251,8 @@ def colors(request):
     }
     return render(request, 'admin_panel/colors.html', context)
 
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@user_passes_test(lambda u:u.is_superuser, login_url='admin_login')
 def color_status(request, id):
     color = Color.objects.filter(id=id).first()
     if color.is_listed == True:
