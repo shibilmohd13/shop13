@@ -1,9 +1,11 @@
+from email import message
 from django.shortcuts import render,redirect
 from .models import *
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
 from django.contrib.auth.decorators import user_passes_test
 from django.views.decorators.cache import cache_control
+from django.contrib import messages
 
 
 # Create your views here.
@@ -27,6 +29,7 @@ def product_status(request, id):
         prod.is_listed = True
         prod.save()
     return redirect('products')
+    
 
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 @user_passes_test(lambda u:u.is_superuser, login_url='admin_login')
@@ -66,9 +69,9 @@ def add_products(request):
             category=category,
             brands=brand,
             color=color,
-            image1=image1,
-            image2=image2,
-            image3=image3,
+            # image1=image1,
+            # image2=image2,
+            # image3=image3,
         )
         product.save()
 
@@ -142,6 +145,9 @@ def edit_products(request, id):
 def add_categories(request):
     if request.method == "POST":
         name = request.POST.get('name')
+        if Category.objects.filter(name=name).exists():
+            messages.error(request, "This Category already exists")
+            return redirect('add_categories')
         cat = Category(name=name,is_listed=True)
         cat.save()
         return redirect("categories")
@@ -152,6 +158,9 @@ def add_categories(request):
 def add_brands(request):
     if request.method == "POST":
         name = request.POST.get('name')
+        if Brand.objects.filter(name=name).exists():
+            messages.error(request, "This Brand already exists")
+            return redirect('add_brands')
         brand = Brand(name=name,is_listed=True)
         brand.save()
         return redirect("brands")
@@ -162,6 +171,9 @@ def add_brands(request):
 def add_colors(request):
     if request.method == "POST":
         name = request.POST.get('name')
+        if Color.objects.filter(name=name).exists():
+            messages.error(request, "This Color already exists")
+            return redirect('add_colors')
         clr = Color(name=name,is_listed=True)
         clr.save()
         return redirect("colors")

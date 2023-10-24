@@ -30,7 +30,7 @@
             <div class="row mb-3">
               <label for="inputText" class="col-sm-2 col-form-label">Product Name</label>
               <div class="col-sm-10">
-                <input type="text" class="form-control" name="name" value="{{prod.name}}">
+                <input type="text" class="form-control" name="name" value="{{prod.name}}" required>
               </div>
             </div>
             <div class="row mb-3">
@@ -42,25 +42,25 @@
             <div class="row mb-3">
                 <label for="inputNumber" class="col-sm-2 col-form-label">Price</label>
                 <div class="col-sm-10 col-md-4">
-                  <input type="number" class="form-control" width="100px" name="price" value="{{prod.price}}">
+                  <input type="number" class="form-control" width="100px" name="price" value="{{prod.price}}" required>
                 </div>
             </div>
             <div class="row mb-3">
                 <label for="inputNumber" class="col-sm-2 col-form-label">Discount</label>
                 <div class="col-sm-10 col-md-4">
-                  <input type="number" class="form-control" width="100px"  name="discount" value="{{prod.discount}}">
+                  <input type="number" class="form-control" width="100px"  name="discount" value="{{prod.discount}}" required>
                 </div>
             </div>
             <div class="row mb-3">
                 <label for="inputNumber" class="col-sm-2 col-form-label">Quantity</label>
                 <div class="col-sm-10 col-md-4">
-                  <input type="number" class="form-control" width="100px" name="quantity" value="{{prod.quantity}}">
+                  <input type="number" class="form-control" width="100px" name="quantity" value="{{prod.quantity}}" required>
                 </div>
             </div>
             <div class="row mb-3">
                 <label class="col-sm-2 col-form-label">Category</label>
                 <div class="col-sm-10">
-                  <select class="form-select" aria-label="Default select example" name="category">
+                  <select class="form-select" aria-label="Default select example" name="category" required>
                     {% for item in cat %}
                     <option {% if item.id == prod.id %}selected{% endif %} value="{{item.id}}">{{item.name}}</option>
                     {% endfor %}
@@ -70,7 +70,7 @@
             <div class="row mb-3">
                 <label class="col-sm-2 col-form-label">Brand</label>
                 <div class="col-sm-10">
-                  <select class="form-select" aria-label="Default select example" name="brand">
+                  <select class="form-select" aria-label="Default select example" name="brand" required>
                     {% for item in bnd %}
                     <option {% if item.id == prod.id %}selected{% endif %} value="{{item.id}}">{{item.name}}</option>
                     {% endfor %}
@@ -80,7 +80,7 @@
             <div class="row mb-3">
                 <label class="col-sm-2 col-form-label">Color</label>
                 <div class="col-sm-10">
-                  <select class="form-select" aria-label="Default select example" name="color">
+                  <select class="form-select" aria-label="Default select example" name="color" required>
                     {% for item in clr %}
                     <option {% if item.id == prod.id %}selected{% endif %} value="{{item.id}}">{{item.name}}</option>
                     {% endfor %}
