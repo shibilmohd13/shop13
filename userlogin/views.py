@@ -28,10 +28,11 @@ def signup(request):
             return redirect('signup')
 
         else:
-            user = CustomUser.objects.create_user(username=email, phone=phone, email=email, password=password,fullname=fullname,is_active=False)
+            otp_sent = str(random.randint(100000,999999))
+            user = CustomUser.objects.create_user(username=email, phone=phone, email=email, password=password,fullname=fullname,is_active=False, otp=otp_sent)
             request.session['email'] = email
             request.session['user_id'] = user.id
-            return redirect('send_otp')
+            return redirect('otp')
 
 
     return render(request,'userlogin/signup.html')
@@ -52,9 +53,9 @@ def signin(request):
 
 def otp(request):
     if request.method == 'POST':
+        user = CustomUser.objects.get(id=request.session['user_id'])
         entered_otp = request.POST['otp']
-        if entered_otp == request.session['otp']:
-            user = CustomUser.objects.get(id=request.session['user_id'])
+        if entered_otp == user.otp:
             user.is_active = True
             user.save()
             return redirect('signin')
@@ -67,16 +68,9 @@ def landing(request):
     return render(request, 'userlogin/homepage.html')
 
 def send_otp(request):
-    otp_sent = random.randint(100000,999999)
-    request.session['otp'] = str(otp_sent)
-    print(otp_sent)
-    sender_email = "shop13ecommerce@gmail.com"
-    sender_pass = 'vqor ejqp zexj omko'
-    connection = smtplib.SMTP('smtp.gmail.com', 587)
-    connection.starttls()
-    connection.login(user=sender_email, password=sender_pass)
-    connection.sendmail(from_addr=sender_email, to_addrs=request.session['email'],msg=f'Subject: OTP for register \n\n Here is your OTP for create account in SHOP13\n OTP:- {otp_sent}')
-    connection.close()
+    user = CustomUser.objects.get(id=request.session['user_id'])
+    user.otp = otp_sent = str(random.randint(100000,999999))
+    user.save()
     return redirect('otp')
 
 
