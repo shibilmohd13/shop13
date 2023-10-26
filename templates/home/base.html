@@ -48,7 +48,7 @@
                 <a href="#"><i class="fa-solid fa-heart header-icons" style="color: #f7ba01;"></i></a>
               </li>
               <li class="nav-item  d-inline-block font_13 me-2">
-                <a class="text-light" href="#"><i class="fa-solid fa-cart-shopping header-icons" style="color: #f7ba01 ;"></i></a>
+                <a class="text-light" href="{% url "cart" %}"><i class="fa-solid fa-cart-shopping header-icons" style="color: #f7ba01 ;"></i></a>
               </li>
               <li class="nav-item  d-inline-block font_13 border-0 d-flex f-row">
             <a class="nav-link dropdown-toggle p-0 text-black d-flex f-row align-items-center" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
@@ -66,7 +66,7 @@
                 </li>
                 {% else %}
                 <li>
-                  <a class="dropdown-item" href="#"><i class="fa fa-caret-right me-1 col_yell"></i>
+                  <a class="dropdown-item" href="{% url "profile" %}"><i class="fa fa-caret-right me-1 col_yell"></i>
                     Profile</a>
               </li>
                 <li>

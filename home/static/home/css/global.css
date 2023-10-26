@@ -24,6 +24,9 @@ a{
 text-decoration:none;
 color:#000;
  }
+.continue-shopping{
+  color: #1d4289;
+}
 a:hover{
 text-decoration:none;
 color: #f7ba01;

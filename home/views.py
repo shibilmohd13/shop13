@@ -1,5 +1,6 @@
 from django.shortcuts import render,redirect
 from products.models import *
+from userlogin.models import CustomUser
 import smtplib
 
 # Create your views here.
@@ -42,3 +43,9 @@ def search(request):
     search_query = request.GET['search']
     products_match = Product.objects.filter(name__icontains=search_query,is_listed=True)
     return render(request, "home/shop.html" , {'obj': products_match})
+
+
+def profile(request):
+    # request.session['users']
+    # CustomUser.objects.filter(email=email)
+    return render(request, 'home/profile.html')

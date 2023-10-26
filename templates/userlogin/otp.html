@@ -33,6 +33,7 @@
                 <input type="tel" pattern="[0-9]{6}" name="otp" id="otp" class="form-control" placeholder="Enter your 6 digit OTP">
               </div>
               <input name="verify" id="verify" class="btn btn-block login-btn" type="submit" value="Verify OTP">
+              <span id="email-error" class="error-message text-danger">{% if messages %}{% for message in messages %}{{message}}{% endfor %}{% endif %}</span>
             </form>
             <a href="{% url 'send_otp' %}" class="forgot-password-link">Resend OTP</a>
             <p class="login-wrapper-footer-text">OTP will expire in <span id="total-time-left" class="otp-timer" style="display: inline-block;">00:59</span></p>

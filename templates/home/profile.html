@@ -1,0 +1,68 @@
+{% extends 'home/base.html' %}
+{% load static %}
+{% block title %}User Profile{% endblock title %}
+{% block css %}<link href="{% static 'home/css/profile.css' %}" rel="stylesheet" />{% endblock css %}
+
+{% block content %}
+
+<div class="container rounded bg-white mt-5 mb-5">
+    <div class="row">
+        <div class="col-md-3 border-right">
+            <div class="d-flex flex-column align-items-center text-center p-3 py-5"><img class="rounded-circle mt-5" width="150px" src="{% static "home/image/user.png" %}"><span class="font-weight-bold">Edogaru</span><span class="text-black-50">edogaru@mail.com.my</span><br><span class="border px-3 p-1 add-experience">Change Profile image</span></div>
+        </div>
+        <div class="col-md-5 border-right">
+            <div class="p-3 py-5">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h4 class="text-right">Profile Settings</h4>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-md-12 mt-2"><label class="labels">Name</label><input type="text" class="form-control" placeholder="Enter Full name" value=""></div>
+                    <div class="col-md-12 mt-2"><label class="labels">Mobile Number</label><input type="text" class="form-control" placeholder="Enter phone number" value=""></div>
+                    <div class="col-md-12 mt-2"><label class="labels">Email</label><input type="email" class="form-control" placeholder="Enter Email" value=""></div><br>
+                    <div class="col-md-12 mt-5 text-center"><span class="border py-2 px-3 button me-2"><i class="fa fa-box"></i>&nbsp;&nbsp;My orders</span><span class="border py-2 px-3 button_1" ><i class="fa fa-pencil"></i>&nbsp;&nbsp;Change Password</span></div><br>
+                    
+                </div>
+                {% comment %} <div class="row mt-3">
+                    <div class="col-md-6"><label class="labels">Country</label><input type="text" class="form-control" placeholder="country" value=""></div>
+                    <div class="col-md-6"><label class="labels">State/Region</label><input type="text" class="form-control" value="" placeholder="state"></div>
+                </div> {% endcomment %}
+                <div class="mt-5 text-center"><button class="btn btn-primary profile-button" type="button">Save Profile</button></div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="p-3 py-5">
+                <div class="row m-0 ">
+                    <h6 class="mb-2">Choose Address</h6>
+                    <form>
+                    <div class="form-check col-md-6 col-6 col-lg-12 my-2">
+                        <div class="mt-2">
+                        <input type="radio" id="html" name="fav_language" value="HTML" checked='checked'>
+                        <label for="html">Malappuram, Kerala, India</label>
+                        </div>
+                        <div class="mt-2">
+                        <input type="radio" id="css" name="fav_language" value="CSS">
+                        <label for="css">Calicut, Kerala, India</label>
+                        </div>
+                        <div class="mt-2">
+                        <input type="radio" id="javascript" name="fav_language" value="JavaScript">
+                        <label for="javascript">Banglore, Karnataka, India</label>
+                        </div>
+                    </div>
+                    </form>
+                </div>
+                <h6 class="my-3">Add new Address</h6>
+                <div class="col-md-12 mt-2"><label class="labels">Street Address</label><input type="text" class="form-control" placeholder="Enter Street Address" value=""></div>
+                <div class="col-md-12 mt-2"><label class="labels">Country</label><input type="text" class="form-control" placeholder="Enter Country" value=""></div>
+                <div class="col-md-12 mt-2"><label class="labels">State</label><input type="text" class="form-control" placeholder="Enter State" value=""></div>
+                <div class="col-md-12 mt-2"><label class="labels">District</label><input type="text" class="form-control" placeholder="Enter District" value=""></div>
+                <div class="col-md-12 mt-2"><label class="labels">Pincode</label><input type="text" class="form-control" placeholder="Enter Pincode" value=""></div>
+                <div class="d-flex justify-content-between align-items-center experience mt-4"><span>Add to addresses</span><span class="border px-3 p-1 add-experience"><i class="fa fa-plus"></i>&nbsp;Add address</span></div><br>            
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+
+{% endblock content %}
+  
