@@ -28,10 +28,9 @@ def signup(request):
             return redirect('signup')
 
         else:
-            request.session['fullname'] = fullname
-            request.session['phone'] = phone
+            user = CustomUser.objects.create_user(username=email, phone=phone, email=email, password=password,fullname=fullname,is_active=False)
             request.session['email'] = email
-            request.session['password'] = password
+            request.session['user_id'] = user.id
             return redirect('send_otp')
 
 
@@ -55,9 +54,9 @@ def otp(request):
     if request.method == 'POST':
         entered_otp = request.POST['otp']
         if entered_otp == request.session['otp']:
-            user = CustomUser.objects.create_user(username=request.session['email'], phone=request.session['phone'], email=request.session['email'], password=request.session['password'],fullname=request.session['fullname'])
+            user = CustomUser.objects.get(id=request.session['user_id'])
+            user.is_active = True
             user.save()
-            request.session.flush()
             return redirect('signin')
         else:
             messages.error(request, 'Invalid otp')
