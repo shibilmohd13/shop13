@@ -11,7 +11,7 @@ class CustomUser(AbstractUser):
     otp = models.CharField(max_length=6, blank=True ,null=True)
 
     def __str__(self) :
-        return self.fullname
+        return self.email
 
 @receiver(post_save, sender=CustomUser)
 def send_otp_signal(sender, instance, **kwargs):
