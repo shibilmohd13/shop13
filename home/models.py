@@ -2,7 +2,7 @@ from django.db import models
 import smtplib
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-
+import os
 # Create your models here.
 
 class Contact(models.Model):
@@ -15,8 +15,8 @@ class Contact(models.Model):
 @receiver(post_save, sender=Contact)
 def send_contact(sender,instance, **kwargs):
     message = f"Subject: Enquiry SHOP13 \n\n From :- {instance.first_name} {instance.last_name} | Email :- {instance.email}\n\n{instance.message}"
-    sender_email = "shop13ecommerce@gmail.com"
-    sender_pass = 'vqor ejqp zexj omko'
+    sender_email = os.environ.get("SENDER_EMAIL")
+    sender_pass = os.environ.get("SENDER_PASS")
     connection = smtplib.SMTP('smtp.gmail.com', 587)
     connection.starttls()
     connection.login(user=sender_email, password=sender_pass)

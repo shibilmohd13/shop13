@@ -12,11 +12,20 @@ from django.contrib import messages
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 @user_passes_test(lambda u:u.is_superuser, login_url='admin_login')
 def products(request):
-    prod = Product.objects.all().order_by('id')
+    prod = Product.objects.exclude(is_listed=False).order_by('id')
     context = {
         'products' : prod
     }
     return render(request, 'admin_panel/products.html', context)
+
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@user_passes_test(lambda u:u.is_superuser, login_url='admin_login')
+def unlisted_products(request):
+    prod = Product.objects.exclude(is_listed=True).order_by('id')
+    context = {
+        'products' : prod
+    }
+    return render(request, 'admin_panel/unlisted_products.html', context)
 
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 @user_passes_test(lambda u:u.is_superuser, login_url='admin_login')
@@ -29,6 +38,19 @@ def product_status(request, id):
         prod.is_listed = True
         prod.save()
     return redirect('products')
+
+
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@user_passes_test(lambda u:u.is_superuser, login_url='admin_login')
+def product_status_unlist(request, id):
+    prod = Product.objects.filter(id=id).first()
+    if prod.is_listed == True:
+        prod.is_listed = False
+        prod.save()
+    else:
+        prod.is_listed = True
+        prod.save()
+    return redirect('unlisted_products')
     
 
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)

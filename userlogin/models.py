@@ -4,6 +4,7 @@ import random
 import smtplib
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+import os
 
 class CustomUser(AbstractUser):
     phone = models.CharField(max_length=50)
@@ -15,8 +16,8 @@ class CustomUser(AbstractUser):
 
 @receiver(post_save, sender=CustomUser)
 def send_otp_signal(sender, instance, **kwargs):
-    sender_email = "shop13ecommerce@gmail.com"
-    sender_pass = 'vqor ejqp zexj omko'
+    sender_email = os.environ.get("SENDER_EMAIL")
+    sender_pass =  os.environ.get("SENDER_PASS")
     connection = smtplib.SMTP('smtp.gmail.com', 587)
     connection.starttls()
     connection.login(user=sender_email, password=sender_pass)

@@ -103,6 +103,13 @@
       </li><!-- End Products Page Nav -->
 
       <li class="nav-item">
+        <a class="nav-link {% block unlisted_products %}collapsed{% endblock unlisted_products %}" href="{% url 'unlisted_products' %}" style="color:#8b0000;">
+          <i class="bi bi-basket" style="color:#8b0000;"></i>
+          <span>Trash Products</span>
+        </a>
+      </li><!-- End Products Page Nav -->
+
+      <li class="nav-item">
         <a class="nav-link {% block categories %}collapsed{% endblock categories %}" href="{% url 'categories' %}">
           <i class="bi bi-inboxes-fill"></i>
           <span>Categories</span>
