@@ -2,6 +2,7 @@ from django.shortcuts import render,redirect
 from products.models import *
 from userlogin.models import CustomUser
 import smtplib
+from . models import Contact
 
 # Create your views here.
 def home(request):
@@ -27,15 +28,12 @@ def about(request):
 
 def contact(request):
     if request.method == "POST":
+        first_name = request.POST['first_name']
+        last_name = request.POST['last_name']
+        phone = request.POST['phone']
         email = request.POST['email']
-        message = f"Subject: Enquiry SHOP13 \n\n From :- {request.POST['first_name']} {request.POST['last_name']} | Email :- {email}\n\n{request.POST['message']}"
-        sender_email = "shop13ecommerce@gmail.com"
-        sender_pass = 'vqor ejqp zexj omko'
-        connection = smtplib.SMTP('smtp.gmail.com', 587)
-        connection.starttls()
-        connection.login(user=sender_email, password=sender_pass)
-        connection.sendmail(from_addr=sender_email, to_addrs="shibilmhdjr13@gmail.com", msg=message)
-        connection.close()
+        user_message = request.POST['message']
+        Contact.objects.create(first_name=first_name, last_name=last_name, phone=phone, email=email, message=user_message)
         return redirect("contact")
     return render(request, 'home/contact.html')
 
