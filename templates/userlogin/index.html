@@ -1,4 +1,5 @@
 {% load static %}
+{% load socialaccount %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -36,7 +37,7 @@
                 <div id="error" class="error-message text-danger mt-2">{% if messages %}{% for message in messages %}{% if message.tags == 'error' %}{{message}}{% endif %}{% endfor %}{% endif %}</div>
               </div>
               <input name="login" id="login" class="btn btn-block login-btn" type="submit" value="Login">
-              <input name="google" class="btn btn-block btn-primary mb-2" type="button" value="Signin With Google" style="border-radius:0px;">
+              <a href="{% provider_login_url 'google' %}" name="google" class="btn btn-block btn-primary mb-2" style="border-radius:0px;">Signin With Google</a>
             </form>
             <a href="#!" class="forgot-password-link">Forgot password?</a>
             <p class="login-wrapper-footer-text">Don't have an account? <a href="{% url 'signup' %}" class="text-reset">Register here</a></p>

@@ -3,6 +3,7 @@ from products.models import *
 from userlogin.models import CustomUser
 import smtplib
 from . models import Contact
+from django.contrib.auth import logout
 
 # Create your views here.
 def home(request):
@@ -18,8 +19,8 @@ def product_details(request,id):
     obj = Product.objects.filter(id=id)[0]
     return render(request, 'home/details.html', {'item': obj})
 
-def logout(request):
-    request.session.flush()
+def logout_view(request):
+    logout(request)
     return redirect('home')
 
 def about(request):
