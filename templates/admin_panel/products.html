@@ -31,7 +31,7 @@
                                 <th>Product Name</th>
                                 <th>Brand</th>
                                 <th>Price</th>
-                                <th>Quantity</th>
+                                <th>Details</th>
                                 <th>List / Unlist</th>
                                 <th>Actions</th>
                             </tr>
@@ -41,17 +41,18 @@
                         {% for prod in products %}
                             <tr>
                                 <td class="align-middle">{{prod.id}}</td>
-                                <td><center><img src="{% get_media_prefix %}{{prod.image1}}" height="80px"/><center></td>
-                                <td class="align-middle">{{prod.name}}</td>
+                                {% comment %} <td><center><img src="{% get_media_prefix %}{{prod.image1}}" height="80px"/><center></td> {% endcomment %}
+                                <td><center><img src="{{prod.colorvarient_set.all.0.productimage_set.last.image.url}}" height="80px"/><center></td>
+                                    <td class="align-middle">{{prod.name}}</td>
                                 <td class="align-middle">{{prod.brands.name}}</td>
                                 <td class="align-middle">&#8377;{{prod.price}}</td>
-                                <td class="align-middle">{{prod.quantity}}</td>
+                                <td class="align-middle"><a href="varient_details/{{prod.id}}" class="btn btn-outline-dark">View Details</a></td>
                                 {% if prod.is_listed %}
-                                <td class="align-middle"><a href='product_status/{{prod.id}}'><span class="badge bg-danger">Unlist</span></a></td>
+                                <td class="align-middle"><a href='product_status/{{prod.id}}'><span class="btn btn-danger">Unlist</span></a></td>
                                 {% else %}
-                                <td class="align-middle"><a href='product_status/{{prod.id}}'><span class="badge bg-success">List</span></a></td>
+                                <td class="align-middle"><a href='product_status/{{prod.id}}'><span class="btn btn-success">List</span></a></td>
                                 {% endif %}
-                                <td class="align-middle" style='font-size:20px'>&nbsp;&nbsp;&nbsp;&nbsp;<a href="edit_products/{{prod.id}}"><i class="bi bi-pencil-square text-warning"></i></a></td>
+                                <td class="align-middle" style='font-size:20px'><a href="edit_products/{{prod.id}}" class="btn btn-warning">Edit</a></td>
 
                             </tr>
 

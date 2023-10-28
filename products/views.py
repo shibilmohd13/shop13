@@ -1,8 +1,5 @@
-from email import message
 from django.shortcuts import render,redirect
 from .models import *
-from django.core.files.storage import default_storage
-from django.core.files.base import ContentFile
 from django.contrib.auth.decorators import user_passes_test
 from django.views.decorators.cache import cache_control
 from django.contrib import messages
@@ -12,7 +9,11 @@ from django.contrib import messages
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 @user_passes_test(lambda u:u.is_superuser, login_url='admin_login')
 def products(request):
-    prod = Product.objects.exclude(is_listed=False).order_by('id')
+    # prod = Product.objects.exclude(is_listed=False).order_by('id')
+    # prod = Product.objects.filter(is_listed=True).prefetch_related('productimage_set', 'colorvarient_set').first()
+    prod = Product.objects.prefetch_related('colorvarient_set__productimage_set').filter(is_listed=True).order_by('id')
+    # print(prod[0].colorvarient_set.first().productimage_set.first().image)
+
     context = {
         'products' : prod
     }
@@ -21,7 +22,7 @@ def products(request):
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 @user_passes_test(lambda u:u.is_superuser, login_url='admin_login')
 def unlisted_products(request):
-    prod = Product.objects.exclude(is_listed=True).order_by('id')
+    prod = Product.objects.prefetch_related('colorvarient_set__productimage_set').filter(is_listed=False).order_by('id')
     context = {
         'products' : prod
     }
@@ -58,59 +59,42 @@ def product_status_unlist(request, id):
 def add_products(request):
     category_list = Category.objects.all()
     brands_list = Brand.objects.all()
-    color_list = Color.objects.all()
     context = {
         'cat' : category_list,
         'bnd' : brands_list,
-        'clr' : color_list
     }
     if request.method == 'POST':
         name = request.POST.get('name')
         description = request.POST.get('description')
         price = request.POST.get('price')
         discount = request.POST.get('discount')
-        quantity = request.POST.get('quantity')
+        discounted_price = request.POST.get('discounted_price')
         category_id = request.POST.get('category')
         brand_id = request.POST.get('brand')
-        color_id = request.POST.get('color')
-        image1 = request.FILES.get('image1')
-        image2 = request.FILES.get('image2')
-        image3 = request.FILES.get('image3')
-
 
         category = Category.objects.get(id=category_id)
         brand = Brand.objects.get(id=brand_id)
-        color = Color.objects.get(id=color_id)
+
 
         product = Product(
             name=name,
             description=description,
             price=price,
             discount=discount,
-            quantity=quantity,
+            discounted_price=discounted_price,
             category=category,
             brands=brand,
-            color=color,
-            # image1=image1,
-            # image2=image2,
-            # image3=image3,
         )
         product.save()
-
-        # Function to save an uploaded image to the 'media' directory
-        def save_image(image, filename):
-            path = default_storage.save(filename, ContentFile(image.read()))
-            return path
-
-        # Save the uploaded images
-        if image1:
-            product.image1 = save_image(image1,f'{image1.name}')
-        if image2:
-            product.image2 = save_image(image2,f'{image2.name}')
-        if image3:
-            product.image3 = save_image(image3,f'{image3.name}')
-
-        product.save()
+        color_list = ['silver', 'gold', 'black' ,'brown']
+        for color in color_list:  
+            quantity = request.POST.get(color, 0)  # Use default value 0 if quantity is not provided
+            print(quantity, name)
+            varient = ColorVarient(product=product, color=color, quantity=quantity)
+            varient.save()
+            images = request.FILES.getlist(f'images_{color}')
+            for image in images:
+                ProductImage(varient=varient, image=image).save()
 
         return redirect('products')
 
@@ -122,43 +106,57 @@ def add_products(request):
 def edit_products(request, id):
     category_list = Category.objects.all()
     brands_list = Brand.objects.all()
-    color_list = Color.objects.all()
     prod = Product.objects.get(id=id)
+    colors = ColorVarient.objects.filter(product=prod)
+    print(prod)
     context = {
         'cat' : category_list,
         'bnd' : brands_list,
-        'clr' : color_list,
-        'prod' : prod
+        'prod' : prod,
+        'colors' : colors
     }
     if request.method == 'POST':
         prod.name = request.POST.get('name')
         prod.description = request.POST.get('description')
         prod.price = request.POST.get('price')
         prod.discount = request.POST.get('discount')
-        prod.quantity = request.POST.get('quantity')
+        prod.discounted_price = request.POST.get('discounted_price')
         prod.category_id = request.POST.get('category')
         prod.brand_id = request.POST.get('brand')
-        prod.color_id = request.POST.get('color')
         prod.save()
 
-        image1 = request.FILES.get('image1')
-        image2 = request.FILES.get('image2')
-        image3 = request.FILES.get('image3')
 
-        # Function to save an uploaded image to the 'media' directory
-        def save_image(image, filename):
-            path = default_storage.save(filename, ContentFile(image.read()))
-            return path
+        color_list = ['silver', 'gold', 'black', 'brown']
 
-        # Save the uploaded images
-        if image1:
-            prod.image1 = save_image(image1,f'{image1.name}')
-        if image2:
-            prod.image2 = save_image(image2,f'{image2.name}')
-        if image3:
-            prod.image3 = save_image(image3,f'{image3.name}')
+        for color in color_list:
+            quantity = request.POST.get(color, 0)  # Use default value 0 if quantity is not provided
 
-        prod.save()
+            # Try to retrieve an existing ColorVariant instance
+            try:
+                varient = ColorVarient.objects.get(product=prod, color=color)
+                varient.quantity = quantity  # Update the quantity
+                varient.save()
+
+            except ColorVarient.DoesNotExist:
+                # If it doesn't exist, create a new ColorVariant
+                varient = ColorVarient(product=prod, color=color, quantity=quantity)
+                varient.save()
+
+        # Second loop to handle images
+        for color in color_list:
+            new_images = request.FILES.getlist(f'images_{color}')
+
+            if new_images:
+
+                # Delete all existing images for this color variant
+                varient = ColorVarient.objects.get(product=prod, color=color)
+                varient.productimage_set.all().delete()
+                
+                # Save the new images
+                for image in new_images:
+                    ProductImage(varient=varient, image=image).save()
+
+
         return redirect('products')
     return render(request, 'admin_panel/edit_products.html',context)
 
@@ -188,18 +186,6 @@ def add_brands(request):
         return redirect("brands")
     return render(request, 'admin_panel/add_brands.html')
 
-@cache_control(no_cache=True, must_revalidate=True, no_store=True)
-@user_passes_test(lambda u:u.is_superuser, login_url='admin_login')
-def add_colors(request):
-    if request.method == "POST":
-        name = request.POST.get('name')
-        if Color.objects.filter(name=name).exists():
-            messages.error(request, "This Color already exists")
-            return redirect('add_colors')
-        clr = Color(name=name,is_listed=True)
-        clr.save()
-        return redirect("colors")
-    return render(request, 'admin_panel/add_colors.html')
 
 
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
@@ -222,15 +208,6 @@ def edit_brands(request,id):
         return redirect('brands')
     return render(request, 'admin_panel/edit_brands.html',{'brand': brand})
 
-@cache_control(no_cache=True, must_revalidate=True, no_store=True)
-@user_passes_test(lambda u:u.is_superuser, login_url='admin_login')
-def edit_colors(request, id):
-    clr = Color.objects.get(id=id)
-    if request.method == 'POST':
-        clr.name = request.POST.get('name')
-        clr.save()
-        return redirect('colors')
-    return render(request, 'admin_panel/edit_colors.html',{'clr':clr})
 
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 @user_passes_test(lambda u:u.is_superuser, login_url='admin_login')
@@ -276,23 +253,11 @@ def brand_status(request, id):
     return redirect('brands')
 
 
+# function for showing the product variant, image on the product variant page 
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 @user_passes_test(lambda u:u.is_superuser, login_url='admin_login')
-def colors(request):
-    color = Color.objects.all().order_by('id')
-    context = {
-        'colors' : color
-    }
-    return render(request, 'admin_panel/colors.html', context)
-
-@cache_control(no_cache=True, must_revalidate=True, no_store=True)
-@user_passes_test(lambda u:u.is_superuser, login_url='admin_login')
-def color_status(request, id):
-    color = Color.objects.filter(id=id).first()
-    if color.is_listed == True:
-        color.is_listed = False
-        color.save()
-    else:
-        color.is_listed = True
-        color.save()
-    return redirect('colors')
+def varient_details(request, id):
+    # product = Product.objects.filter(pk=id, is_listed=True).prefetch_related('productimage_set', 'colorvarient_set').first()
+    # print(product)
+    prod = Product.objects.filter(id=id).prefetch_related('colorvarient_set__productimage_set').first()
+    return render(request, 'admin_panel/varient_details.html', { 'product' : prod })

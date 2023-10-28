@@ -27,7 +27,12 @@
 
   <!-- Template Main CSS File -->
   <link href="{% static 'admin_panel/assets/css/style.css' %}" rel="stylesheet">
-
+  <style>
+    th, td {
+      text-align: center !important; /* Horizontally center the content within table cells */
+      vertical-align: middle !important; /* Vertically center the content within table cells */
+    }
+  </style>
 
 </head>
 
@@ -105,7 +110,7 @@
       <li class="nav-item">
         <a class="nav-link {% block unlisted_products %}collapsed{% endblock unlisted_products %}" href="{% url 'unlisted_products' %}" style="color:#8b0000;">
           <i class="bi bi-basket" style="color:#8b0000;"></i>
-          <span>Trash Products</span>
+          <span>Unlisted Products</span>
         </a>
       </li><!-- End Products Page Nav -->
 
@@ -123,12 +128,12 @@
         </a>
       </li><!-- End Brands Page Nav -->
 
-      <li class="nav-item">
+      {% comment %} <li class="nav-item">
         <a class="nav-link {% block colors %}collapsed{% endblock colors %}" href="{% url 'colors' %}">
           <i class="bi bi-palette-fill"></i>
           <span>Colors</span>
         </a>
-      </li><!-- End Orders Page Nav -->
+      </li><!-- End Orders Page Nav --> {% endcomment %}
 
       <li class="nav-item">
         <a class="nav-link {% block orders %}collapsed{% endblock orders %}" href="#">

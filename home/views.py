@@ -12,15 +12,14 @@ def home(request):
 
 def shop(request):
     obj = Product.objects.exclude(is_listed=False)
-    clr = Color.objects.exclude(is_listed=False)
-    return render(request, 'home/shop.html', {'obj': obj , 'colors_nav': clr})
+    return render(request, 'home/shop.html', {'obj': obj })
 
 def product_details(request,id):
     obj = Product.objects.filter(id=id)[0]
     return render(request, 'home/details.html', {'item': obj})
 
 def logout_view(request):
-    logout(request)
+    request.session.flush()
     return redirect('home')
 
 def about(request):
@@ -41,6 +40,7 @@ def contact(request):
 def search(request):
     search_query = request.GET['search']
     products_match = Product.objects.filter(name__icontains=search_query,is_listed=True)
+    print(products_match)
     return render(request, "home/shop.html" , {'obj': products_match})
 
 

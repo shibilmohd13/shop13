@@ -52,11 +52,11 @@
                 </div>
             </div>
             <div class="row mb-3">
-                <label for="inputNumber" class="col-sm-2 col-form-label">Quantity</label>
-                <div class="col-sm-10 col-md-4">
-                  <input type="number" class="form-control" width="100px" name="quantity" required>
-                </div>
-            </div>
+              <label for="inputNumber" class="col-sm-2 col-form-label">Discounted price</label>
+              <div class="col-sm-10 col-md-4">
+                <input type="number" min="1" class="form-control" width="100px" name="discounted_price" required>
+              </div>
+          </div>
             <div class="row mb-3">
                 <label class="col-sm-2 col-form-label">Category</label>
                 <div class="col-sm-10">
@@ -79,43 +79,61 @@
                   </select>
                 </div>
             </div>
-            <div class="row mb-3">
-                <label class="col-sm-2 col-form-label">Color</label>
+
+            {% comment %} <div class="row mb-3">
+                <label for="inputNumber" class="col-sm-2 col-form-label">Images</label>
                 <div class="col-sm-10">
-                  <select class="form-select" aria-label="Default select example" name="color" required>
-                    <option selected disabled required>Select Color</option>
-                    {% for item in clr %}
-                    <option value="{{item.id}}">{{item.name}}</option>
-                    {% endfor %}
-                  </select>
+                  <input class="form-control" type="file" id="formFile" name="images" multiple>
                 </div>
-            </div>
+            </div> {% endcomment %}
+
+
             <div class="row mb-3">
-                <label for="inputNumber" class="col-sm-2 col-form-label">Image 1</label>
-                <div class="col-sm-10">
-                  <input class="form-control" type="file" id="formFile" name="image1">
+              <label class="col-sm-2 col-form-label">Quantity</label>
+              <div class="col-sm-10">
+                  <div class="row">
+                      <div class="col-sm-6 col-md-3 mb-3">
+                          <label for="silverQuantity" class="mb-2">Silver</label>
+                          <input type="number" class="form-control" name="silver" min="0" >
+                      </div>
+                      <div class="col-sm-6 col-md-3 mb-3">
+                          <label for="goldQuantity" class="mb-2">Gold</label>
+                          <input type="number" class="form-control" name="gold" min="0" >
+                      </div>
+                      <div class="col-sm-6 col-md-3 mb-3">
+                          <label for="blackQuantity"  class="mb-2">Black</label>
+                          <input type="number" class="form-control" name="black" min="0" >
+                      </div>
+                      <div class="col-sm-6 col-md-3 mb-3">
+                          <label for="brownQuantity"  class="mb-2">Brown</label>
+                          <input type="number" class="form-control" name="brown" min="0">
+                      </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-6 col-md-3 mb-3">
+                        <input class="form-control" type="file" id="formFile" name="images_silver" multiple>
+                    </div>
+                    <div class="col-sm-6 col-md-3 mb-3">
+                        <input class="form-control" type="file" id="formFile" name="images_gold" multiple>
+                    </div>
+                    <div class="col-sm-6 col-md-3 mb-3">
+                        <input class="form-control" type="file" id="formFile" name="images_black" multiple>
+                    </div>
+                    <div class="col-sm-6 col-md-3 mb-3">
+                        <input class="form-control" type="file" id="formFile" name="images_brown" multiple>
+                    </div>
                 </div>
-            </div>
-            <div class="row mb-3">
-                <label for="inputNumber" class="col-sm-2 col-form-label">Image 2</label>
-                <div class="col-sm-10">
-                  <input class="form-control" type="file" id="formFile" name="image2">
-                </div>
-            </div>
-            <div class="row mb-3">
-                <label for="inputNumber" class="col-sm-2 col-form-label">Image 3</label>
-                <div class="col-sm-10">
-                  <input class="form-control" type="file" id="formFile" name="image3">
-                </div>
-            </div>
-          
-            <br><br>
+              </div>
+          </div>
+
+          <br><br>
             <div class="row mb-3">
               <label class="col-sm-2 col-form-label">Submit</label>
               <div class="col-sm-10">
                 <button type="submit" class="btn btn-primary">Add Product</button>
               </div>
             </div>
+          
 
           </form><!-- End General Form Elements -->
 
@@ -126,4 +144,13 @@
 
 
     </main><!-- End #main -->
+
+
 {% endblock content %}
+
+  
+  
+  
+  
+  
+  

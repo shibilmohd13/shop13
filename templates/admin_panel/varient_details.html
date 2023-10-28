@@ -1,0 +1,64 @@
+{% extends 'admin_panel/admin_base.html' %}
+{% load static %}
+{% block title %} Product Varient{% endblock title %}
+{% block products %}{% endblock products %}
+{% block content %}
+
+<main id="main" class="main">
+    <div class="d-flex justify-content-between">
+        <div class="pagetitle">
+            <h1>Products</h1>
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">Admin</li>
+                    <li class="breadcrumb-item">Products</li>
+                    <li class="breadcrumb-item active">Varient Details</li>
+                </ol>
+            </nav>
+        </div><!-- End Page Title -->
+    </div>
+
+        <!-- Recent Sales -->
+        <div class="col-12">
+            <div class="card recent-sales overflow-auto">
+
+                <div class="card-body">
+                    <table class="table table-borderless mt-3">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Product Image</th>
+                                <th>Product Name</th>
+                                <th>Color</th>
+                                <th>Quantity</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            
+                            {% for color_varient in product.colorvarient_set.all %}
+                            <tr>
+                                <td>{{ color_varient.id }}</td>
+                                <td>
+                                    <img src="{{color_varient.productimage_set.last.image.url }}" alt="{{ color_varient.product.name }}" height="100">
+                                </td>
+                                <td>{{ color_varient.product.name }}</td>
+                                <td>{{ color_varient.color }}</td>
+                                <td>
+                                    {% if color_varient.quantity > 0 %}
+                                        {{ color_varient.quantity }}
+                                    {% else %}
+                                        <div class="text-danger">Out of Stock</div>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+
+                </div>
+
+            </div>
+        </div><!-- End Recent Sales -->
+
+    </main><!-- End #main -->
+{% endblock content %}
