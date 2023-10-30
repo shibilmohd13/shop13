@@ -9,11 +9,7 @@ from django.contrib import messages
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 @user_passes_test(lambda u:u.is_superuser, login_url='admin_login')
 def products(request):
-    # prod = Product.objects.exclude(is_listed=False).order_by('id')
-    # prod = Product.objects.filter(is_listed=True).prefetch_related('productimage_set', 'colorvarient_set').first()
     prod = Product.objects.prefetch_related('colorvarient_set__productimage_set').filter(is_listed=True).order_by('id')
-    # print(prod[0].colorvarient_set.first().productimage_set.first().image)
-
     context = {
         'products' : prod
     }
@@ -115,6 +111,7 @@ def edit_products(request, id):
         'prod' : prod,
         'colors' : colors
     }
+
     if request.method == 'POST':
         prod.name = request.POST.get('name')
         prod.description = request.POST.get('description')

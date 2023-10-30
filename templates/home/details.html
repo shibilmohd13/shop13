@@ -25,20 +25,22 @@
                     <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
                         <div class="carousel-indicators">
                             <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0"
-                                class="active" aria-label="Slide 1"></button>
+                                 aria-label="Slide 1"></button>
                             <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1"
                                 aria-label="Slide 2" class="" aria-current="true"></button>
                             <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2"
-                                aria-label="Slide 3"></button>
+                                class="active" aria-label="Slide 3"></button>
                         </div>
 
                         <div class="carousel-inner">
-                            <div class="carousel-item active">
+                            {% for i in item.productimage_set.all %}
+                            <div class="carousel-item {% if forloop.last %} active{% endif %}">
                                 <center>
-                                <img src="{% get_media_prefix %}{{item.image1}}" class="d-block " height='500px' alt="abc">
+                                <img src="{{i.image.url}}" class="d-block " height='500px' alt="abc">
                                 </center>
                             </div>
-                            <div class="carousel-item">
+                            {% endfor %}
+                            {% comment %} <div class="carousel-item ">
                                 <center>
                                 <img src="{% get_media_prefix %}{{item.image2}}" class="d-block " height='500px' alt="abc">
                                 </center>
@@ -47,8 +49,7 @@
                                 <center>
                                 <img src="{% get_media_prefix %}{{item.image3}}" class="d-block  " height='500px' alt="abc">
                                 </center>
-
-                            </div>
+                            </div> {% endcomment %}
                         </div>
                         <button class="carousel-control-prev" type="button"
                             data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
@@ -70,7 +71,7 @@
                     {% else %}
                     <h6 class="d-inline-block bg-danger text-white font_12 ps-3 pe-3 pt-2 pb-2 rounded-1">Out of Stock</h6>
                     {% endif %}
-                    <h4 class="mt-2">{{item.name}}</h4>
+                    <h4 class="mt-2">{{item.product.name}}</h4>
                     <h6 class="font_14 mt-3">
                         <span class="col_yell">
                             <i class="fa fa-star"></i>
@@ -81,9 +82,9 @@
                         </span>
                         - 2 Customer Reviews
                     </h6>
-                    <h4 class="mt-3"><span class="col_yell me-3">&#8377;{{item.price}}</span> <span
-                            class="font_14  text-decoration-line-through col_light">&#8377;{{item.price}}</span></h4>
-                    <p>{{item.description}}</p>
+                    <h4 class="mt-3"><span class="col_yell me-3">&#8377;{{item.product.discounted_price}}</span> <span
+                            class="font_14  text-decoration-line-through col_light">&#8377;{{item.product.price}}</span></h4>
+                    <p>{{item.product.description}}</p>
                     <!-- <h6><span class="me-2">Size :</span>
                         <a class="font_14 col_light me-1" href="#">Guide</a> <a
                             class="font_14 col_light" href="#">Can't Find Your Size?</a></h6> -->
@@ -99,14 +100,23 @@
                     <h6 class="text-uppercase mt-4"><a class="button " href="#" style="color:#ffffff; background: rgb(0, 0, 94);">Buy Now</a></h6>
                     <h6 class="text-uppercase ms-1 mt-4"><a class="button" href="#">Add to Cart</a></h6>
                     </div>
-
                     
+                    <h6 class="mt-3 mb-3">Colors:</h6>
+                    <div class="d-flex f-row mt-3">
+                        <div class="color-images">
+                            {% for v in all_varients %}
+                            <a href="../product_details/{{v.id}}"><img src="{{v.productimage_set.last.image.url}}" alt="{{v.color}}" class="color-thumbnail border-2 " height='70px'></a>
+                            {% endfor %} 
+                        </div>
+                    </div>
+                
+                     
 
                     <h6 class="mt-4"><a href="#"><i class="fa fa-heart-o col_yell me-1"></i> Add To Wishlist</a>
                     </h6>
                     <hr>
-                    <h6 class="font_13 col_light">BRAND : <a class="col_light" href="#">{{item.brands.name}}</a> / <a class="col_light" href="#">{{item.color.name}}</a></h6>
-                    <h6 class="font_13 col_light mt-3 mb-0">CATEGORY : <a class="col_light" href="#">{{item.category.name}}</a></h6>
+                    <h6 class="font_13 col_light">BRAND : <a class="col_light" href="#">{{item.product.brands.name}}</a> / <a class="col_light" href="#">{{item.color}}</a></h6>
+                    <h6 class="font_13 col_light mt-3 mb-0">CATEGORY : <a class="col_light" href="#">{{item.product.category.name}}</a></h6>
                 </div>
             </div>
         </div>

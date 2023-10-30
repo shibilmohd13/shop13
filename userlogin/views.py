@@ -11,6 +11,7 @@ def signup(request):
     if request.method == 'POST':
         fullname = request.POST['fullname']
         phone = request.POST['phone']
+        print(type(phone))
         email = request.POST['email']
         password = request.POST['password']
 

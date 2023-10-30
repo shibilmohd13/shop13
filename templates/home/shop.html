@@ -95,7 +95,7 @@
                       <figure class="effect-jazz mb-0">
                         <a href="../product_details/{{item.id}}"
                           ><img
-                            src="{% get_media_prefix %}{{item.image1}}"
+                            src="{{item.colorvarient_set.all.0.productimage_set.all.last.image.url}}"
                             height = '300px'
                             alt="abc"
                         /></a>
@@ -145,14 +145,14 @@
                     <a href="product_details/{{item.id}}">{{item.name}}</a>
                   </h6>
                   <h6 class="font_13">
-                    <a class="col_light" href="product_details/{{item.id}}">{{item.brands.name}} / {{item.color.name}}</a>
+                    <a class="col_light" href="product_details/{{item.id}}">{{item.category.name}} / {{item.brands.name}}</a>
                   </h6>
                   <hr />
                   <h6 class="fw-normal mb-0">
                     <span class="text-decoration-line-through col_light"
                       >	&#8377;{{item.price}}</span
                     >
-                    <span class="pull-right fw-bold col_yell">&#8377;{{item.price}}</span>
+                    <span class="pull-right fw-bold col_yell">&#8377;{{item.discounted_price}}</span>
                   </h6>
                 </div>
               </div>
