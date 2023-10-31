@@ -45,7 +45,7 @@ def signin(request):
         user = authenticate(request, username=email, password=password)
         if user is not None:
             print(user.fullname)
-            request.session['fullname'] = user.fullname
+            request.session['email'] = user.fullname
             return redirect('home')
         else:
             messages.error(request, "Invalid User")

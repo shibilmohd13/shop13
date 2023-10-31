@@ -7,7 +7,7 @@
 <main id="main" class="main">
     <div class="d-flex justify-content-between">
         <div class="pagetitle">
-            <h1>Products</h1>
+            <h1>Product Varients</h1>
             <nav>
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item">Admin</li>
@@ -15,7 +15,10 @@
                     <li class="breadcrumb-item active">Varient Details</li>
                 </ol>
             </nav>
+
         </div><!-- End Page Title -->
+        <a href="../add_varients/{{product.id}}"class="btn btn-primary btn-rounded h-50">Add Varients</a>
+
     </div>
 
         <!-- Recent Sales -->
@@ -30,7 +33,12 @@
                                 <th>Product Image</th>
                                 <th>Product Name</th>
                                 <th>Color</th>
+                                <th>Discounted price</th>
+                                <th>Discount</th>
+                                <th>Price</th>
                                 <th>Quantity</th>
+                                <th>Status</th>
+                                <th>Edit</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -43,6 +51,9 @@
                                 </td>
                                 <td>{{ color_varient.product.name }}</td>
                                 <td>{{ color_varient.color }}</td>
+                                <td>{{ color_varient.discounted_price }}</td>
+                                <td>{{ color_varient.discount }}%</td>
+                                <td>{{ color_varient.price }}</td>
                                 <td>
                                     {% if color_varient.quantity > 0 %}
                                         {{ color_varient.quantity }}
@@ -50,6 +61,12 @@
                                         <div class="text-danger">Out of Stock</div>
                                     {% endif %}
                                 </td>
+                                {% if color_varient.is_listed %}
+                                <td class="align-middle"><a href='../varient_status/{{color_varient.id}}'><span class="btn btn-danger">Unlist</span></a></td>
+                                {% else %}
+                                <td class="align-middle"><a href='../varient_status/{{color_varient.id}}'><span class="btn btn-success">List</span></a></td>
+                                {% endif %}
+                                <td class="align-middle" style='font-size:20px'><a href="../edit_varients/{{color_varient.id}}" class="btn btn-warning">Edit</a></td>
                             </tr>
                         {% endfor %}
                         </tbody>

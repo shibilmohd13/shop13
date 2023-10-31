@@ -20,9 +20,6 @@ class Brand(models.Model):
 class Product(models.Model):
     name = models.CharField(max_length=50)
     description = models.TextField()
-    price = models.IntegerField()
-    discount = models.DecimalField(max_digits=5, decimal_places=2)
-    discounted_price = models.IntegerField(default=0)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     brands = models.ForeignKey(Brand, on_delete=models.CASCADE)
     is_listed = models.BooleanField(default=True)
@@ -37,6 +34,11 @@ class ColorVarient(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     color = models.CharField(max_length=10)
     quantity = models.PositiveIntegerField()
+    price = models.IntegerField()
+    discount = models.DecimalField(max_digits=5, decimal_places=2,default=0)
+    discounted_price = models.IntegerField(default=0)
+    is_listed = models.BooleanField(default=True)
+
 
     def __str__(self):
         return f"{self.product.name} - {self.color}"

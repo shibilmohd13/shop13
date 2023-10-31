@@ -11,14 +11,14 @@ def home(request):
     return render(request, 'home/home.html', {'obj': obj})
 
 def shop(request):
-    obj = Product.objects.exclude(is_listed=False)
+    obj = Product.objects.prefetch_related('colorvarient_set__productimage_set').filter(is_listed=True).order_by('id')
     return render(request, 'home/shop.html', {'obj': obj })
 
 def product_details(request,id):
     # obj = Product.objects.prefetch_related('colorvarient_set__productimage_set').filter(is_listed=True, id=id).first()
 
     obj = ColorVarient.objects.prefetch_related('productimage_set').filter(id=id).first()
-    all_variants = ColorVarient.objects.filter(product=obj.product).prefetch_related('productimage_set')
+    all_variants = ColorVarient.objects.filter(product=obj.product).prefetch_related('productimage_set').filter(is_listed=True)
 
     return render(request, 'home/details.html', {'item': obj, 'all_varients': all_variants })
 

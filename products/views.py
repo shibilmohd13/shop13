@@ -62,9 +62,9 @@ def add_products(request):
     if request.method == 'POST':
         name = request.POST.get('name')
         description = request.POST.get('description')
-        price = request.POST.get('price')
-        discount = request.POST.get('discount')
-        discounted_price = request.POST.get('discounted_price')
+        # price = request.POST.get('price')
+        # discount = request.POST.get('discount')
+        # discounted_price = request.POST.get('discounted_price')
         category_id = request.POST.get('category')
         brand_id = request.POST.get('brand')
 
@@ -75,22 +75,22 @@ def add_products(request):
         product = Product(
             name=name,
             description=description,
-            price=price,
-            discount=discount,
-            discounted_price=discounted_price,
+            # price=price,
+            # discount=discount,
+            # discounted_price=discounted_price,
             category=category,
             brands=brand,
         )
         product.save()
-        color_list = ['silver', 'gold', 'black' ,'brown']
-        for color in color_list:  
-            quantity = request.POST.get(color, 0)  # Use default value 0 if quantity is not provided
-            print(quantity, name)
-            varient = ColorVarient(product=product, color=color, quantity=quantity)
-            varient.save()
-            images = request.FILES.getlist(f'images_{color}')
-            for image in images:
-                ProductImage(varient=varient, image=image).save()
+        # color_list = ['silver', 'gold', 'black' ,'brown']
+        # for color in color_list:  
+        #     quantity = request.POST.get(color, 0)  # Use default value 0 if quantity is not provided
+        #     print(quantity, name)
+        #     varient = ColorVarient(product=product, color=color, quantity=quantity)
+        #     varient.save()
+        #     images = request.FILES.getlist(f'images_{color}')
+        #     for image in images:
+        #         ProductImage(varient=varient, image=image).save()
 
         return redirect('products')
 
@@ -115,43 +115,43 @@ def edit_products(request, id):
     if request.method == 'POST':
         prod.name = request.POST.get('name')
         prod.description = request.POST.get('description')
-        prod.price = request.POST.get('price')
-        prod.discount = request.POST.get('discount')
-        prod.discounted_price = request.POST.get('discounted_price')
+        # prod.price = request.POST.get('price')
+        # prod.discount = request.POST.get('discount')
+        # prod.discounted_price = request.POST.get('discounted_price')
         prod.category_id = request.POST.get('category')
-        prod.brand_id = request.POST.get('brand')
+        prod.brands_id = request.POST.get('brand')
         prod.save()
 
 
-        color_list = ['silver', 'gold', 'black', 'brown']
+        # color_list = ['silver', 'gold', 'black', 'brown']
 
-        for color in color_list:
-            quantity = request.POST.get(color, 0)  # Use default value 0 if quantity is not provided
+        # for color in color_list:
+        #     quantity = request.POST.get(color, 0)  # Use default value 0 if quantity is not provided
 
-            # Try to retrieve an existing ColorVariant instance
-            try:
-                varient = ColorVarient.objects.get(product=prod, color=color)
-                varient.quantity = quantity  # Update the quantity
-                varient.save()
+        #     # Try to retrieve an existing ColorVariant instance
+        #     try:
+        #         varient = ColorVarient.objects.get(product=prod, color=color)
+        #         varient.quantity = quantity  # Update the quantity
+        #         varient.save()
 
-            except ColorVarient.DoesNotExist:
-                # If it doesn't exist, create a new ColorVariant
-                varient = ColorVarient(product=prod, color=color, quantity=quantity)
-                varient.save()
+        #     except ColorVarient.DoesNotExist:
+        #         # If it doesn't exist, create a new ColorVariant
+        #         varient = ColorVarient(product=prod, color=color, quantity=quantity)
+        #         varient.save()
 
-        # Second loop to handle images
-        for color in color_list:
-            new_images = request.FILES.getlist(f'images_{color}')
+        # # Second loop to handle images
+        # for color in color_list:
+        #     new_images = request.FILES.getlist(f'images_{color}')
 
-            if new_images:
+        #     if new_images:
 
-                # Delete all existing images for this color variant
-                varient = ColorVarient.objects.get(product=prod, color=color)
-                varient.productimage_set.all().delete()
+        #         # Delete all existing images for this color variant
+        #         varient = ColorVarient.objects.get(product=prod, color=color)
+        #         varient.productimage_set.all().delete()
                 
-                # Save the new images
-                for image in new_images:
-                    ProductImage(varient=varient, image=image).save()
+        #         # Save the new images
+        #         for image in new_images:
+        #             ProductImage(varient=varient, image=image).save()
 
 
         return redirect('products')
@@ -258,3 +258,74 @@ def varient_details(request, id):
     # print(product)
     prod = Product.objects.filter(id=id).prefetch_related('colorvarient_set__productimage_set').first()
     return render(request, 'admin_panel/varient_details.html', { 'product' : prod })
+
+def add_varients(request, id):
+
+    product = Product.objects.get(id=id)
+
+    if request.method == "POST":
+        color = request.POST.get('color')
+        quantity = request.POST.get('quantity')
+        price = request.POST.get('price')
+        discount = request.POST.get('discount')
+        discounted_price = request.POST.get('discounted_price')
+        variant = ColorVarient(
+                product=product,
+                color=color,
+                quantity=quantity,
+                price=price,
+                discount=discount,
+                discounted_price=discounted_price,
+            )
+        variant.save()
+        # Handle image uploads
+        for image in request.FILES.getlist('images'):
+            ProductImage.objects.create(varient=variant, image=image)
+        
+        return redirect('varient_details', id=id)
+
+    return render(request, 'admin_panel/add_varients.html', {"product" : product})
+
+def edit_varients(request, id):
+    
+    varient = ColorVarient.objects.get(id=id)
+    existing_images = ProductImage.objects.filter(varient=varient).order_by('-id')
+
+    if request.method == 'POST':
+        color = request.POST.get('color')
+        quantity = request.POST.get('quantity')
+        price = request.POST.get('price')
+        discount = request.POST.get('discount')
+        discounted_price = request.POST.get('discounted_price')
+
+        # Update the variant with the new data
+        varient.color = color
+        varient.quantity = quantity
+        varient.price = price
+        varient.discount = discount
+        varient.discounted_price = discounted_price
+
+        varient.save()
+
+        new_images = request.FILES.getlist('images')
+
+        if new_images:
+
+            ProductImage.objects.filter(varient=varient).delete()
+
+            for image in new_images:
+                ProductImage.objects.create(varient=varient, image=image)
+        return redirect('varient_details', id=varient.product.id)
+
+    return render(request, 'admin_panel/edit_varients.html', {'varient' : varient , 'product' : varient.product , 'images' : existing_images})
+
+def varient_status(request, id):
+    varient = ColorVarient.objects.filter(id=id).first()
+    prod_id = varient.product.id
+    if varient.is_listed == True:
+        varient.is_listed = False
+        varient.save()
+    else:
+        varient.is_listed = True
+        varient.save()
+    return redirect('varient_details', id=prod_id)

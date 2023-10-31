@@ -39,7 +39,7 @@
                   <textarea class="form-control" style="height: 100px" name="description">{{prod.description}}</textarea>
                 </div>
             </div>
-            <div class="row mb-3">
+            {% comment %} <div class="row mb-3">
                 <label for="inputNumber" class="col-sm-2 col-form-label">Price</label>
                 <div class="col-sm-10 col-md-4">
                   <input type="number" min="1" class="form-control" width="100px" name="price" value="{{prod.price}}" required>
@@ -56,7 +56,7 @@
               <div class="col-sm-10 col-md-4">
                 <input type="number" min="1" class="form-control" width="100px" name="discounted_price" value="{{prod.discounted_price}}" required>
               </div>
-          </div>
+          </div> {% endcomment %}
             <div class="row mb-3">
                 <label class="col-sm-2 col-form-label">Category</label>
                 <div class="col-sm-10">
@@ -78,7 +78,7 @@
                 </div>
             </div>
 
-
+{% comment %} 
             <div class="row mb-3">
               <label class="col-sm-2 col-form-label">Quantity</label>
               <div class="col-sm-10">
@@ -115,7 +115,7 @@
                     </div>
                 </div>
               </div>
-          </div>
+          </div> {% endcomment %}
 
           <br><br>
             <div class="row mb-3">

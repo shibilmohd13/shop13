@@ -93,7 +93,7 @@
                   <div class="prod_2i1 clearfix">
                     <div class="grid clearfix">
                       <figure class="effect-jazz mb-0">
-                        <a href="../product_details/{{item.id}}"
+                        <a href="../product_details/{{item.colorvarient_set.first.id}}"
                           ><img
                             src="{{item.colorvarient_set.all.0.productimage_set.all.last.image.url}}"
                             height = '300px'
@@ -112,7 +112,7 @@
                     <h6
                       class="bg_yell d-inline-block pt-1 pb-1 font_13 text-white ps-3 pe-3 pull-right"
                     >
-                      {{item.discount}}%
+                      {{item.colorvarient_set.first.discount}}%
                     </h6>
                   </div>
                   <div
@@ -142,7 +142,7 @@
                     <i class="fa fa-star-half-o"></i>
                   </span>
                   <h6 class="mt-2">
-                    <a href="product_details/{{item.id}}">{{item.name}}</a>
+                    <a href="../product_details/{{item.colorvarient_set.first.id}}">{{item.name}}</a>
                   </h6>
                   <h6 class="font_13">
                     <a class="col_light" href="product_details/{{item.id}}">{{item.category.name}} / {{item.brands.name}}</a>
@@ -150,9 +150,9 @@
                   <hr />
                   <h6 class="fw-normal mb-0">
                     <span class="text-decoration-line-through col_light"
-                      >	&#8377;{{item.price}}</span
+                      >	&#8377;{{item.colorvarient_set.first.price}}</span
                     >
-                    <span class="pull-right fw-bold col_yell">&#8377;{{item.discounted_price}}</span>
+                    <span class="pull-right fw-bold col_yell">&#8377;{{item.colorvarient_set.first.discounted_price}}</span>
                   </h6>
                 </div>
               </div>

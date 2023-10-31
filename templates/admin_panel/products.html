@@ -30,7 +30,7 @@
                                 <th>Product Image</th>
                                 <th>Product Name</th>
                                 <th>Brand</th>
-                                <th>Price</th>
+                                <th>Category</th>
                                 <th>Details</th>
                                 <th>List / Unlist</th>
                                 <th>Actions</th>
@@ -44,9 +44,9 @@
                                 {% comment %} <td><center><img src="{% get_media_prefix %}{{prod.image1}}" height="80px"/><center></td> {% endcomment %}
                                 <td><center><img src="{{prod.colorvarient_set.all.0.productimage_set.last.image.url}}" height="80px"/><center></td>
                                     <td class="align-middle">{{prod.name}}</td>
-                                <td class="align-middle">{{prod.brands.name}}</td>
-                                <td class="align-middle">&#8377;{{prod.price}}</td>
-                                <td class="align-middle"><a href="varient_details/{{prod.id}}" class="btn btn-outline-dark">View Details</a></td>
+                                    <td class="align-middle">{{prod.brands.name}}</td>
+                                    <td class="align-middle">{{prod.category.name}}</td>
+                                    <td class="align-middle"><a href="varient_details/{{prod.id}}" class="btn btn-outline-dark">View Details</a></td>
                                 {% if prod.is_listed %}
                                 <td class="align-middle"><a href='product_status/{{prod.id}}'><span class="btn btn-danger">Unlist</span></a></td>
                                 {% else %}

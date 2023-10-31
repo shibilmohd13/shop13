@@ -17,7 +17,11 @@ urlpatterns = [
     path('edit_categories/<str:id>', views.edit_categories,name='edit_categories'),
     path('edit_brands/<str:id>', views.edit_brands,name='edit_brands'),
     path('unlisted_products',views.unlisted_products,name="unlisted_products"),
-    path('varient_details/<str:id>',views.varient_details, name='varient_details')
+    path('varient_details/<str:id>',views.varient_details, name='varient_details'),
+    path('add_varients/<str:id>',views.add_varients, name='add_varients'),
+    path('varient_status/<str:id>',views.varient_status, name="varient_status"),
+    path('edit_varients/<str:id>',views.edit_varients, name='edit_varients'),
+
 
 
 
