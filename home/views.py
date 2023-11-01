@@ -49,8 +49,3 @@ def search(request):
     print(products_match)
     return render(request, "home/shop.html" , {'obj': products_match})
 
-
-def profile(request):
-    # request.session['users']
-    # CustomUser.objects.filter(email=email)
-    return render(request, 'home/profile.html')

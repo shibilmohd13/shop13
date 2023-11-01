@@ -1,0 +1,476 @@
+{% extends 'home/base.html' %}
+{% load static %}
+{% block title %}User Profile{% endblock title %}
+{% block css %}
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<style type="text/css">
+    body{
+        font-family: 'Rubik', sans-serif !important;
+        background: #f5f5f5;
+    }
+    
+    .ui-w-80 {
+        width: 80px !important;
+        height: auto;
+    }
+    
+    .btn-default {
+        border-color: rgba(24,28,33,0.1);
+        background: rgba(0,0,0,0);
+        color: #4E5155;
+    }
+    
+    label.btn {
+        margin-bottom: 0;
+    }
+    
+    .btn-outline-primary {
+        border-color: #26B4FF;
+        background: transparent;
+        color: #26B4FF;
+    }
+    
+    .btn {
+        cursor: pointer;
+    }
+    
+    .text-light {
+        color: #babbbc !important;
+    }
+    
+    .btn-facebook {
+        border-color: rgba(0,0,0,0);
+        background: #3B5998;
+        color: #fff;
+    }
+    
+    .btn-instagram {
+        border-color: rgba(0,0,0,0);
+        background: #000;
+        color: #fff;
+    }
+    
+    .card {
+        background-clip: padding-box;
+        box-shadow: 0 1px 4px rgba(24,28,33,0.012);
+    }
+    
+    .row-bordered {
+        overflow: hidden;
+    }
+    
+    .account-settings-fileinput {
+        position: absolute;
+        visibility: hidden;
+        width: 1px;
+        height: 1px;
+        opacity: 0;
+    }
+    .account-settings-links .list-group-item.active {
+        font-weight: bold !important;
+    }
+    html:not(.dark-style) .account-settings-links .list-group-item.active {
+        background: transparent !important;
+    }
+    .account-settings-multiselect ~ .select2-container {
+        width: 100% !important;
+    }
+    .light-style .account-settings-links .list-group-item {
+        padding: 0.85rem 1.5rem;
+        border-color: rgba(24, 28, 33, 0.03) !important;
+    }
+    .light-style .account-settings-links .list-group-item.active {
+        color: #4e5155 !important;
+    }
+    .material-style .account-settings-links .list-group-item {
+        padding: 0.85rem 1.5rem;
+        border-color: rgba(24, 28, 33, 0.03) !important;
+    }
+    .material-style .account-settings-links .list-group-item.active {
+        color: #4e5155 !important;
+    }
+    .dark-style .account-settings-links .list-group-item {
+        padding: 0.85rem 1.5rem;
+        border-color: rgba(255, 255, 255, 0.03) !important;
+    }
+    .dark-style .account-settings-links .list-group-item.active {
+        color: #fff !important;
+    }
+    .light-style .account-settings-links .list-group-item.active {
+        color: #4E5155 !important;
+    }
+    .light-style .account-settings-links .list-group-item {
+        padding: 0.85rem 1.5rem;
+        border-color: rgba(24,28,33,0.03) !important;
+    }
+        
+</style>
+
+{% endblock css %}
+
+{% block content %}
+
+<div class="container light-style flex-grow-1 container-p-y mb-4">
+    <h4 class="font-weight-bold py-3 mb-4">
+    User Profile
+    </h4>
+    <div class="card overflow-hidden">
+    <div class="row no-gutters row-bordered row-border-light">
+    <div class="col-md-3 pt-0">
+    <div class="list-group list-group-flush account-settings-links">
+    <a class="list-group-item list-group-item-action active" data-toggle="list" href="#account-general">User Details</a>
+    <a class="list-group-item list-group-item-action" data-toggle="list" href="#account-change-password">Change password</a>
+    <a class="list-group-item list-group-item-action" data-toggle="list" href="#account-social-links">Manage Address</a>
+    <a class="list-group-item list-group-item-action" data-toggle="list" href="#account-connections">Connections</a>
+    <a class="list-group-item list-group-item-action" data-toggle="list" href="#account-notifications">Notifications</a>
+    </div>
+    </div>
+    <div class="col-md-9">
+    <div class="tab-content">
+    <div class="tab-pane fade active show" id="account-general">
+    {% comment %} <div class="card-body media align-items-center">
+    <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt class="d-block ui-w-80">
+    <div class="media-body ml-4">
+    <label class="btn btn-outline-primary">
+    Upload new photo
+    <input type="file" class="account-settings-fileinput">
+    </label> &nbsp;
+    <button type="button" class="btn btn-default md-btn-flat">Reset</button>
+    <div class="text-light small mt-1">Allowed JPG, GIF or PNG. Max size of 800K</div>
+    </div>
+    </div> {% endcomment %}
+    <hr class="border-light m-0">
+    <form method="POST" action="{% url "update_profile" %}">
+        {% csrf_token %}
+        <div class="card-body">
+        <div class="form-group">
+        <label class="form-label">Fullname</label>
+        <input type="text" class="form-control mb-1" name='fullname' value="{{user_obj.fullname}}">
+        </div>
+        <div class="form-group">
+        <label class="form-label">Phone</label>
+        <input type="text" class="form-control" name='phone' value="{{user_obj.phone}}">
+        </div>
+        <div class="form-group">
+        <label class="form-label">E-mail</label>
+        <input type="text" class="form-control mb-1" name="email" value="{{user_obj.email}}" disabled>
+        {% comment %} <div class="alert alert-warning mt-3">
+        Your email is not confirmed. Please check your inbox.<br>
+        <a href="javascript:void(0)">Resend confirmation</a>
+        </div> {% endcomment %}
+        </div>
+        <div class="form-group">
+        <label class="form-label">Primary Address</label>
+        {% for address in user_data %}
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="primary_address" value="{{address.id}}" {% if forloop.counter == 1 %}checked{% else %}{% endif %} required>
+            <label class="form-check-label ps-2" for="address">
+            {{address.name}}, {{address.street_address}}, {{address.phone}}
+            </label>
+        </div>
+        {% endfor %}
+
+            <input type="submit" value="Save changes" class="btn btn-primary mt-4">
+            <a href="{% url "profile" %}"><button type="button" class="btn btn-default mt-4">Cancel</button></a>
+
+    </form>
+
+    </div>
+    </div>
+    </div>
+    <div class="tab-pane fade" id="account-change-password">
+    <form method="POST" action='{% url "change_password" %}'>
+        {% csrf_token %}
+        <div class="card-body pb-2">
+            <div class="form-group">
+            <label class="form-label">Current password</label>
+            <input type="password" class="form-control" name="current_password">
+            </div>
+            <div class="form-group">
+            <label class="form-label">New password</label>
+            <input type="password" class="form-control" name="new_password">
+            </div>
+            <div class="form-group">
+            <label class="form-label">Repeat new password</label>
+            <input type="password" class="form-control" name="password_confirm">
+            </div>
+            
+            <input type="submit" value="Save changes" class="btn btn-primary mt-4">
+            <a href="{% url "profile" %}"><button type="button" class="btn btn-default mt-4">Cancel</button></a>
+        </div>
+    </form>
+    </div>
+    
+    <div class="tab-pane fade" id="account-social-links">
+    <div class="card-body pb-2">
+
+
+        <!-- Add Address trigger modal -->
+        <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#addAddressModal">
+            Add Address
+        </button>
+        
+        <!-- Add address Modal -->
+        <div class="modal fade" id="addAddressModal" tabindex="-1" role="dialog" aria-labelledby="addAddressModalTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <form method="POST" action='{% url "add_address" %}'>
+                {% csrf_token %}
+                <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Add Address</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                </div>
+                <div class="modal-body">
+                    <div class="container">
+                        <div class="form-group">
+                        <label class="form-label">Name</label>
+                        <input type="text" class="form-control" name="name"> 
+                        </div>
+                        <div class="form-group">
+                        <label class="form-label">Phone</label>
+                        <input type="text" class="form-control" name="phone">
+                        </div>
+                        <div class="form-group">
+                        <label class="form-label">Street address</label>
+                        <textarea class="form-control" rows="2" name="street_address"></textarea>
+                        </div>
+                        <div class="form-group">
+                        <label class="form-label">City</label>
+                        <input type="text" class="form-control" name="city">
+                        </div>    
+                        <div class="form-group">
+                        <label class="form-label">State</label>
+                        <input type="text" class="form-control" name="state">
+                        </div>    
+                        <div class="form-group">
+                        <label class="form-label">Pin Code</label>
+                        <input type="number" class="form-control" name="pincode">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-success">Add Address</button>
+                </div>
+                </form>
+            </div>
+            </div>
+        </div>
+        <!-- Edit address Modal HTML -->
+        {% for address in user_data %}
+        <div id="editAddress-{{forloop.counter}}" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form action="edit_address/{{address.id}}" method='POST'>
+                        {% csrf_token %}
+                        <div class="modal-header">
+                            <h5 class="modal-title" >Edit Address</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="container">
+                                    <div class="form-group">    
+                                    <label class="form-label">Name</label>
+                                    <input type="text" class="form-control" name="name" value="{{address.name}}"> 
+                                    </div>
+                                    <div class="form-group">
+                                    <label class="form-label">Phone</label>
+                                    <input type="text" class="form-control" name="phone" value="{{address.phone}}">
+                                    </div>
+                                    <div class="form-group">
+                                    <label class="form-label">Street address</label>
+                                    <textarea class="form-control" rows="2" name="street_address">{{address.street_address}}</textarea>
+                                    </div>
+                                    <div class="form-group">
+                                    <label class="form-label">City</label>
+                                    <input type="text" class="form-control" name="city" value="{{address.city}}">
+                                    </div>    
+                                    <div class="form-group">
+                                    <label class="form-label">State</label>
+                                    <input type="text" class="form-control" name="state" value="{{address.state}}">
+                                    </div>    
+                                    <div class="form-group">
+                                    <label class="form-label">Pin Code</label>
+                                    <input type="number" class="form-control" name="pincode" value="{{address.pin_code}}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-success">Update Address</button>
+                            </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        <!-- Delete Modal HTML -->
+        {% for address in user_data %}
+        <div id="deleteAddress-{{forloop.counter}}" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">						
+                        <h4 class="modal-title">Delete Addres</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    </div>
+                    <div class="modal-body">					
+                        <p>Are you sure you want to delete this Address?</p>
+                        <p class="text-warning"><small>{{address.name}}, {{address.phone}}, {{address.street_address}}, {{address.city}}, {{address.state}}, {{address.pin_code}}</small></p>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+                        <a href="delete_address/{{address.id}}" type="submit" class="btn btn-danger">Delete</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+
+        <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Phone</th>
+                <th scope="col">Street Adddress</th>
+                <th scope="col">City</th>
+                <th scope="col">State</th>
+                <th scope="col">Pincode</th>
+                <th scope="col">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+                {% for address in user_data %}
+                <tr>
+                    <td>{{address.name}}</td>
+                    <td>{{address.phone}}</td>
+                    <td>{{address.street_address}}</td>
+                    <td>{{address.city}}</td>
+                    <td>{{address.state}}</td>
+                    <td>{{address.pin_code}}</td>
+                    <td class="text-center">
+                        <a href="#editAddress-{{forloop.counter}}" class="edit" data-toggle="modal"><i class="fa-solid fa-pencil text-warning"></i></a>&nbsp;&nbsp;&nbsp;
+                        <a href="#deleteAddress-{{forloop.counter}}" class="delete" data-toggle="modal"><i class="fa-solid fa-trash text-danger"></i></a>
+                    </td>
+
+                </tr>
+                {% endfor %}
+            </tbody>
+          </table>
+    </div>
+    </div>
+
+
+    <div class="tab-pane fade" id="account-connections">
+    <div class="card-body">
+    <button type="button" class="btn btn-twitter">Connect to <strong>Twitter</strong></button>
+    </div>
+    <hr class="border-light m-0">
+    <div class="card-body">
+    <h5 class="mb-2">
+    <a href="javascript:void(0)" class="float-right text-muted text-tiny"><i class="ion ion-md-close"></i> Remove</a>
+    <i class="ion ion-logo-google text-google"></i>
+    You are connected to Google:
+    </h5>
+    <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="2b45464a535c4e47476b464a424705484446">[email&#160;protected]</a>
+    </div>
+    <hr class="border-light m-0">
+    <div class="card-body">
+    <button type="button" class="btn btn-facebook">Connect to <strong>Facebook</strong></button>
+    </div>
+    <hr class="border-light m-0">
+    <div class="card-body">
+    <button type="button" class="btn btn-instagram">Connect to <strong>Instagram</strong></button>
+    </div>
+    </div>
+    <div class="tab-pane fade" id="account-notifications">
+    <div class="card-body pb-2">
+    <h6 class="mb-4">Activity</h6>
+    <div class="form-group">
+    <label class="switcher">
+    <input type="checkbox" class="switcher-input" checked>
+    <span class="switcher-indicator">
+    <span class="switcher-yes"></span>
+    <span class="switcher-no"></span>
+    </span>
+    <span class="switcher-label">Email me when someone comments on my article</span>
+    </label>
+    </div>
+    <div class="form-group">
+    <label class="switcher">
+    <input type="checkbox" class="switcher-input" checked>
+    <span class="switcher-indicator">
+    <span class="switcher-yes"></span>
+    <span class="switcher-no"></span>
+    </span>
+    <span class="switcher-label">Email me when someone answers on my forum thread</span>
+    </label>
+    </div>
+    <div class="form-group">
+    <label class="switcher">
+    <input type="checkbox" class="switcher-input">
+    <span class="switcher-indicator">
+    <span class="switcher-yes"></span>
+    <span class="switcher-no"></span>
+    </span>
+    <span class="switcher-label">Email me when someone follows me</span>
+    </label>
+    </div>
+    </div>
+    <hr class="border-light m-0">
+    <div class="card-body pb-2">
+    <h6 class="mb-4">Application</h6>
+    <div class="form-group">
+    <label class="switcher">
+    <input type="checkbox" class="switcher-input" checked>
+    <span class="switcher-indicator">
+    <span class="switcher-yes"></span>
+    <span class="switcher-no"></span>
+    </span>
+    <span class="switcher-label">News and announcements</span>
+    </label>
+    </div>
+    <div class="form-group">
+    <label class="switcher">
+    <input type="checkbox" class="switcher-input">
+    <span class="switcher-indicator">
+    <span class="switcher-yes"></span>
+    <span class="switcher-no"></span>
+    </span>
+    <span class="switcher-label">Weekly product updates</span>
+    </label>
+    </div>
+    <div class="form-group">
+    <label class="switcher">
+    <input type="checkbox" class="switcher-input" checked>
+    <span class="switcher-indicator">
+    <span class="switcher-yes"></span>
+    <span class="switcher-no"></span>
+    </span>
+    <span class="switcher-label">Weekly blog digest</span>
+    </label>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    <div class="text-right mt-3">
+    {% comment %} <button type="button" class="btn btn-primary">Save changes</button>&nbsp;
+    <button type="button" class="btn btn-default">Cancel</button> {% endcomment %}
+    </div>
+    </div>
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript">
+        
+    </script>
+    </body>
+
+{% endblock content %}
+  

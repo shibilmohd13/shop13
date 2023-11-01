@@ -6,7 +6,7 @@ Author URI: https://www.templateonweb.com/
 Licence: <a href="https://www.templateonweb.com/license">Website Template Licence</a>
 */
 body{
-font-family: 'Rubik', sans-serif;
+font-family: 'Rubik', sans-serif !important;
 color:#000;
 font-size:14px;
 letter-spacing:0.5px;

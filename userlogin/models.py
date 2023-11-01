@@ -24,4 +24,15 @@ def send_otp_signal(sender, instance, **kwargs):
     connection.sendmail(from_addr=sender_email, to_addrs=instance.email,msg=f'Subject: OTP for register \n\n Here is your OTP for create account in SHOP13\n OTP:- {instance.otp}')
     connection.close()
 
-    
+class Address(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, null=True)
+    name = models.CharField(max_length=50)
+    phone = models.CharField(max_length=50)
+    street_address = models.TextField()
+    city = models.CharField(max_length=50)
+    state = models.CharField(max_length=50)
+    pin_code = models.IntegerField()
+    is_primary = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f'Address for {self.user.email}'

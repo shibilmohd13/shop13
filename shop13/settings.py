@@ -48,6 +48,8 @@ INSTALLED_APPS = [
     'admin_panel',
     'products',
     'cart',
+    'user_profile',
+
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
