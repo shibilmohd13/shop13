@@ -51,10 +51,10 @@ def change_password(request):
                 print('Profile changed') 
                 return redirect('profile')
             else:
-                print('Pass not match')
+                messages.error(request, "NOt same")
                 return redirect('profile')
         else:
-            print("not the current user")
+            messages.error(request, "NOt same")
             return redirect('profile')
 
 def add_address(request):

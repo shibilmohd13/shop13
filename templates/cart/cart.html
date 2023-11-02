@@ -32,29 +32,30 @@
         <div class="cart_3l">
           <h6>PRODUCT</h6>
         </div>
+        {% for item in cart_items %}
         <div class="cart_3l1 mt-3 row ms-0 me-0">
           <div class="col-md-3 ps-0 col-3">
             <div class="cart_3l1i">
-              <a href="#"><img src="{% static "home/image/12.jpg" %}" alt="abc" class="w-100" /></a>
+              <a href="#"><img src=" {{item.product.productimage_set.last.image.url}} " alt="abc" height="250px" /></a>
             </div>
           </div>
           <div class="col-md-9 col-9">
             <div class="cart_3l1i1">
               <h6 class="fw-bold">
                 <a href="#"
-                  >Naminos elementum disus tincidunts cosmo de cosmopolis</a
+                  >{{item.product.product.name}}</a
                 >
               </h6>
-              <h6 class="fw-normal font_12 mt-3">RED / XS</h6>
-              <h6 class="font_12 mt-3">Vendor</h6>
-              <h5 class="col_yell mt-3">$175.00</h5>
+              <h6 class="fw-normal font_12 mt-3">{{item.product.product.brands}} / {{item.product.product.category}}</h6>
+              <h6 class="font_12 mt-3">{{item.product.color}}</h6>
+              <h5 class="col_yell mt-3">&#8377;{{item.product.discounted_price}}</h5>
               <h6 class="font_12 mt-3 mb-3">Quantity</h6>
             </div>
             <div class="cart_3l1i2">
               <input
                 type="number"
                 min="1"
-                value="1"
+                value="{{item.prod_quantity}}"
                 class="form-control"
                 placeholder="Qty"
               />
@@ -62,66 +63,7 @@
             </div>
           </div>
         </div>
-        <div class="cart_3l1 mt-3 row ms-0 me-0">
-          <div class="col-md-3 ps-0 col-3">
-            <div class="cart_3l1i">
-              <a href="#"><img src="{% static "home/image/12.jpg" %}" alt="abc" class="w-100" /></a>
-            </div>
-          </div>
-          <div class="col-md-9 col-9">
-            <div class="cart_3l1i1">
-              <h6 class="fw-bold">
-                <a href="#"
-                  >Naminos elementum disus tincidunts cosmo de cosmopolis</a
-                >
-              </h6>
-              <h6 class="fw-normal font_12 mt-3">RED / XS</h6>
-              <h6 class="font_12 mt-3">Vendor</h6>
-              <h5 class="col_yell mt-3">$175.00</h5>
-              <h6 class="font_12 mt-3 mb-3">Quantity</h6>
-            </div>
-            <div class="cart_3l1i2">
-              <input
-                type="number"
-                min="1"
-                value="1"
-                class="form-control"
-                placeholder="Qty"
-              />
-              <h6><a class="button_1" href="#">REMOVE</a></h6>
-            </div>
-          </div>
-        </div>
-        <div class="cart_3l1 mt-3 row ms-0 me-0 pb-0 border-0">
-          <div class="col-md-3 ps-0 col-3">
-            <div class="cart_3l1i">
-              <a href="#"><img src="{% static "home/image/12.jpg" %}" alt="abc" class="w-100" /></a>
-            </div>
-          </div>
-          <div class="col-md-9 col-9">
-            <div class="cart_3l1i1">
-              <h6 class="fw-bold">
-                <a href="#"
-                  >Naminos elementum disus tincidunts cosmo de cosmopolis</a
-                >
-              </h6>
-              <h6 class="fw-normal font_12 mt-3">RED / XS</h6>
-              <h6 class="font_12 mt-3">Vendor</h6>
-              <h5 class="col_yell mt-3">$175.00</h5>
-              <h6 class="font_12 mt-3 mb-3">Quantity</h6>
-            </div>
-            <div class="cart_3l1i2">
-              <input
-                type="number"
-                min="1"
-                value="1"
-                class="form-control"
-                placeholder="Qty"
-              />
-              <h6><a class="button_1" href="#">REMOVE</a></h6>
-            </div>
-          </div>
-        </div>
+        {% endfor %}
       </div>
       <div class="col-md-4">
         

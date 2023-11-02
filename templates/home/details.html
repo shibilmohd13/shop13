@@ -1,7 +1,10 @@
 {% extends 'home/base.html' %}
 {% load static %}
 {% block title %}Product Details{% endblock title %}
-{% block css %}<link href="{% static 'home/css/detail.css' %}" rel="stylesheet" />{% endblock css %}
+{% block css %}<link href="{% static 'home/css/detail.css' %}" rel="stylesheet" />
+
+
+{% endblock css %}
 
 {% block shop %}active{% endblock shop %}
 
@@ -18,7 +21,7 @@
 </section>
 
 <section id="detail" class="pt-4 pb-5">
-    <div class="container-xl">
+    <div class="container-xl product_data">
         <div class="row detail_1">
             <div class="col-md-6">
                 <div class="detail_1l">
@@ -89,16 +92,19 @@
                         <a class="font_14 col_light me-1" href="#">Guide</a> <a
                             class="font_14 col_light" href="#">Can't Find Your Size?</a></h6> -->
                     
-                    
+                    <form>
+                        {% csrf_token %}
                     <div class="d-flex f-row">
+                        
                         <h6 class="me-5 mt-4">Quantity : </h6>
-                        <input type="number" min="1" value="1" class="form-control mt-2 border-3" placeholder="Qty"
+                        <input type="number" min="1" value="1" class="form-control mt-2 border-3 qty-input" placeholder="Qty"
                         style="width: 140px; height:50px; margin-right:10px; float:left;">
+                        <input type="hidden" value="{{item.id}}" class="prod_id">
                     </div>
 
                     <div class="d-flex f-row">
-                    <h6 class="text-uppercase mt-4"><a class="button " href="#" style="color:#ffffff; background: rgb(0, 0, 94);">Buy Now</a></h6>
-                    <h6 class="text-uppercase ms-1 mt-4"><a class="button" href="#">Add to Cart</a></h6>
+                    <h6 class="text-uppercase mt-4"><button class="button" href="#" style="color:#ffffff; background: rgb(0, 0, 94);">Buy Now</button></h6>
+                    <h6 class="text-uppercase ms-1 mt-4"><button class="button" href="#" id="addtocart">Add to Cart</button></h6>
                     </div>
                     
                     <h6 class="mt-3 mb-3">Colors:</h6>
@@ -109,8 +115,7 @@
                             {% endfor %} 
                         </div>
                     </div>
-                
-                     
+                </form>
 
                     <h6 class="mt-4"><a href="#"><i class="fa fa-heart-o col_yell me-1"></i> Add To Wishlist</a>
                     </h6>
@@ -124,4 +129,42 @@
 </section>
 
   {% endblock content %}
+
+  {% block scripts %}
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#addtocart').click(function (e) {
+            e.preventDefault();
+            console.log('clicked');
+            var product_id = $(this).closest('.product_data').find('.prod_id').val();
+            var product_qty = $(this).closest('.product_data').find('.qty-input').val();
+            var token = $('input[name=csrfmiddlewaretoken]').val();
+            console.log('clicked');
+            
+            $.ajax({
+                method: "POST",
+                url: "/cart/addtocart", // Update the URL to the correct endpoint
+                data: {
+                    'product_id': product_id,
+                    'product_qty': product_qty,
+                    csrfmiddlewaretoken: token
+                },
+                dataType: 'json', // or the appropriate data type
+                success: function (response) {
+                    console.log(response);
+                    // You can handle the response here, e.g., update the cart icon or show a success message.
+                },
+                error: function (xhr, status, error) {
+                    console.log("Error:", error);
+                    // Handle the error, e.g., display an error message.
+                }
+            });
+        });
+    });
+</script>
+
+
+    </script>
+  {% endblock scripts %}
 

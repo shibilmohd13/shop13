@@ -10,10 +10,16 @@
   <link href="{% static 'home/css/font-awesome.min.css' %} " rel="stylesheet" />
   <link href="{% static 'home/css/global.css' %} " rel="stylesheet" />
   <link rel="icon" type="image/x-icon" href="{% static 'home/image/13_favicon_logo.jpg' %}">
+    <!-- CSS -->
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
+  <!-- Default theme -->
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css"/>
   {% block css %}{% endblock css %}
   <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300&display=swap" rel="stylesheet" />
   <script src="{% static 'home/js/bootstrap.bundle.min.js' %}"></script>
   <script src="https://kit.fontawesome.com/d059fb7515.js" crossorigin="anonymous"></script>
+
+
 </head>
 
 <body>
@@ -304,6 +310,18 @@
       }
     }
   </script>
+  {% comment %} Alerty JS {% endcomment %}
+  <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+
+  <script>
+    alertify.set('notifier','position', 'top-right');
+    {% for msg in messages %}
+    alertify.success('{{ msg }}');
+    {% endfor %}
+    
+    
+  </script>
+  {% block scripts %}{% endblock scripts %}
 </body>
 
 </html>
