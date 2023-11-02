@@ -85,8 +85,8 @@
                         </span>
                         - 2 Customer Reviews
                     </h6>
-                    <h4 class="mt-3"><span class="col_yell me-3">&#8377;{{item.discounted_price}}</span> <span
-                            class="font_14  text-decoration-line-through col_light">&#8377;{{item.price}}</span></h4>
+                    <h4 class="mt-3"><span class="col_yell">&#8377;</span><span class="col_yell me-3" id='discounted_price'>{{item.discounted_price}}</span> 
+                        <span class="font_14  text-decoration-line-through col_light">&#8377;</span><span class="font_14  text-decoration-line-through col_light" id='price'>{{item.price}}</span></h4>
                     <p>{{item.product.description}}</p>
                     <!-- <h6><span class="me-2">Size :</span>
                         <a class="font_14 col_light me-1" href="#">Guide</a> <a
@@ -111,7 +111,7 @@
                     <div class="d-flex f-row mt-3">
                         <div class="color-images">
                             {% for v in all_varients %}
-                            <a href="../product_details/{{v.id}}"><img src="{{v.productimage_set.last.image.url}}" alt="{{v.color}}" class="color-thumbnail border-2 " height='70px'></a>
+                            <a href="../product_details/{{v.id}}"  data-color-variant-id="{{ v.id }}"><img src="{{v.productimage_set.last.image.url}}" alt="{{v.color}}" class="color-thumbnail border-2 " height='70px'></a>
                             {% endfor %} 
                         </div>
                     </div>
@@ -120,7 +120,7 @@
                     <h6 class="mt-4"><a href="#"><i class="fa fa-heart-o col_yell me-1"></i> Add To Wishlist</a>
                     </h6>
                     <hr>
-                    <h6 class="font_13 col_light">BRAND : <a class="col_light" href="#">{{item.product.brands.name}}</a> / <a class="col_light" href="#">{{item.color}}</a></h6>
+                    <h6 class="font_13 col_light">BRAND : <a class="col_light" href="#">{{item.product.brands.name}}</a> / <a class="col_light" href="#" id="color">{{item.color}}</a></h6>
                     <h6 class="font_13 col_light mt-3 mb-0">CATEGORY : <a class="col_light" href="#">{{item.product.category.name}}</a></h6>
                 </div>
             </div>
@@ -157,6 +157,29 @@
                 },
                 error: function (xhr, status, error) {
                     console.log("Error:", error);
+                    // Handle the error, e.g., display an error message.
+                }
+            });
+        });
+
+        // Add an event listener to each color image
+        $('.color-images a').click(function (e) {
+            e.preventDefault();
+            var color_variant_id = $(this).data('color-variant-id'); // You should add a data attribute to store the ColorVariant's ID in the anchor tag
+
+            $.ajax({
+                method: 'GET',
+                url: `/get_color_variant_details/${color_variant_id}`, // Update the URL to match your endpoint
+                dataType: 'json',
+                success: function (response) {
+                    // Update the price, discount price, and color on the page
+                    $('#price').text(response.price);
+                    $('#discounted_price').text(response.discounted_price);
+                    $('#color').text(response.color);
+
+                },
+                error: function (xhr, status, error) {
+                    console.log('Error:', error);
                     // Handle the error, e.g., display an error message.
                 }
             });

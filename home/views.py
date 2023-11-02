@@ -4,6 +4,8 @@ from userlogin.models import CustomUser
 import smtplib
 from . models import Contact
 from django.contrib.auth import logout
+from django.http import JsonResponse
+
 
 # Create your views here.
 def home(request):
@@ -21,6 +23,20 @@ def product_details(request,id):
     all_variants = ColorVarient.objects.filter(product=obj.product).prefetch_related('productimage_set').filter(is_listed=True)
 
     return render(request, 'home/details.html', {'item': obj, 'all_varients': all_variants })
+
+
+def get_color_variant_details(request, id):
+    try:
+        color_variant = ColorVarient.objects.get(id=id)
+        data = {
+            'discounted_price': color_variant.discounted_price,
+            'price': color_variant.price,
+            'color': color_variant.color,
+        }
+        return JsonResponse(data)
+    except ColorVarient.DoesNotExist:
+        return JsonResponse({'error': 'ColorVariant not found'}, status=404)
+
 
 
 
