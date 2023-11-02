@@ -32,6 +32,9 @@ def get_color_variant_details(request, id):
             'discounted_price': color_variant.discounted_price,
             'price': color_variant.price,
             'color': color_variant.color,
+            'quantity': color_variant.quantity,
+            'id': color_variant.id,
+            
         }
         return JsonResponse(data)
     except ColorVarient.DoesNotExist:

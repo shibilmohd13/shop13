@@ -70,9 +70,10 @@
             <div class="col-md-6">
                 <div class="detail_1r">
                     {% if item.quantity > 0 %}
-                    <h6 class="d-inline-block bg_yell text-white font_12 ps-3 pe-3 pt-2 pb-2 rounded-1">In Stock</h6>
+                    <h6 id="availability-status" class="d-inline-block font_12 ps-3 pe-3 pt-2 pb-2 rounded-1 bg_yell">In Stock</h6>
                     {% else %}
-                    <h6 class="d-inline-block bg-danger text-white font_12 ps-3 pe-3 pt-2 pb-2 rounded-1">Out of Stock</h6>
+                    <h6 id="availability-status" class="d-inline-block font_12 ps-3 pe-3 pt-2 pb-2 rounded-1 bg-danger">Out of Stock</h6>
+
                     {% endif %}
                     <h4 class="mt-2">{{item.product.name}}</h4>
                     <h6 class="font_14 mt-3">
@@ -99,7 +100,7 @@
                         <h6 class="me-5 mt-4">Quantity : </h6>
                         <input type="number" min="1" value="1" class="form-control mt-2 border-3 qty-input" placeholder="Qty"
                         style="width: 140px; height:50px; margin-right:10px; float:left;">
-                        <input type="hidden" value="{{item.id}}" class="prod_id">
+                        <input type="hidden" id="product-id" value="{{item.id}}" class="prod_id">
                     </div>
 
                     <div class="d-flex f-row">
@@ -176,6 +177,23 @@
                     $('#price').text(response.price);
                     $('#discounted_price').text(response.discounted_price);
                     $('#color').text(response.color);
+                    $('#quantity').text(response.quantity);
+                    $('#id').text(response.id);
+
+                    // Assume you have a new product ID from a response, e.g., from an API call
+                    var newProductId = response.id;
+
+                    // Update the value of the hidden input
+                    $('#product-id').val(newProductId);
+                    
+                    
+                    // Update the availability status based on the quantity
+                    if (response.quantity > 0) {
+                        $('#availability-status').text('In Stock').removeClass('bg-danger').addClass('bg_yell');
+                    } else {
+                        $('#availability-status').text('Out of Stock').removeClass('bg_yell').addClass('bg-danger');
+                    }
+
 
                 },
                 error: function (xhr, status, error) {
