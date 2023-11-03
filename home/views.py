@@ -28,12 +28,16 @@ def product_details(request,id):
 def get_color_variant_details(request, id):
     try:
         color_variant = ColorVarient.objects.get(id=id)
+        image_urls = [img.image.url for img in color_variant.productimage_set.all()] # Get image URLs
+        image_urls.reverse()
         data = {
             'discounted_price': color_variant.discounted_price,
             'price': color_variant.price,
             'color': color_variant.color,
             'quantity': color_variant.quantity,
             'id': color_variant.id,
+            'image_urls': image_urls # Get image URLs
+
             
         }
         return JsonResponse(data)

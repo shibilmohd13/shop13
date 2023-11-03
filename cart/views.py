@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from userlogin.models import *
 from products.models import *
 from cart.models import Cart
@@ -30,7 +30,7 @@ def addtocart(request):
                     return JsonResponse({'status' : "Product already in cart"})
                 else:
                     prod_qty = int(request.POST.get('product_qty'))
-
+                    
                     if product_check.quantity >= prod_qty:
                         product = ColorVarient.objects.get(id=prod_id)
                         Cart.objects.create(user=user, product=product, prod_quantity=prod_qty, created_at=timezone.now())
@@ -41,7 +41,8 @@ def addtocart(request):
             else:
                 return JsonResponse({'status' : "No such product"})
         else:
-            return JsonResponse({'status' : "login to continue"})
+            return redirect('signin')
+            # return JsonResponse({'status' : "login to continue"})
 
     return render(request, "home/details.html")
 

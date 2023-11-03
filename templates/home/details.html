@@ -26,13 +26,12 @@
             <div class="col-md-6">
                 <div class="detail_1l">
                     <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
+                        
                         <div class="carousel-indicators">
-                            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0"
-                                 aria-label="Slide 1"></button>
-                            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1"
-                                aria-label="Slide 2" class="" aria-current="true"></button>
-                            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2"
-                                class="active" aria-label="Slide 3"></button>
+                            {% for i in item.productimage_set.all %}
+                                <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="{{ forloop.counter0 }}" aria-label="Slide {{ forloop.counter }}" {% if forloop.first %} class="active" {% endif %} >
+                                </button>
+                            {% endfor %}
                         </div>
 
                         <div class="carousel-inner">
@@ -43,16 +42,6 @@
                                 </center>
                             </div>
                             {% endfor %}
-                            {% comment %} <div class="carousel-item ">
-                                <center>
-                                <img src="{% get_media_prefix %}{{item.image2}}" class="d-block " height='500px' alt="abc">
-                                </center>
-                            </div>
-                            <div class="carousel-item">
-                                <center>
-                                <img src="{% get_media_prefix %}{{item.image3}}" class="d-block  " height='500px' alt="abc">
-                                </center>
-                            </div> {% endcomment %}
                         </div>
                         <button class="carousel-control-prev" type="button"
                             data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
@@ -89,9 +78,6 @@
                     <h4 class="mt-3"><span class="col_yell">&#8377;</span><span class="col_yell me-3" id='discounted_price'>{{item.discounted_price}}</span> 
                         <span class="font_14  text-decoration-line-through col_light">&#8377;</span><span class="font_14  text-decoration-line-through col_light" id='price'>{{item.price}}</span></h4>
                     <p>{{item.product.description}}</p>
-                    <!-- <h6><span class="me-2">Size :</span>
-                        <a class="font_14 col_light me-1" href="#">Guide</a> <a
-                            class="font_14 col_light" href="#">Can't Find Your Size?</a></h6> -->
                     
                     <form>
                         {% csrf_token %}
@@ -179,6 +165,24 @@
                     $('#color').text(response.color);
                     $('#quantity').text(response.quantity);
                     $('#id').text(response.id);
+
+                    // Assume you have a list of image URLs for the selected color variant
+                    var imageUrls = response.image_urls;
+
+                    // Clear existing carousel items
+                    $('.carousel-inner').empty();
+
+                    // Create and append new carousel items based on the image URLs
+                    imageUrls.forEach(function (imageUrl, index) {
+                        var isActive = index === 0 ? 'active' : '';
+                        var carouselItem = `
+                            <div class="carousel-item ${isActive}">
+                                <center>
+                                    <img src="${imageUrl}" class="d-block" height="500px" alt="abc">
+                                </center>
+                            </div>`;
+                        $('.carousel-inner').append(carouselItem);
+                    });
 
                     // Assume you have a new product ID from a response, e.g., from an API call
                     var newProductId = response.id;
