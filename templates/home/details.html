@@ -62,7 +62,6 @@
                     <h6 id="availability-status" class="d-inline-block font_12 ps-3 pe-3 pt-2 pb-2 rounded-1 bg_yell">In Stock</h6>
                     {% else %}
                     <h6 id="availability-status" class="d-inline-block font_12 ps-3 pe-3 pt-2 pb-2 rounded-1 bg-danger">Out of Stock</h6>
-
                     {% endif %}
                     <h4 class="mt-2">{{item.product.name}}</h4>
                     <h6 class="font_14 mt-3">
@@ -81,19 +80,19 @@
                     
                     <form>
                         {% csrf_token %}
-                    <div class="d-flex f-row">
-                        
+                    {% comment %} <div class="d-flex f-row">
                         <h6 class="me-5 mt-4">Quantity : </h6>
-                        <input type="number" min="1" value="1" class="form-control mt-2 border-3 qty-input" placeholder="Qty"
-                        style="width: 140px; height:50px; margin-right:10px; float:left;">
-                        <input type="hidden" id="product-id" value="{{item.id}}" class="prod_id">
-                    </div>
-
+                        <input type="number" min="1" value="1" class="form-control mt-2 border-3 qty-input" placeholder="Qty" style="width: 140px; height:50px; margin-right:10px; float:left;">
+                    </div> {% endcomment %}
+                    <input type="hidden" id="product-id" value="{{item.id}}" class="prod_id">
                     <div class="d-flex f-row">
-                    <h6 class="text-uppercase mt-4"><button class="button" href="#" style="color:#ffffff; background: rgb(0, 0, 94);">Buy Now</button></h6>
-                    <h6 class="text-uppercase ms-1 mt-4"><button class="button" href="#" id="addtocart">Add to Cart</button></h6>
+
+                    {% if item.quantity == 0 %}
+                    <h6 class="text-uppercase ms-1 mt-4"><button class="button border-0 bg-secondary" href="#" id="addtocart">Add to Cart</button></h6>
+                    {% else %}
+                    <h6 class="text-uppercase ms-1 mt-4"><button class="button border-0 bg-warning" href="#" id="addtocart">Add to Cart</button></h6>
+                    {% endif %}
                     </div>
-                    
                     <h6 class="mt-3 mb-3">Colors:</h6>
                     <div class="d-flex f-row mt-3">
                         <div class="color-images">
@@ -125,7 +124,7 @@
             e.preventDefault();
             console.log('clicked');
             var product_id = $(this).closest('.product_data').find('.prod_id').val();
-            var product_qty = $(this).closest('.product_data').find('.qty-input').val();
+            {% comment %} var product_qty = $(this).closest('.product_data').find('.qty-input').val(); {% endcomment %}
             var token = $('input[name=csrfmiddlewaretoken]').val();
             console.log('clicked');
             
@@ -134,13 +133,25 @@
                 url: "/cart/addtocart", // Update the URL to the correct endpoint
                 data: {
                     'product_id': product_id,
-                    'product_qty': product_qty,
                     csrfmiddlewaretoken: token
                 },
                 dataType: 'json', // or the appropriate data type
                 success: function (response) {
                     console.log(response);
                     // You can handle the response here, e.g., update the cart icon or show a success message.
+                    if (response.success) {
+                        Swal.fire({
+                          title: 'Item Added to Cart',
+                          text: 'Your item has been added to the cart.',
+                          icon: 'success',
+                        });
+                      } else {
+                        Swal.fire({
+                          title: 'Error',
+                          text: 'Already in cart',
+                          icon: 'error',
+                        });
+                      }
                 },
                 error: function (xhr, status, error) {
                     console.log("Error:", error);
@@ -194,8 +205,10 @@
                     // Update the availability status based on the quantity
                     if (response.quantity > 0) {
                         $('#availability-status').text('In Stock').removeClass('bg-danger').addClass('bg_yell');
+                        $('#addtocart').removeClass('bg-secondary').addClass('bg-warning').prop('disabled', false);
                     } else {
                         $('#availability-status').text('Out of Stock').removeClass('bg_yell').addClass('bg-danger');
+                        $('#addtocart').removeClass('bg-warning').addClass('bg-secondary').prop('disabled', true);
                     }
 
 

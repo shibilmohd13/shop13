@@ -62,10 +62,10 @@
               </div>
               <hr />
             </div>
-
+            {% comment %}
             <hr />
             <h6 class="mb-3">FILTER COLOR</h6>
-            <div class="row m-0">
+             <div class="row m-0">
               {% for item in colors_nav %}
               <div class="form-check col-md-6 col-6 col-lg-12 mt-2">
                 <input
@@ -79,7 +79,7 @@
               </div>
               {% endfor %}
 
-            </div>
+            </div> {% endcomment %}
           </div>
         </div>
       </div>
@@ -95,7 +95,7 @@
                       <figure class="effect-jazz mb-0">
                         <a href="../product_details/{{item.colorvarient_set.first.id}}"
                           ><img
-                            src="{{item.colorvarient_set.all.0.productimage_set.all.last.image.url}}"
+                            src="{{item.colorvarient_set.first.productimage_set.all.last.image.url}}"
                             height = '300px'
                             alt="abc"
                         /></a>
@@ -122,13 +122,13 @@
                       <li class="d-inline-block me-3">
                         <a href="#"><i class="fa fa-heart"></i></a>
                       </li>
-                      <li class="d-inline-block me-3">
+                      {% comment %} <li class="d-inline-block me-3">
                         <a href="#"
                           ><i class="fa fa-shopping-cart"></i
                         ></a>
-                      </li>
+                      </li> {% endcomment %}
                       <li class="d-inline-block">
-                        <a href="../product_details/{{item.id}}"><i class="fa fa-eye"></i></a>
+                        <a href="../product_details/{{item.colorvarient_set.first.id}}"><i class="fa fa-eye"></i></a>
                       </li>
                     </ul>
                   </div>
@@ -145,7 +145,7 @@
                     <a href="../product_details/{{item.colorvarient_set.first.id}}">{{item.name}}</a>
                   </h6>
                   <h6 class="font_13">
-                    <a class="col_light" href="product_details/{{item.id}}">{{item.category.name}} / {{item.brands.name}}</a>
+                    <a class="col_light" href="../product_details/{{item.colorvarient_set.first.id}}">{{item.category.name}} / {{item.brands.name}}</a>
                   </h6>
                   <hr />
                   <h6 class="fw-normal mb-0">

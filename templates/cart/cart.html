@@ -1,7 +1,40 @@
 {% extends 'home/base.html' %}
 {% load static %}
 {% block title %}Cart{% endblock title %}
-{% block css %}<link href="{% static 'home/css/cart.css' %}" rel="stylesheet" />{% endblock css %}
+{% block css %}<link href="{% static 'home/css/cart.css' %}" rel="stylesheet" />
+<style>
+  .wrapper{
+    height: 38px;
+    width: 130px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #FFF;
+    border : solid #f7ba01 1px;
+    border-radius: 5px;
+    box-shadow: 0px 5px 10px rgba(0,0,0,0.2);
+    margin-bottom:20px;
+  }
+  .wrapper span{
+    width: 100%;
+    text-align: center;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    user-select: none;
+  }
+  .wrapper span.num{
+    font-size: 15px;
+    border-right: 2px solid rgba(0,0,0,0.2);
+    border-left: 2px solid rgba(0,0,0,0.2);
+    pointer-events: none;
+  }
+  .cart_3r1 .form-control{
+    border : solid #f7ba01 1px !important;
+
+  }
+</style>
+{% endblock css %}
 
 {% block content %}
   
@@ -42,25 +75,29 @@
           <div class="col-md-9 col-9">
             <div class="cart_3l1i1">
               <h6 class="fw-bold">
-                <a href="#"
-                  >{{item.product.product.name}}</a
-                >
+                <a href="#"> {{item.product.product.name}} </a>
               </h6>
               <h6 class="fw-normal font_12 mt-3">{{item.product.product.brands}} / {{item.product.product.category}}</h6>
               <h6 class="font_12 mt-3">{{item.product.color}}</h6>
               <h5 class="col_yell mt-3">&#8377;{{item.product.discounted_price}}</h5>
-              <h6 class="font_12 mt-3 mb-3">Quantity</h6>
+
+              <h6 class="font_12 mt-3 mb-3">Quantity :</h6>
             </div>
-            <div class="cart_3l1i2">
-              <input
-                type="number"
-                min="1"
-                value="{{item.prod_quantity}}"
-                class="form-control"
-                placeholder="Qty"
-              />
-              <h6><a class="button_1" href="#">REMOVE</a></h6>
+            {% if item.product.quantity > 0 %}
+            <div class="cart_3l1i2 d-flex">
+              <div class="wrapper">
+                <span class="minus">-</span>
+                <span class="num">01</span>
+                <span class="plus">+</span>
+              </div>
+              <h6><button class="button_1 ms-3"  onclick="confirmDelete(this)" data-item-id="{{ item.id }}" href="#">REMOVE</button></h6>
             </div>
+            {% else %}  
+            <div class="cart_3l1i2 d-flex align-items-center">
+              <h6 class="btn btn-danger m-0">Out of stock</h6>
+              <h6><button class="button_1 ms-3 " onclick="confirmDelete(this)" data-item-id="{{ item.id }}" href="#">REMOVE</button></h6>
+            </div>
+            {% endif %}
           </div>
         </div>
         {% endfor %}
@@ -92,3 +129,73 @@
 </section>
 
 {% endblock %}
+{% block scripts %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+  const plus = document.querySelector(".plus");
+  const minus = document.querySelector(".minus");
+  const num = document.querySelector(".num");
+  let a = 1;
+  const maxQuantity = 10; // Set the maximum quantity based on the database value
+
+  plus.addEventListener("click", () => {
+    if (a < maxQuantity) {
+      a++;
+      num.innerText = a < 10 ? "0" + a : a;
+    } else {
+      alert("Maximum quantity reached.");
+    }
+  });
+
+  minus.addEventListener("click", () => {
+    if (a > 1) {
+      a--;
+      num.innerText = a < 10 ? "0" + a : a;
+    }
+  });
+</script>
+
+ <script>
+  function confirmDelete(button) {
+   const itemId = button.getAttribute('data-item-id');
+   Swal.fire({
+    title: 'Are you sure?',
+    text: "You won't be able to revert this!",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#d33',
+    cancelButtonColor: '#1d4289',
+    confirmButtonText: 'Yes, delete it!'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      // User confirmed the deletion, proceed with the AJAX request to remove the item
+      $.ajax({
+        type: 'POST',
+        url: '../cart/remove_item_from_cart/',
+        data: {
+          item_id: itemId,
+          csrfmiddlewaretoken: getCookie('csrftoken')
+        },
+        success: function(data) {
+          console.log('Item removed successfully.');
+          location.reload(); // Reload the page
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+          console.error('Error removing item:', errorThrown);
+        }
+      });
+    }
+  });
+}
+
+  
+  // Function to get the CSRF token from cookies
+  function getCookie(name) {
+   const value = `; ${document.cookie}`;
+   const parts = value.split(`; ${name}=`);
+   if (parts.length === 2) return parts.pop().split(';').shift();
+  }
+  
+    </script>
+{% endblock scripts %}
