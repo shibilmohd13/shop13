@@ -65,7 +65,10 @@
         <div class="cart_3l">
           <h6>PRODUCT</h6>
         </div>
+        <form method="POST">
+        {% csrf_token %}
         {% for item in cart_items %}
+
         <div class="cart_3l1 mt-3 row ms-0 me-0">
           <div class="col-md-3 ps-0 col-3">
             <div class="cart_3l1i col-md-3">
@@ -79,28 +82,31 @@
               </h6>
               <h6 class="fw-normal font_12 mt-3">{{item.product.product.brands}} / {{item.product.product.category}}</h6>
               <h6 class="font_12 mt-3">{{item.product.color}}</h6>
-              <h5 class="col_yell mt-3">&#8377;{{item.product.discounted_price}}</h5>
+              {% comment %} <h5 class="col_yell mt-3">&#8377;{{item.product.discounted_price}}</h5> {% endcomment %}
+              <h4 class="mt-3"> <span class="font_14  col_light">Price : &#8377;</span><span class="font_14  col_light  me-3" id='price'>{{item.product.discounted_price}} </span>
+                <span class="col_yell">Total : &#8377;</span><span class="col_yell variant_total_price{{item.product.id}}" >{{item.cart_price}}</span></h4>
 
               <h6 class="font_12 mt-3 mb-3">Quantity :</h6>
             </div>
             {% if item.product.quantity > 0 %}
             <div class="cart_3l1i2 d-flex">
               <div class="wrapper">
-                <span class="minus">-</span>
-                <span class="num">01</span>
-                <span class="plus">+</span>
+              <span class="minus" onclick="cartQuantity(-1, '{{ item.product.id }}', '{{ item.prod_quantity }}')">-</span>
+              <span class="num-{{item.product.id}}">{{ item.prod_quantity }}</span>
+              <span class="plus" onclick="cartQuantity(1, '{{ item.product.id }}', '{{ item.prod_quantity }}')">+</span>
               </div>
-              <h6><button class="button_1 ms-3"  onclick="confirmDelete(this)" data-item-id="{{ item.id }}" href="#">REMOVE</button></h6>
+              <h6><button type="button" class="button_1 ms-3 border-0"  onclick="confirmDelete(this)" data-item-id="{{ item.id }}" href="#">REMOVE</button></h6>
             </div>
             {% else %}  
             <div class="cart_3l1i2 d-flex align-items-center">
               <h6 class="btn btn-danger m-0">Out of stock</h6>
-              <h6><button class="button_1 ms-3 " onclick="confirmDelete(this)" data-item-id="{{ item.id }}" href="#">REMOVE</button></h6>
+              <h6><button type="button" class="button_1 ms-3 " onclick="confirmDelete(this)" data-item-id="{{ item.id }}" href="#">REMOVE</button></h6>
             </div>
             {% endif %}
           </div>
         </div>
         {% endfor %}
+      </form>
       </div>
       <div class="col-md-4">
         
@@ -116,7 +122,9 @@
         </div>
         <div class="cart_3r">
             <h6 class="head_1">SUBTOTAL</h6>
-            <h5 class="text-center col_yell mt-3">$1,347.00</h5>
+            <h6 class="text-center text-secondary mt-3 total_price">{{total}}</h6>
+            <h6 class="head_1">TOTAL</h6>
+            <h5 class="text-center col_yell mt-3 total_price">{{total}}</h5>
             <hr />
             <h6 class="text-center mt-3">
               <a class="button" href="checkout.html">PROCEED TO CHECKOUT</a>
@@ -133,28 +141,52 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script>
-  const plus = document.querySelector(".plus");
-  const minus = document.querySelector(".minus");
-  const num = document.querySelector(".num");
-  let a = 1;
-  const maxQuantity = 10; // Set the maximum quantity based on the database value
+  function getCSRFToken() {
+   return document.querySelector('input[name=csrfmiddlewaretoken]').value;
+  }
+ 
+  function cartQuantity(change, variantId, quantity) {
+   console.log("Change: " + change);
+   console.log("Variant ID: " + variantId);
+   console.log("Quantity: " + quantity);
+   console.log('botton clicked')
+   var c = change
+   var p = variantId
+   var e = quantity
+   $.ajax({
+    url: '../cart/update_cart',
+    type: 'POST',
+    encocded:true,
+    data:{
+     change: c,
+     variantId: p,
+     quantity: e
+    },
 
-  plus.addEventListener("click", () => {
-    if (a < maxQuantity) {
-      a++;
-      num.innerText = a < 10 ? "0" + a : a;
-    } else {
-      alert("Maximum quantity reached.");
-    }
-  });
+    headers: {
+     'X-CSRFToken': getCSRFToken() // Include the CSRF token in the request header
+    },
+    success: function(data) {
+     // Handle the response from the server
+     console.log(data);
+ 
+     // Update the displayed quantity based on the server response
+     var newQuantity = data.updatedQuantity; // Replace with the actual property in the response
+      var totalPrice = data.prodtotal
+      var total = data.total
 
-  minus.addEventListener("click", () => {
-    if (a > 1) {
-      a--;
-      num.innerText = a < 10 ? "0" + a : a;
+     // Find the <span> element with class "num" and update its content
+      $(`.num-${variantId}`).text(newQuantity);
+      $(`.variant_total_price${variantId}`).text(totalPrice);
+      $(`.total_price`).text(total);
+
+    },
+    error: function(error) {
+     console.error('Error:', error);
     }
-  });
-</script>
+   });
+  }
+ </script>
 
  <script>
   function confirmDelete(button) {

@@ -2,20 +2,27 @@ from django.shortcuts import render,redirect
 from userlogin.models import *
 from products.models import *
 from cart.models import Cart
-from django.http import JsonResponse
+from django.http import JsonResponse,HttpResponse
 from django.utils import timezone  # Import timezone module
 
 
 
 # Create your views here.
 def cart(request):
-    email = request.session["email"]
-    user = CustomUser.objects.get(email=email)
-    cart_items = Cart.objects.filter(user=user)
-    context = {
-        'cart_items' : cart_items
-    }
-    return render(request, "cart/cart.html" ,context)
+    if 'email' in request.session:
+        email = request.session["email"]
+        user = CustomUser.objects.get(email=email)
+        cart_items = Cart.objects.filter(user=user)
+        subPrice = cart_items.values_list('cart_price',flat=True)
+        total = sum(subPrice)
+        print(subPrice)
+        print(total)
+        context = {
+            'cart_items' : cart_items,
+            'total' : total
+        }
+        return render(request, "cart/cart.html" ,context)
+    return redirect('signin')
 
 def addtocart(request):
     
@@ -33,7 +40,7 @@ def addtocart(request):
                     
                     if product_check.quantity >= prod_qty:
                         product = ColorVarient.objects.get(id=prod_id)
-                        Cart.objects.create(user=user, product=product, prod_quantity=prod_qty, created_at=timezone.now())
+                        Cart.objects.create(user=user, product=product, prod_quantity=prod_qty, cart_price=product.discounted_price, created_at=timezone.now())
                         return JsonResponse({'status' : "Product added successfully",'success' : True})
                     else:
                         return JsonResponse({'status' : f"Only {str(product_check.quantity)} Quantity available"})
@@ -62,5 +69,55 @@ def remove_item_from_cart(request):
             return JsonResponse({'message': 'Invalid request method'}, status=405)
     else:
         return redirect('signin')
+
+
+#function for updating the cart details like price, quantity and other info    
+def update_cart(request):
+    if request.method == 'POST':
+        if 'email' in request.session:
+            user = request.session['email']
+            use = CustomUser.objects.filter(email=user).first()
+            change = int(request.POST.get('change'))
+            variant_id = request.POST.get('variantId')
+            varient_obj = ColorVarient.objects.get(id=variant_id)
+            quantity = request.POST.get('quantity')
+            print(varient_obj)
+            print(user)            
+            cart = Cart.objects.get(user=use, product=varient_obj)
+            
+
+            if change == 1:
+
+                if varient_obj.quantity > cart.prod_quantity:
+                    if cart.prod_quantity < 10:
+                        cart.prod_quantity += 1
+                        cart.save()
+                    else:
+                        cart.prod_quantity = 10
+                        cart.save()
+                else:
+                    pass
+            else:
+                if cart.prod_quantity > 1:
+                    cart.prod_quantity -= 1
+                    cart.save()
+                else:
+                    cart.prod_quantity = 1
+                    cart.save()
+
+            priceOfInstance = varient_obj.discounted_price
+            prodtotal = cart.prod_quantity * priceOfInstance
+            cart.cart_price = prodtotal
+            cart.save()
+            cart_items = Cart.objects.filter(user=use)
+            print(cart_items)
+            total = sum(cart_items.values_list('cart_price',flat=True))
+            print(total)
+
+            
+        response_data = {'updatedQuantity': cart.prod_quantity , 'prodtotal' : prodtotal, 'total' : total}
+        return JsonResponse(response_data)
+
+    return HttpResponse(status=200)
 
 
