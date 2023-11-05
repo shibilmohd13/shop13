@@ -1,0 +1,83 @@
+{% extends 'home/base.html' %}
+{% load static %}
+{% block title %} View Order{% endblock title %}
+{% block css %}
+<link href="{% static 'home/css/cart.css' %}" rel="stylesheet">
+<style>
+  /* Custom CSS for order details */
+  .order-details {
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 2px 2px 5px #ccc;
+    margin: 20px auto;
+    max-width: 600px;
+    background-color: #fff;
+  }
+
+  .order-details h2 {
+    font-size: 24px;
+  }
+
+  .order-details p {
+    font-size: 16px;
+    margin: 10px 0;
+  }
+
+  .order-item {
+    border: 1px solid #ddd;
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 20px;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .order-item p {
+    font-size: 18px;
+    margin: 10px 0;
+  }
+</style>
+{% endblock css %}
+
+{% block content %}
+<section id="center" class="center_o pt-4 pb-4 bg-light">
+  <div class="container-xl">
+    <div class="row center_o1 text-center">
+      <div class="col-md-12">
+        <h1>ORDER PLACED SUCCESSFULLY!!!</h1>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="cart_page" class="cart pt-4 pb-4">
+  <div class="container-xl">
+    <div class="order-details">
+      <h2>Order Details</h2>
+      <p><strong>Order ID:</strong> {{current_order.order_id}}</p>
+      <p><strong>Order Date:</strong> {{current_order.order_date}}</p>
+      <p><strong>Shipping Address:</strong> {{current_order.address.name}}, {{current_order.address.street_address}}, {{current_order.address.phone}}, {{current_order.address.pin_code}}</p>
+
+      {% for item in current_order.ordersitem_set.all %}
+  <!-- Display order items as needed -->
+  <div class="order-item">
+    <div style="display: flex; align-items: center;">
+      <div style="flex: 2;">
+        <p><strong>Product Name:</strong> {{ item.variant.product.name }}</p>
+        <p><strong>Color:</strong> {{ item.variant.color }}</p>
+        <p><strong>Quantity:</strong> {{ item.quantity }}</p>
+        <p><strong>Price:</strong> {{ item.price }}</p>
+        <p><strong>Subtotal:</strong> {{ item.total_price }}</p>
+      </div>
+      <div style="flex: 1;">
+        <img style=" float:right;" src="{{ item.variant.productimage_set.last.image.url }}" alt="Product A Image" height="150px">
+      </div>
+    </div>
+  </div>
+{% endfor %}
+
+    </div>
+  </div>
+</section>
+{% endblock %}

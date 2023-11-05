@@ -1,0 +1,110 @@
+{% extends 'admin_panel/admin_base.html' %}
+{% load static %}
+{% block title %}Orders{% endblock title %}
+{% block orders %}{% endblock orders %}
+{% block content %}
+<div class="main-panel" style="margin-left: 300px;">
+    <div class="content-wrapper">
+      <div class="row">
+        <div class="mt-5 col-12 grid-margin mx-auto">
+          <div class="card mb-5">
+            <div class="card-body">
+              <div class="mb-5">
+                <ul class="navbar-nav w-100">
+                  <li class="nav-item w-100"></li>
+                </ul>
+              </div>
+              <div class="col-md-6 ms-3">
+                <h3>View Orders</h3>
+              </div>
+              <nav>
+                <ol class="breadcrumb ms-4">
+                  <li class="breadcrumb-item">Admin</li>
+                  <li class="breadcrumb-item">Orders</li>
+                  <li class="breadcrumb-item active">View Orders</li>
+                </ol>
+              </nav>
+              <div class="table-responsive">
+                <div class="container-fluid d-flex flex-column justify-content-center">
+                  <div class="card col-12 my-3 mx-auto p-2" style="border: 0.2px solid #494949;">
+                    <div class="card-header d-flex justify-content-between w-100">
+                      <div class="d-flex flex-column">
+                        <p class="text-primary" >{{obj.status}}</p>
+                        <h6> Expected Delivery {{obj.order.expected_delivery_date}}</h6>
+                      </div>
+                    </div>
+                    <hr class="m-0 mb-1">
+                    <div>
+                      <!-- <h6 class="mx-5 mb-2">Delivery Expect on : <b>date</b></h6> -->
+                    </div>
+                    <div class="card-body row col-12 d-flex">
+                      <div class="col-md-4 col-12 mx-auto">
+                        <img class="mt-4" src="{{obj.variant.productimage_set.last.image.url}}" style="height: 400px; border-radius: 7px;" alt="">
+                        <p class="card-text"></p>
+                        <!-- <a href="#" class="btn btn-dark">Go somewhere</a> -->
+                      </div>
+                      <div class="col-md-7 col-12">
+                        <h4 class="card-title">{{obj.variant.product.name}} - {{obj.variant.color}}</h4>
+
+                        <p class="card-text">
+                            <p>Order ID: <b>{{obj.order.order_id}}</b></p>
+                            <p>User : <b>{{obj.order.user.fullname}}</b></p>
+                            <p>Quantity: <b>{{obj.quantity}}</b></p>
+                          <p>Order Date: <b>{{obj.order.order_date}}</b></p>
+                          Payment Method: {{ obj.order.payment_method }}
+                        </p>
+                        <h5 class="card-title mb-2">RS: {{ obj.total_price }}</h5>
+                        <hr class="bg-secondary">
+                        <h5 class="card-title" style="font-size: 15px;">Shipping Address</h5>
+                        <h6 class="card-title" style="font-size: 15px;"> FULL NAME : {{ obj.order.address.name }}</h6>
+                        <p class="card-text"><b>Location:</b><br>
+                            {{obj.order.address.street_address}},<br>
+                            {{obj.order.address.city}},<br>
+                            {{obj.order.address.state}},<br>
+                            {{obj.order.address.pincode}}
+                        <p class="card-text">PHONE: <b>{{obj.order.address.phone}}</b></p>                      </div>
+                    </div>
+                  </div>
+                </div>
+                {% comment %} <div class="container-fluid d-flex flex-column justify-content-center">
+                  <div class="card row col-12 my-3 mx-auto p-2" style="border: 0.2px solid #494949;">
+                    <div class="col-md-9 mx-auto">
+                      <h3 class="text-center py-4">Order Status</h3>
+                      <div class="progress">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated" style="width: 25%"></div>
+                      </div>
+                       <ul class="list-group mt-3">
+                        <li class="list-group-item active">Order placed</li>
+                        <li class="list-group-item">Shipped</li>
+                        <li class="list-group-item">Out for Delivery</li>
+                        <li class="list-group-item">Delivered</li>
+                      </ul> 
+                    </div>
+                    <hr class="bg-secondary">
+                    <h4 class="text-center py-4">Change Order Status</h4>
+                    <div class="col-md-12 mx-auto d-flex justify-content-center py-3 mb-5">
+                      <form action="/admin/order/orderManagement/changeStatus" method="post">
+                        <select name="status" class="form-control mb-3" style="width: 15rem; border-radius: 7px;" required>
+                          <option value="" disabled selected>Select Status</option>
+                          <option value="Shipped">Shipped</option>
+                          <option value="OutforDelivery">Out for Delivery</option>
+                          <option value="Delivered">Delivered</option>
+                        </select>
+                        <input type="text" name="orderId" value="12345" hidden>
+                        <input type="text" name="productId" value="67890" hidden>
+                        <button type="submit" class="btn btn-info mx-2 py-2 my-auto" style="width: 12rem;">Update Now</button>
+                      </form>
+                    </div>
+                  </div>
+                </div> {% endcomment %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  
+
+{% endblock %}

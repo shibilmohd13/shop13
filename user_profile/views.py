@@ -9,7 +9,7 @@ def profile(request):
     print(request.user)
     email = request.session['email']
     user = CustomUser.objects.get(email=email)
-    user_data = Address.objects.filter(user=user)
+    user_data = Address.objects.filter(user=user,is_present=True)
     return render(request, 'user_profile/profile.html',{'user_data' : user_data})
 
 def update_profile(request):
@@ -25,8 +25,6 @@ def update_profile(request):
         user.fullname = request.POST.get('fullname', user.fullname)
         user.phone = request.POST.get('phone', user.phone)
         user.save()
-        primary_address_id  = request.POST.get('primary_address')
-        Address
 
         
         messages.success(request, "updated successfully")
@@ -104,5 +102,6 @@ def edit_address(request, id):
 
 def delete_address(request, id):
     address = Address.objects.get(id=id)
-    address.delete()
+    address.is_present = False
+    address.save()
     return redirect('profile')

@@ -4,6 +4,7 @@ from userlogin.models import CustomUser
 from django.contrib import messages
 from django.contrib.auth.decorators import user_passes_test
 from django.views.decorators.cache import cache_control
+from orders.models import *
 
 # Create your views here.
 
@@ -56,5 +57,15 @@ def admin_logout(request):
     return redirect('admin_login')
 
 
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@user_passes_test(lambda u: u.is_superuser, login_url='admin_login')
 def orders(request):
-    return render(request, 'admin_panel/orders.html')
+    order_items = OrdersItem.objects.all().order_by("order_id")
+    return render(request, 'admin_panel/orders.html' , {'items' : order_items})
+
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@user_passes_test(lambda u: u.is_superuser, login_url='admin_login')
+def view_order_details(request, id):
+    obj = OrdersItem.objects.get(id=id)
+    print(obj)
+    return render(request,'admin_panel/order_details.html',{'obj':obj})

@@ -32,6 +32,7 @@
       <div class="col-md-8">
         <div class="checkout_1l">
         </div>
+        {% csrf_token %}
             <div class="checkout_1l1 row">
                 <div class="d-flex justify-content-between mt-3">
                 <h5 class="m-0">Select Shipping Address</h5>
@@ -90,7 +91,7 @@
                 <form>
                     {% for address in addresses %}
                     <div class="form-check mt-3 address-item">
-                       <input type="radio" class="form-check-input ms-3" id="address_{{ address.id }}" name="shipping_address" value="{{ address.id }}">
+                       <input type="radio" class="form-check-input ms-3" id="address_{{ address.id }}" name="selected_address" value="{{ address.id }}" {% if forloop.counter == 1 %}checked{% endif %}>
                        <label class="form-check-label ms-3" for="address_{{ address.id }}">
                           <strong>{{ address.name }}</strong><br>
                           {{ address.street_address }}<br>
@@ -172,15 +173,15 @@
           <label class="form-check-label" for="customCheck1">Check Payments</label>
       </div> {% endcomment %}
            <div class="form-check mt-2">
-          <input type="radio" class="form-check-input" id="customCheck1">
+          <input type="radio" class="form-check-input" id="customCheck1" value="COD" name="payment" checked>
           <label class="form-check-label" for="customCheck1">Cash On Delivery</label>
       </div>
            {% comment %} <div class="form-check mt-2">
           <input type="radio" class="form-check-input" id="customCheck1">
           <label class="form-check-label" for="customCheck1">PayPal</label>
-      </div> {% endcomment %}
+      </div> {% endcomment %}   
       <div>
-        <h6 class="mt-3"><a class="button" href="#" id="placeOrderButton">PLACE ORDER</a></h6>
+        <h6 class="mt-3"><button class="button border-0" href="#" id="placeOrderButton">PLACE ORDER</button></h6>
     </div>
         </div>
      </div>
@@ -189,17 +190,52 @@
 
   {% endblock content %}
   {% block scripts %}
-  <script>
-    // Add a click event listener to the "PLACE ORDER" button
-    document.getElementById("placeOrderButton").addEventListener("click", function() {
-        // Display a SweetAlert
-        Swal.fire({
-            title: 'Order Confirmation',
-            text: 'Your order has been placed successfully!',
-            icon: 'success',
-            confirmButtonText: 'OK'
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#placeOrderButton').click(function (event) {
+            event.preventDefault();
+
+            // Get the selected address ID
+            var selectedAddress = $("input[name='selected_address']:checked").val();
+            // Get the selected payment method
+            var selectedPayment = $("input[name='payment']:checked").val();
+
+            // Get the CSRF token from a hidden input field
+            var csrfToken = $("input[name='csrfmiddlewaretoken']").val();
+
+            // Make sure both address and payment method are selected
+            if (selectedAddress && selectedPayment) {
+                // Create a data object to send in the request
+                var data = {
+                    selected_address: selectedAddress,
+                    payment: selectedPayment,
+                    csrfmiddlewaretoken: csrfToken, // Include the CSRF token
+                };
+
+                // Send the AJAX request
+                $.ajax({
+                    type: 'POST',
+                    url: 'place_order',
+                    data: data,
+                    success: function (response) {
+                        if (response.success){
+                            window.location.href = '../orders/view_order'
+                        }
+                        else{
+                            alert('Error' + response.message)
+                        }
+                        }
+
+                });
+            } else {
+                alert("Please select an address and payment method.");
+            }
         });
     });
+</script>
+
 </script>
   {% endblock scripts %}
 

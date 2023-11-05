@@ -1,3 +1,4 @@
+from unicodedata import category
 from django.shortcuts import render,redirect
 from products.models import *
 from userlogin.models import CustomUser
@@ -5,6 +6,8 @@ import smtplib
 from . models import Contact
 from django.contrib.auth import logout
 from django.http import JsonResponse
+from django.db.models import Q
+
 
 
 # Create your views here.
@@ -19,8 +22,8 @@ def shop(request):
 def product_details(request,id):
     # obj = Product.objects.prefetch_related('colorvarient_set__productimage_set').filter(is_listed=True, id=id).first()
 
-    obj = ColorVarient.objects.prefetch_related('productimage_set').filter(id=id).first()
-    all_variants = ColorVarient.objects.filter(product=obj.product).prefetch_related('productimage_set').filter(is_listed=True)
+    obj = ColorVarient.objects.prefetch_related('productimage_set').get(id=id)
+    all_variants = ColorVarient.objects.filter(product=obj.product).prefetch_related('productimage_set').filter(is_listed=True).order_by("color")
 
     return render(request, 'home/details.html', {'item': obj, 'all_varients': all_variants })
 
@@ -66,9 +69,28 @@ def contact(request):
         return redirect("contact")
     return render(request, 'home/contact.html')
 
+
 def search(request):
-    search_query = request.GET['search']
-    products_match = Product.objects.filter(name__icontains=search_query,is_listed=True)
+    search_query = request.GET.get('search', '')  # Get the search query from the request
+
+    # Create a Q object for searching through product names
+    name_query = Q(name__icontains=search_query)
+
+    # Create a Q object for searching through category names
+    category_query = Q(category__name__icontains=search_query)
+
+    # Create a Q object for searching through brand names
+    brand_query = Q(brands__name__icontains=search_query)
+
+    # Combine the three Q objects using the OR operator (|)
+    combined_query = name_query | category_query | brand_query
+
+    # Use the combined query to filter the Product objects
+    products_match = Product.objects.filter(
+        combined_query, is_listed=True
+    )
+
     print(products_match)
-    return render(request, "home/shop.html" , {'obj': products_match})
+    return render(request, "home/shop.html", {'obj': products_match})
+
 

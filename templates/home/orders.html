@@ -1,0 +1,65 @@
+{% extends 'home/base.html' %}
+{% load static %}
+{% block title %} My orders{% endblock title %}
+{% block css %}<link href="{% static 'home/css/cart.css' %}" rel="stylesheet" />  
+<style>
+  td, th{
+    text-align: center;
+    vertical-align: middle;
+  }
+  th{
+    height:50px;
+  }
+
+</style>
+
+{% endblock css %}
+
+{% block content %}
+  
+<section id="center" class="center_o pt-4 pb-4 bg-light">
+  <div class="container-xl">
+    <div class="row center_o1 text-center">
+      <div class="col-md-12">
+        <h1>MY ORDERS</h1>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="cart_page" class="cart pt-4 pb-4">
+  <div class="container-xl">
+    <table class="table table-light ">
+      <thead> 
+        <tr class="custom-th">
+          <th scope="col">Product Image</th>
+          <th scope="col">Product</th>
+          <th scope="col">Color</th>
+          <th scope="col">Price</th>
+          <th scope="col">Quantity</th>
+          <th scope="col">Total Price</th>
+          {% comment %} <th scope="col">Order Details</th> {% endcomment %}
+          <th scope="col">Order Status</th>
+          <th scope="col">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for order in order_items %}
+        <tr>
+          <td><img src='{{order.variant.productimage_set.last.image.url}}' height='100px'></td>
+          <td>{{order.variant.product.name}}</td>
+          <td>{{order.variant.color}}</td>
+          <td>{{order.price}}</td>
+          <td>{{order.quantity}}</td>
+          <td>{{order.total_price}}</td>
+          {% comment %} <td><a class="btn btn-sm btn-outline-secondary">View Order<a></td> {% endcomment %}
+          <td><span class="badge text-warning">{{order.status}}<span></td>
+          <td><a class="btn btn-sm btn-outline-danger">Cancel Order<a></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+
+{% endblock %}

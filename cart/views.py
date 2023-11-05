@@ -2,8 +2,10 @@ from django.shortcuts import render,redirect
 from userlogin.models import *
 from products.models import *
 from cart.models import Cart
+from orders.models import Orders,OrdersItem
 from django.http import JsonResponse,HttpResponse
 from django.utils import timezone  # Import timezone module
+from datetime import timedelta
 
 
 
@@ -123,7 +125,7 @@ def update_cart(request):
 def checkout(request):
     email = request.session['email']
     user = CustomUser.objects.get(email=email)
-    address = Address.objects.filter(user=user)
+    address = Address.objects.filter(user=user,is_present=True)
     cart_items = Cart.objects.filter(user=user)
     total = sum(cart_items.values_list('cart_price',flat=True))
 
@@ -177,4 +179,87 @@ def edit_address_checkout(request, id):
     return redirect('checkout')
 
 
+def place_order(request):
+    if 'email' in request.session:
+        email = request.session.get("email")
+        user = CustomUser.objects.get(email=email)
+
+        address_id = request.POST.get('selected_address')
+        address = Address.objects.get(id = address_id)
+
+        payment_method = request.POST.get("payment")
+
+        cart_items = Cart.objects.filter(user=user)
+        for item in cart_items:
+            price = item.cart_price
+    return JsonResponse({"success" : 'order places'})
+
+
+def place_order(request):
+    if 'email' in request.session:
+        email = request.session.get("email")
+        user = CustomUser.objects.get(email=email)
+
+        address_id = request.POST.get('selected_address')
+        address = Address.objects.get(id=address_id)
+
+        payment_method = request.POST.get("payment")
+
+        cart_items = Cart.objects.filter(user=user)
+        
+
+        if cart_items.exists():
+            # Create an Orders object
+            order = Orders.objects.create(
+                user=user,
+                address=address,
+                payment_method=payment_method,
+                total_amount=0,  # You'll calculate the total amount in the next step
+                quantity=0,  # You'll calculate the total quantity in the next step
+
+            )
+
+            order.expected_delivery_date = order.order_date + timedelta(days=7)
+
+            # Initialize total_amount and quantity to 0
+            total_amount = 0
+            total_quantity = 0
+
+            # Create OrdersItem objects and calculate the total amount and quantity
+            for item in cart_items:
+                order_item = OrdersItem.objects.create(
+                    order=order,
+                    variant=item.product,
+                    quantity=item.prod_quantity,
+                    price=item.product.discounted_price,
+                    status='Order confirmed',  # Set the default status here
+
+                )
+                order_item.save()
+
+                # Calculate the total amount and quantity
+                total_amount += item.prod_quantity * item.product.discounted_price
+                total_quantity += item.prod_quantity
+
+                # Reduce the quantity of the ColorVariant in the order
+                color_variant = item.product
+                color_variant.quantity -= item.prod_quantity
+                color_variant.save()
+
+            # Update the total_amount and quantity in the Orders object
+            order.total_amount = total_amount
+            order.quantity = total_quantity
+            order.save()
+            print("order sucess")
+            request.session['order_id'] = str(order.order_id)
+            
+
+            # Clear the user's cart after the order is placed
+            cart_items.delete()
+
+            return JsonResponse({"success": 'Order placed successfully'})
+        else:
+            return JsonResponse({'success' : False , 'message' : "your cart is empty"})
+
+    return JsonResponse({"error": 'User not authenticated'})
 
