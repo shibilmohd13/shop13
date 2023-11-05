@@ -1,0 +1,96 @@
+{% extends 'admin_panel/admin_base.html' %}
+{% load static %}
+{% block title %} Orders{% endblock title %}
+{% block orders %}{% endblock orders %}
+{% block content %}
+
+<main id="main" class="main">
+
+        <div class="pagetitle">
+            <h1>Orders</h1>
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">Admin</li>
+                    <li class="breadcrumb-item active">Orders</li>
+                </ol>
+            </nav>
+        </div><!-- End Page Title -->
+
+        <!-- Recent Sales -->
+        <div class="col-12">
+            <div class="card recent-sales overflow-auto">
+
+                <div class="card-body">
+                    <table class="table table-borderless mt-3">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Fullname</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>Joined On</th>
+                                <th>Block / Unblock</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            
+                        {% for user in users %}
+                            <tr>
+                                <td>{{user.id}}1</td>
+                                <td>{{user.fullname}}Javad pk</td>
+                                <td>{{user.email}}</td>
+                                <td>{{user.phone}}</td>
+                                <td>{{user.date_joined}}</td>
+                                {% if user.is_active %}
+                                <td><a href='user_status/{{user.id}}'><span class="badge bg-danger">Block</span></a></td>
+                                {% else %}
+                                <td><a href='user_status/{{user.id}}'><span class="badge bg-success">Unblock</span></a></td>
+                                {% endif %}
+                            </tr>
+                        
+                        
+                        {% endfor %}
+
+
+                            {% comment %} <tr>
+                                <td>05</td>
+                                <td>Bridie Kessler</td>
+                                <td><a href="#" class="text-primary">Blanditiis dolor omnis similique</a></td>
+                                <td>9087654321</td>
+                                <td>Calicut, Kerala, India</td>
+                                <td><span class="badge bg-success">Unblock</span></td>
+                            </tr>
+                            <tr>
+                                <td>07</td>
+                                <td>Ashleigh Langosh</td>
+                                <td><a href="#" class="text-primary">At recusandae consectetur</a></td>
+                                <td>9087654321</td>
+                                <td>Banglore, Karnataka, India</td>
+                                <td><span class="badge bg-success">Unblock</span></td>
+                            </tr>
+                            <tr>
+                                <td>09</td>
+                                <td>Angus Grady</td>
+                                <td><a href="#" class="text-primar">Ut voluptatem id earum et</a></td>
+                                <td>856654321</td>
+                                <td>Malappuram, Kerala, India</td>
+                                <td><span class="badge bg-danger">Block</span></td>
+                            </tr>
+                            <tr>
+                                <td>11</td>
+                                <td>Raheem Lehner</td>
+                                <td><a href="#" class="text-primary">Sunt similique distinctio</a></td>
+                                <td>908763521</td>
+                                <td>Palakkad, Kerala, India</td>
+                                <td><span class="badge bg-success">Unblock</span></td>
+                            </tr> {% endcomment %}
+                        </tbody>
+                    </table>
+
+                </div>
+
+            </div>
+        </div><!-- End Recent Sales -->
+
+    </main><!-- End #main -->
+{% endblock content %}

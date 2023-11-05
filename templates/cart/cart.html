@@ -56,7 +56,7 @@
       </div>
       <div class="col-md-6">
         <h5 class="text-end text-uppercase">
-          <a href="#" class="continue-shopping">Continue Shopping</a>
+          <a href='{% url "shop" %}' class="continue-shopping">Continue Shopping</a>
         </h5>
       </div>
     </div>
@@ -122,12 +122,12 @@
         </div>
         <div class="cart_3r">
             <h6 class="head_1">SUBTOTAL</h6>
-            <h6 class="text-center text-secondary mt-3 total_price">{{total}}</h6>
+            <h6 class="text-center text-secondary mt-3 total_price">&#8377;{{total}}</h6>
             <h6 class="head_1">TOTAL</h6>
-            <h5 class="text-center col_yell mt-3 total_price">{{total}}</h5>
+            <h5 class="text-center col_yell mt-3 total_price">&#8377;{{total}}</h5>
             <hr />
             <h6 class="text-center mt-3">
-              <a class="button" href="checkout.html">PROCEED TO CHECKOUT</a>
+              <a class="button" href='{% url "checkout" %}'>PROCEED TO CHECKOUT</a>
             </h6>
             <br />
           </div>

@@ -120,4 +120,61 @@ def update_cart(request):
 
     return HttpResponse(status=200)
 
+def checkout(request):
+    email = request.session['email']
+    user = CustomUser.objects.get(email=email)
+    address = Address.objects.filter(user=user)
+    cart_items = Cart.objects.filter(user=user)
+    total = sum(cart_items.values_list('cart_price',flat=True))
+
+
+    return render(request, "cart/checkout.html" , {'addresses' : address , 'cart_items' : cart_items , 'total' : total})
+
+
+def add_address_checkout(request):
+    email = request.session['email']
+    user = CustomUser.objects.get(email=email)
+    
+    name = request.POST['name']
+    phone = request.POST['phone']
+    street_address = request.POST['street_address']
+    city = request.POST['city']
+    state = request.POST['state']
+    pincode = request.POST['pincode']
+
+    new_address = Address(
+        user = user,
+        name = name,
+        phone = phone,
+        street_address = street_address,
+        city = city,
+        state = state,
+        pin_code = pincode
+    )
+    new_address.save()
+                
+    return redirect('checkout')
+
+def edit_address_checkout(request, id):
+    address = Address.objects.get(id=id)
+
+    name = request.POST.get('name')
+    phone = request.POST.get('phone')
+    street_address = request.POST.get('street_address')
+    city = request.POST.get('city')
+    state = request.POST.get('state')
+    pincode = request.POST.get('pincode')
+
+    address.name = name
+    address.phone = phone
+    address.street_address = street_address
+    address.city = city
+    address.state = state
+    address.pin_code = pincode
+
+    address.save()
+
+    return redirect('checkout')
+
+
 

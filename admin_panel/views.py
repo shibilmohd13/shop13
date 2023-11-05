@@ -34,7 +34,7 @@ def admin_dash(request):
 @user_passes_test(lambda u:u.is_superuser, login_url='admin_login')
 def users(request):
     users = CustomUser.objects.all().exclude(is_superuser=True).order_by('id')
-    context = { 'users' : users}
+    context = { 'users' : users }
     return render(request, 'admin_panel/users.html', context)
 
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
@@ -54,3 +54,7 @@ def user_status(request, id):
 def admin_logout(request):
     request.session.flush()
     return redirect('admin_login')
+
+
+def orders(request):
+    return render(request, 'admin_panel/orders.html')

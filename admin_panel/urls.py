@@ -6,5 +6,6 @@ urlpatterns = [
     path('admin_dash',views.admin_dash, name='admin_dash'),
     path('users',views.users,name='users'),
     path('user_status/<str:id>',views.user_status,name='user_status'),
-    path('admin_logout',views.admin_logout, name='admin_logout')
+    path('admin_logout',views.admin_logout, name='admin_logout'),
+    path('orders',views.orders, name='orders'),
 ]

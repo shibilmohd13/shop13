@@ -1,7 +1,17 @@
 {% extends 'home/base.html' %}
 {% load static %}
 {% block title %}Checkout{% endblock title %}
-{% block css %}<link href="{% static 'home/css/cart.css' %}" rel="stylesheet"/>{% endblock css %}
+{% block css %}
+<style>
+    .address-item {
+       border: 1px solid #f7ba01; /* Yellow border */
+       padding: 10px; /* Add padding for spacing */
+    }
+ </style>
+<link href="{% static 'home/css/cart.css' %}" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+{% endblock css %}
 
 {% block content %}
 
@@ -11,7 +21,6 @@
       <div class="row center_o1 text-center">
        <div class="col-md-12">
          <h1>CHECKOUT</h1>
-         <h6 class="d-inline-block  font_14 col_yell bg-white"><a class="col_light" href="#">Home</a> <span class="me-2 ms-2">/</span> Checkout</h6>
        </div>
       </div>
     </div>
@@ -22,113 +31,176 @@
     <div class="checkout_1 row">
       <div class="col-md-8">
         <div class="checkout_1l">
-         <h5>Make Your Checkout Here</h5>
-         <p>Please register in order to checkout more quickly</p>
         </div>
-        <div class="checkout_1l1 row">
-         <div class="col-md-6 ps-0">
-          <h6 class="font_13 fw-bold">First Name <span>*</span></h6>
-          <input class="form-control" type="text">
-         </div>
-         <div class="col-md-6 ps-0">
-          <h6 class="font_13 fw-bold">Last Name <span>*</span></h6>
-          <input class="form-control" type="text">
-         </div>
-        </div>
-        <div class="checkout_1l1 row">
-         <div class="col-md-6 ps-0">
-          <h6 class="font_13 fw-bold">Email Address <span>*</span></h6>
-          <input class="form-control" type="text">
-         </div>
-         <div class="col-md-6 ps-0">
-          <h6 class="font_13 fw-bold">Phone Number <span>*</span></h6>
-          <input class="form-control" type="text">
-         </div>
-        </div>
-        <div class="checkout_1l1 row">
-         <div class="col-md-6 ps-0">
-          <h6 class="font_13 fw-bold">Country <span>*</span></h6>
-          <select class="form-select">
-                   <option>India</option>
-                   <option>Paksitan</option>
-                   <option>Russia</option>
-                   <option>England</option>
-                   <option>Nepal</option>
-               </select>
-         </div>
-         <div class="col-md-6 ps-0">
-          <h6 class="font_13 fw-bold">State / Divition <span>*</span></h6>
-          <select class="form-select">
-                   <option>UP</option>
-                   <option>MP</option>
-                   <option>Bihar</option>
-                   <option>Delhi</option>
-                   <option>Jharkhand</option>
-               </select>
-         </div>
-        </div>
-        <div class="checkout_1l1 row">
-         <div class="col-md-6 ps-0">
-          <h6 class="font_13 fw-bold">Address Line 1 <span>*</span></h6>
-          <input class="form-control" type="text">
-         </div>
-         <div class="col-md-6 ps-0">
-          <h6 class="font_13 fw-bold">Address Line 2 <span>*</span></h6>
-          <input class="form-control" type="text">
-         </div>
-        </div>
-        <div class="checkout_1l1 row">
-         <div class="col-md-6 ps-0">
-          <h6 class="font_13 fw-bold">Postal Code <span>*</span></h6>
-          <input class="form-control" type="text">
-         </div>
-         <div class="col-md-6 ps-0">
-          <h6 class="font_13 fw-bold">Company <span>*</span></h6>
-          <select class="form-select">
-                   <option>Microsoft</option>
-                   <option>Xaiomi</option>
-                   <option>Apple</option>
-                   <option>Samsung</option>
-                   <option>Motorola</option>
-               </select>
-         </div>
-        </div>
-        <div class="checkout_1l">
-         <div class="form-check">
-          <input type="checkbox" class="form-check-input" id="customCheck1">
-          <label class="form-check-label" for="customCheck1"><a href="#">Create an account?</a></label>
+            <div class="checkout_1l1 row">
+                <div class="d-flex justify-content-between mt-3">
+                <h5 class="m-0">Select Shipping Address</h5>
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    Add new address
+                </button>
+                
+                <!-- Modal -->
+                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                    <div class="modal-content">
+                        <form method="POST" action='{% url "add_address_checkout" %}'>
+                            {% csrf_token %}
+                            <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">Add Address</h5>
+
+                            </div>
+                            <div class="modal-body">
+                                <div class="container">
+                                    <div class="form-group">
+                                    <label class="form-label">Name</label>
+                                    <input type="text" class="form-control" name="name"> 
+                                    </div>
+                                    <div class="form-group">
+                                    <label class="form-label">Phone</label>
+                                    <input type="text" class="form-control" name="phone">
+                                    </div>
+                                    <div class="form-group">
+                                    <label class="form-label">Street address</label>
+                                    <textarea class="form-control" rows="2" name="street_address"></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                    <label class="form-label">City</label>
+                                    <input type="text" class="form-control" name="city">
+                                    </div>    
+                                    <div class="form-group">
+                                    <label class="form-label">State</label>
+                                    <input type="text" class="form-control" name="state">
+                                    </div>    
+                                    <div class="form-group">
+                                    <label class="form-label">Pin Code</label>
+                                    <input type="number" class="form-control" name="pincode">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-success">Add Address</button>
+                            </div>
+                            </form>
+                    </div>
+                    </div>
+                    </div>
+                </div>
+                <form>
+                    {% for address in addresses %}
+                    <div class="form-check mt-3 address-item">
+                       <input type="radio" class="form-check-input ms-3" id="address_{{ address.id }}" name="shipping_address" value="{{ address.id }}">
+                       <label class="form-check-label ms-3" for="address_{{ address.id }}">
+                          <strong>{{ address.name }}</strong><br>
+                          {{ address.street_address }}<br>
+                          {{ address.city }}, {{ address.state }} - {{ address.pin_code }}<br>
+                          Phone: {{ address.phone }}<br>
+                          <button type="button" class="btn btn-outline-secondary mt-2" data-bs-toggle="modal" data-bs-target="#editAddresscheckout-{{forloop.counter}}">
+                            Edit
+                        </button>
+                       </label>
+
+                    </div>
+                    {% endfor %}
+                 </form>
+             </div>
       </div>
-        </div>
+      <!-- Edit address Modal HTML -->
+      {% for address in addresses %}
+      <div id="editAddresscheckout-{{forloop.counter}}" class="modal fade">
+          <div class="modal-dialog">
+              <div class="modal-content">
+                  <form action="edit_address_checkout/{{address.id}}" method='POST'>
+                      {% csrf_token %}
+                      <div class="modal-header">
+                          <h5 class="modal-title" >Edit Address</h5>
+                          </div>
+                          <div class="modal-body">
+                              <div class="container">
+                                  <div class="form-group">    
+                                  <label class="form-label">Name</label>
+                                  <input type="text" class="form-control" name="name" value="{{address.name}}"> 
+                                  </div>
+                                  <div class="form-group">
+                                  <label class="form-label">Phone</label>
+                                  <input type="text" class="form-control" name="phone" value="{{address.phone}}">
+                                  </div>
+                                  <div class="form-group">
+                                  <label class="form-label">Street address</label>
+                                  <textarea class="form-control" rows="2" name="street_address">{{address.street_address}}</textarea>
+                                  </div>
+                                  <div class="form-group">
+                                  <label class="form-label">City</label>
+                                  <input type="text" class="form-control" name="city" value="{{address.city}}">
+                                  </div>    
+                                  <div class="form-group">
+                                  <label class="form-label">State</label>
+                                  <input type="text" class="form-control" name="state" value="{{address.state}}">
+                                  </div>    
+                                  <div class="form-group">
+                                  <label class="form-label">Pin Code</label>
+                                  <input type="number" class="form-control" name="pincode" value="{{address.pin_code}}">
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="modal-footer">
+                          <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                          <button type="submit" class="btn btn-success">Update Address</button>
+                          </div>
+                  </form>
+              </div>
+          </div>
       </div>
+      {% endfor %}
+      
        <div class="col-md-4">
          <div class="checkout_1r">
-           <h5>CART TOTALS</h5>
+           <h5 class="mt-4">CART TOTALS</h5>
            <hr class="line">
-          <h6 class="fw-bold font_13">Sub Total <span class="pull-right">$230.00</span></h6>
-          <h6 class="fw-bold mt-3 font_13">(+) Shipping <span class="pull-right">$20.00</span></h6>
+           {% for item in cart_items %}
+           <h6 class="font_13 text-secondary">{{item.product.product.name}} - {{item.product.color}} <span class="pull-right">{{item.prod_quantity}} x &#8377;{{item.product.discounted_price}}</span></h6>
+           {% endfor %}
+           <h6 class="fw-bold font_13">Sub Total <span class="pull-right">&#8377;{{total}}</span></h6>
+           <h6 class="fw-bold mt-3 font_13">(+) Shipping <span class="pull-right">Free shipping</span></h6>
           <hr> 
-          <h6 class="fw-bold font_13">Total <span class="pull-right">$250.00</span></h6><br>
+          <h6 class="fw-bold">Total <span class="pull-right">&#8377;{{total}}</span></h6><br>
            <h5>PAYMENTS</h5>
            <hr class="line">
-           <div class="form-check mt-3">
+           {% comment %} <div class="form-check mt-3">
           <input type="radio" class="form-check-input" id="customCheck1">
           <label class="form-check-label" for="customCheck1">Check Payments</label>
-      </div>
+      </div> {% endcomment %}
            <div class="form-check mt-2">
           <input type="radio" class="form-check-input" id="customCheck1">
           <label class="form-check-label" for="customCheck1">Cash On Delivery</label>
       </div>
-           <div class="form-check mt-2">
+           {% comment %} <div class="form-check mt-2">
           <input type="radio" class="form-check-input" id="customCheck1">
           <label class="form-check-label" for="customCheck1">PayPal</label>
-      </div>
-           <h6 class="mt-3"><a class="button" href="#">PROCEED TO CHECKOUT</a></h6>
-         </div>
+      </div> {% endcomment %}
+      <div>
+        <h6 class="mt-3"><a class="button" href="#" id="placeOrderButton">PLACE ORDER</a></h6>
+    </div>
         </div>
      </div>
    </div>
   </section>
 
   {% endblock content %}
+  {% block scripts %}
+  <script>
+    // Add a click event listener to the "PLACE ORDER" button
+    document.getElementById("placeOrderButton").addEventListener("click", function() {
+        // Display a SweetAlert
+        Swal.fire({
+            title: 'Order Confirmation',
+            text: 'Your order has been placed successfully!',
+            icon: 'success',
+            confirmButtonText: 'OK'
+        });
+    });
+</script>
+  {% endblock scripts %}
 
   
