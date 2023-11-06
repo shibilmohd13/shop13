@@ -7,9 +7,10 @@ from django.http import JsonResponse,HttpResponse
 from django.utils import timezone  # Import timezone module
 from datetime import timedelta
 
-
-
 # Create your views here.
+
+
+# View cart
 def cart(request):
     if 'email' in request.session:
         email = request.session["email"]
@@ -26,8 +27,9 @@ def cart(request):
         return render(request, "cart/cart.html" ,context)
     return redirect('signin')
 
+
+# Add Items to Cart
 def addtocart(request):
-    
     if request.method == 'POST':
         if 'email' in request.session:
             email = request.session["email"]
@@ -39,21 +41,19 @@ def addtocart(request):
                     return JsonResponse({'status' : "Product already in cart"})
                 else:
                     prod_qty = 1
-                    
                     if product_check.quantity >= prod_qty:
                         product = ColorVarient.objects.get(id=prod_id)
                         Cart.objects.create(user=user, product=product, prod_quantity=prod_qty, cart_price=product.discounted_price, created_at=timezone.now())
                         return JsonResponse({'status' : "Product added successfully",'success' : True})
                     else:
                         return JsonResponse({'status' : f"Only {str(product_check.quantity)} Quantity available"})
-
             else:
                 return JsonResponse({'status' : "No such product"})
         else:
             return redirect('signin')
-            # return JsonResponse({'status' : "login to continue"})
 
     return render(request, "home/details.html")
+
 
 #function for removing the item from cart
 def remove_item_from_cart(request):
@@ -86,7 +86,6 @@ def update_cart(request):
             print(varient_obj)
             print(user)            
             cart = Cart.objects.get(user=use, product=varient_obj)
-            
 
             if change == 1:
 
@@ -122,6 +121,8 @@ def update_cart(request):
 
     return HttpResponse(status=200)
 
+
+# View checkout page
 def checkout(request):
     email = request.session['email']
     user = CustomUser.objects.get(email=email)
@@ -129,10 +130,10 @@ def checkout(request):
     cart_items = Cart.objects.filter(user=user)
     total = sum(cart_items.values_list('cart_price',flat=True))
 
-
     return render(request, "cart/checkout.html" , {'addresses' : address , 'cart_items' : cart_items , 'total' : total})
 
 
+# Add address view in checkout
 def add_address_checkout(request):
     email = request.session['email']
     user = CustomUser.objects.get(email=email)
@@ -157,6 +158,8 @@ def add_address_checkout(request):
                 
     return redirect('checkout')
 
+
+# Edit address view in checkout
 def edit_address_checkout(request, id):
     address = Address.objects.get(id=id)
 
@@ -179,22 +182,8 @@ def edit_address_checkout(request, id):
     return redirect('checkout')
 
 
-def place_order(request):
-    if 'email' in request.session:
-        email = request.session.get("email")
-        user = CustomUser.objects.get(email=email)
 
-        address_id = request.POST.get('selected_address')
-        address = Address.objects.get(id = address_id)
-
-        payment_method = request.POST.get("payment")
-
-        cart_items = Cart.objects.filter(user=user)
-        for item in cart_items:
-            price = item.cart_price
-    return JsonResponse({"success" : 'order places'})
-
-
+# Place order
 def place_order(request):
     if 'email' in request.session:
         email = request.session.get("email")
@@ -207,7 +196,6 @@ def place_order(request):
 
         cart_items = Cart.objects.filter(user=user)
         
-
         if cart_items.exists():
             # Create an Orders object
             order = Orders.objects.create(
@@ -251,6 +239,8 @@ def place_order(request):
             order.quantity = total_quantity
             order.save()
             print("order sucess")
+
+            # Moving order id into session for future use
             request.session['order_id'] = str(order.order_id)
             
 

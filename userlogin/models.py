@@ -6,6 +6,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 import os
 
+# CustomUser inherited from django's User model
 class CustomUser(AbstractUser):
     phone = models.CharField(max_length=50)
     fullname = models.CharField(max_length=100)
@@ -14,6 +15,8 @@ class CustomUser(AbstractUser):
     def __str__(self) :
         return self.email
 
+
+# signal for sending otp when a user is created
 @receiver(post_save, sender=CustomUser)
 def send_otp_signal(sender, instance, **kwargs):
     sender_email = os.environ.get("SENDER_EMAIL")
@@ -24,6 +27,8 @@ def send_otp_signal(sender, instance, **kwargs):
     connection.sendmail(from_addr=sender_email, to_addrs=instance.email,msg=f'Subject: OTP for register \n\n Here is your OTP for create account in SHOP13\n OTP:- {instance.otp}')
     connection.close()
 
+
+# Address modal
 class Address(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, null=True)
     name = models.CharField(max_length=50)

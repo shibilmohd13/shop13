@@ -3,52 +3,65 @@
 {% block title %} Add Category{% endblock title %}
 {% block categories %}{% endblock categories %}
 {% block content %}
-
 <main id="main" class="main">
-
   <div class="d-flex justify-content-between">
     <div class="pagetitle">
-        <h1>Add Categories</h1>
-        <nav>
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item">Admin</li>
-                <li class="breadcrumb-item">Categories</li>
-                <li class="breadcrumb-item active">Add Category</li>
-            </ol>
-        </nav>
+      <h1>Add Categories</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">Admin</li>
+          <li class="breadcrumb-item">Categories</li>
+          <li class="breadcrumb-item active">Add Category</li>
+        </ol>
+      </nav>
     </div><!-- End Page Title -->
     <a href="{% url 'categories' %}" class="btn btn-danger btn-rounded h-50">Cancel</a>
-</div>
-
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">Add a New Category</h5>
-
-        <!-- General Form Elements -->
-        <form method='POST'>
-          {% csrf_token %}
-            <div class="row mb-3">
-              <label for="inputText" class="col-sm-2 col-form-label">Category Name</label>
-              <div class="col-sm-10">
-                <input type="text" class="form-control" name='name' required>
-              </div>
-            </div>
-            <div id="error" class="error-message text-danger mt-2">{% if messages %}{% for message in messages %}{% if message.tags == 'error' %}{{message}}{% endif %}{% endfor %}{% endif %}</div>
-            <br><br>
-            <div class="row mb-3">
-              <label class="col-sm-2 col-form-label">Submit</label>
-              <div class="col-sm-10">
-                <button type="submit" class="btn btn-primary">Add Category</button>
-              </div>
-            </div>
-
-          </form><!-- End General Form Elements -->
-
+  </div>
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title">Add a New Category</h5>
+      <!-- General Form Elements -->
+      <form method='POST' onsubmit="return validateForm()">
+        {% csrf_token %}
+        <div class="row mb-3">
+          <label for="inputText" class="col-sm-2 col-form-label">Category Name</label>
+          <div class="col-sm-10">
+            <input type="text" class="form-control" name="name" id="nameField" required>
+            <span id="nameError" class="error-message text-danger mt-2">{% if messages %} {% for message in messages %}{{message}}{% endfor %} {% endif %}</span>
+          </div>
         </div>
-      </div>
-
+        <br><br>
+        <div class="row mb-3">
+          <label class="col-sm-2 col-form-label">Submit</label>
+          <div class="col-sm-10">
+            <button type="submit" class="btn btn-primary">Add Category</button>
+          </div>
+        </div>
+      </form><!-- End General Form Elements -->
     </div>
+  </div>
+</div>
+</main><!-- End #main -->
+<script>
+function validateForm() {
+  // Get the value of the "name" input field
+  var nameField = document.getElementById("nameField");
+  var nameValue = nameField.value;
+  
+  // Define a regular expression for alphanumeric characters
+  var alphaNumericRegex = /^[A-Za-z0-9]+$/;
 
-
-    </main><!-- End #main -->
+  // Validate the name
+  if (nameValue.length < 2) {
+    document.getElementById("nameError").textContent = "Name must be at least 2 characters long";
+    return false;
+  }else if (nameValue.includes("  ")) {
+    document.getElementById("nameError").textContent = "Name cannot contain more than 2 consecutive spaces";
+    return false;
+  } else {
+    document.getElementById("nameError").textContent = ""; // Clear error message
+    return true;
+  }
+}
+</script>
 {% endblock content %}

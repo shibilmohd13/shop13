@@ -3,9 +3,12 @@ from .models import *
 from django.contrib.auth.decorators import user_passes_test
 from django.views.decorators.cache import cache_control
 from django.contrib import messages
-
+from django.core.exceptions import ObjectDoesNotExist
 
 # Create your views here.
+
+
+# Showing the Listed products in the admin side
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 @user_passes_test(lambda u:u.is_superuser, login_url='admin_login')
 def products(request):
@@ -15,6 +18,8 @@ def products(request):
     }
     return render(request, 'admin_panel/products.html', context)
 
+
+# showing Unlisted products
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 @user_passes_test(lambda u:u.is_superuser, login_url='admin_login')
 def unlisted_products(request):
@@ -24,6 +29,8 @@ def unlisted_products(request):
     }
     return render(request, 'admin_panel/unlisted_products.html', context)
 
+
+# Change status of the product ( Listed / Unlisted )
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 @user_passes_test(lambda u:u.is_superuser, login_url='admin_login')
 def product_status(request, id):
@@ -37,6 +44,7 @@ def product_status(request, id):
     return redirect('products')
 
 
+# Change status of the product in the Unlisted products page
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 @user_passes_test(lambda u:u.is_superuser, login_url='admin_login')
 def product_status_unlist(request, id):
@@ -50,53 +58,50 @@ def product_status_unlist(request, id):
     return redirect('unlisted_products')
     
 
+# Add products
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
-@user_passes_test(lambda u:u.is_superuser, login_url='admin_login')
+@user_passes_test(lambda u: u.is_superuser, login_url='admin_login')
 def add_products(request):
     category_list = Category.objects.all()
     brands_list = Brand.objects.all()
     context = {
-        'cat' : category_list,
-        'bnd' : brands_list,
+        'cat': category_list,
+        'bnd': brands_list,
     }
+
     if request.method == 'POST':
         name = request.POST.get('name')
         description = request.POST.get('description')
-        # price = request.POST.get('price')
-        # discount = request.POST.get('discount')
-        # discounted_price = request.POST.get('discounted_price')
         category_id = request.POST.get('category')
         brand_id = request.POST.get('brand')
+
+        # Check if a product with the same name exists (case-insensitive)
+        try:
+            existing_product = Product.objects.get(name__iexact=name)
+            messages.error(request, "A product with the same name already exists.")
+            return redirect('add_products')
+        except ObjectDoesNotExist:
+            pass
 
         category = Category.objects.get(id=category_id)
         brand = Brand.objects.get(id=brand_id)
 
-
         product = Product(
             name=name,
             description=description,
-            # price=price,
-            # discount=discount,
-            # discounted_price=discounted_price,
             category=category,
             brands=brand,
         )
         product.save()
-        # color_list = ['silver', 'gold', 'black' ,'brown']
-        # for color in color_list:  
-        #     quantity = request.POST.get(color, 0)  # Use default value 0 if quantity is not provided
-        #     print(quantity, name)
-        #     varient = ColorVarient(product=product, color=color, quantity=quantity)
-        #     varient.save()
-        #     images = request.FILES.getlist(f'images_{color}')
-        #     for image in images:
-        #         ProductImage(varient=varient, image=image).save()
 
+        messages.success(request, "Product added successfully.")
         return redirect('products')
 
     return render(request, 'admin_panel/add_products.html', context)
 
 
+
+# Edit Products
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 @user_passes_test(lambda u:u.is_superuser, login_url='admin_login')
 def edit_products(request, id):
@@ -115,76 +120,52 @@ def edit_products(request, id):
     if request.method == 'POST':
         prod.name = request.POST.get('name')
         prod.description = request.POST.get('description')
-        # prod.price = request.POST.get('price')
-        # prod.discount = request.POST.get('discount')
-        # prod.discounted_price = request.POST.get('discounted_price')
         prod.category_id = request.POST.get('category')
         prod.brands_id = request.POST.get('brand')
         prod.save()
 
 
-        # color_list = ['silver', 'gold', 'black', 'brown']
-
-        # for color in color_list:
-        #     quantity = request.POST.get(color, 0)  # Use default value 0 if quantity is not provided
-
-        #     # Try to retrieve an existing ColorVariant instance
-        #     try:
-        #         varient = ColorVarient.objects.get(product=prod, color=color)
-        #         varient.quantity = quantity  # Update the quantity
-        #         varient.save()
-
-        #     except ColorVarient.DoesNotExist:
-        #         # If it doesn't exist, create a new ColorVariant
-        #         varient = ColorVarient(product=prod, color=color, quantity=quantity)
-        #         varient.save()
-
-        # # Second loop to handle images
-        # for color in color_list:
-        #     new_images = request.FILES.getlist(f'images_{color}')
-
-        #     if new_images:
-
-        #         # Delete all existing images for this color variant
-        #         varient = ColorVarient.objects.get(product=prod, color=color)
-        #         varient.productimage_set.all().delete()
-                
-        #         # Save the new images
-        #         for image in new_images:
-        #             ProductImage(varient=varient, image=image).save()
-
-
         return redirect('products')
     return render(request, 'admin_panel/edit_products.html',context)
 
+
+# Add Categories
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 @user_passes_test(lambda u:u.is_superuser, login_url='admin_login')
 def add_categories(request):
     if request.method == "POST":
         name = request.POST.get('name')
-        if Category.objects.filter(name=name).exists():
-            messages.error(request, "This Category already exists")
+        try:
+            existing_product = Category.objects.get(name__iexact=name)
+            messages.error(request, "A Category with the same name already exists.")
             return redirect('add_categories')
+        except ObjectDoesNotExist:
+            pass
         cat = Category(name=name,is_listed=True)
         cat.save()
         return redirect("categories")
     return render(request, 'admin_panel/add_categories.html')
 
+
+# Add Brands
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 @user_passes_test(lambda u:u.is_superuser, login_url='admin_login')
 def add_brands(request):
     if request.method == "POST":
         name = request.POST.get('name')
-        if Brand.objects.filter(name=name).exists():
-            messages.error(request, "This Brand already exists")
+        try:
+            existing_product = Brand.objects.get(name__iexact=name)
+            messages.error(request, "A Brand with the same name already exists.")
             return redirect('add_brands')
+        except ObjectDoesNotExist:
+            pass
         brand = Brand(name=name,is_listed=True)
         brand.save()
         return redirect("brands")
     return render(request, 'admin_panel/add_brands.html')
 
 
-
+# Edit categories
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 @user_passes_test(lambda u:u.is_superuser, login_url='admin_login')
 def edit_categories(request, id):
@@ -195,6 +176,8 @@ def edit_categories(request, id):
         return redirect('categories')
     return render(request, 'admin_panel/edit_categories.html',{'cat':cat})
 
+
+# Edit Brands
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 @user_passes_test(lambda u:u.is_superuser, login_url='admin_login')
 def edit_brands(request,id):
@@ -206,6 +189,7 @@ def edit_brands(request,id):
     return render(request, 'admin_panel/edit_brands.html',{'brand': brand})
 
 
+# show all categories
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 @user_passes_test(lambda u:u.is_superuser, login_url='admin_login')
 def categories(request):
@@ -215,6 +199,8 @@ def categories(request):
     }
     return render(request, 'admin_panel/categories.html', context)
 
+
+# Category status change
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 @user_passes_test(lambda u:u.is_superuser, login_url='admin_login')
 def category_status(request, id):
@@ -228,6 +214,7 @@ def category_status(request, id):
     return redirect('categories')
 
 
+# Show all Brands
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 @user_passes_test(lambda u:u.is_superuser, login_url='admin_login')
 def brands(request):
@@ -237,6 +224,8 @@ def brands(request):
     }
     return render(request, 'admin_panel/brands.html', context)
 
+
+# change status of Brands
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 @user_passes_test(lambda u:u.is_superuser, login_url='admin_login')
 def brand_status(request, id):
@@ -254,11 +243,14 @@ def brand_status(request, id):
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 @user_passes_test(lambda u:u.is_superuser, login_url='admin_login')
 def varient_details(request, id):
-    # product = Product.objects.filter(pk=id, is_listed=True).prefetch_related('productimage_set', 'colorvarient_set').first()
-    # print(product)
+
     prod = Product.objects.filter(id=id).prefetch_related('colorvarient_set__productimage_set').first()
     return render(request, 'admin_panel/varient_details.html', { 'product' : prod })
 
+
+# Add varients for specific product
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@user_passes_test(lambda u:u.is_superuser, login_url='admin_login')
 def add_varients(request, id):
 
     product = Product.objects.get(id=id)
@@ -286,6 +278,11 @@ def add_varients(request, id):
 
     return render(request, 'admin_panel/add_varients.html', {"product" : product})
 
+
+
+# Edit varients
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@user_passes_test(lambda u:u.is_superuser, login_url='admin_login')
 def edit_varients(request, id):
     
     varient = ColorVarient.objects.get(id=id)
@@ -319,6 +316,10 @@ def edit_varients(request, id):
 
     return render(request, 'admin_panel/edit_varients.html', {'varient' : varient , 'product' : varient.product , 'images' : existing_images})
 
+
+# Change varient Status
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@user_passes_test(lambda u:u.is_superuser, login_url='admin_login')
 def varient_status(request, id):
     varient = ColorVarient.objects.filter(id=id).first()
     prod_id = varient.product.id

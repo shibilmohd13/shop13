@@ -7,6 +7,9 @@ import random
 import smtplib
 
 # Create your views here.
+
+
+# Create user
 def signup(request):
     if request.method == 'POST':
         fullname = request.POST['fullname']
@@ -38,6 +41,8 @@ def signup(request):
 
     return render(request,'userlogin/signup.html')
 
+
+# Authenticate User
 def signin(request):
     if request.method == 'POST':
         email = request.POST['email']
@@ -52,6 +57,8 @@ def signin(request):
             return redirect('signin')
     return render(request,'userlogin/index.html')
 
+
+# check OTP
 def otp(request):
     if request.method == 'POST':
         user = CustomUser.objects.get(id=request.session['user_id'])
@@ -65,9 +72,12 @@ def otp(request):
             return redirect('otp')
     return render(request,'userlogin/otp.html')
 
+
 def landing(request):
     return render(request, 'userlogin/homepage.html')
 
+
+# resend otp 
 def send_otp(request):
     user = CustomUser.objects.get(id=request.session['user_id'])
     user.otp = otp_sent = str(random.randint(100000,999999))

@@ -6,6 +6,8 @@ from orders.models import *
 
 # Create your views here.
 
+
+# View for listing order history of the User
 def orders(request):
     if 'email' in request.session:
         email = request.session['email']
@@ -15,6 +17,8 @@ def orders(request):
 
     return render(request, "home/orders.html", {'order_items': order_items})
 
+
+# View for providing the Order Confirmed page After placing a Order
 def view_orders(request):
     order_id = uuid.UUID(request.session['order_id'])
     current_order = Orders.objects.get(order_id=order_id)

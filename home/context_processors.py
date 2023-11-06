@@ -1,5 +1,8 @@
 from products.models import *
 from userlogin.models import *
+
+
+# Context processor for Provide list of Categories, Brands And also User in Every View
 def navbar_elements(request):
     categories_nav = Category.objects.exclude(is_listed=False)
     brands_nav = Brand.objects.exclude(is_listed=False)    

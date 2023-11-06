@@ -20,17 +20,18 @@
     <a href="{% url 'products' %}" class="btn btn-danger btn-rounded h-50">Cancel</a>
 </div>
 
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">Edit a Existing Product</h5>
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Edit an Existing Product</h5>
 
-          <!-- General Form Elements -->
-        <form action='' method='POST' enctype="multipart/form-data">
+        <!-- General Form Elements -->
+        <form action='' method='POST' enctype="multipart/form-data" onsubmit="return validateForm()">
           {% csrf_token %}
             <div class="row mb-3">
               <label for="inputText" class="col-sm-2 col-form-label">Product Name</label>
               <div class="col-sm-10">
-                <input type="text" class="form-control" name="name" value="{{prod.name}}" required>
+                <input type="text" class="form-control" name="name" id="nameField" value="{{prod.name}}" required>
+                <span id="nameError" class="error-message text-danger mt-2"></span>
               </div>
             </div>
             <div class="row mb-3">
@@ -39,24 +40,6 @@
                   <textarea class="form-control" style="height: 100px" name="description">{{prod.description}}</textarea>
                 </div>
             </div>
-            {% comment %} <div class="row mb-3">
-                <label for="inputNumber" class="col-sm-2 col-form-label">Price</label>
-                <div class="col-sm-10 col-md-4">
-                  <input type="number" min="1" class="form-control" width="100px" name="price" value="{{prod.price}}" required>
-                </div>
-            </div>
-            <div class="row mb-3">
-                <label for="inputNumber" class="col-sm-2 col-form-label">Discount</label>
-                <div class="col-sm-10 col-md-4">
-                  <input type="number" class="form-control" width="100px"  name="discount" value="{{prod.discount}}" required>
-                </div>
-            </div>
-            <div class="row mb-3">
-              <label for="inputNumber" class="col-sm-2 col-form-label">Discounted price</label>
-              <div class="col-sm-10 col-md-4">
-                <input type="number" min="1" class="form-control" width="100px" name="discounted_price" value="{{prod.discounted_price}}" required>
-              </div>
-          </div> {% endcomment %}
             <div class="row mb-3">
                 <label class="col-sm-2 col-form-label">Category</label>
                 <div class="col-sm-10">
@@ -77,161 +60,48 @@
                   </select>
                 </div>
             </div>
-
-{% comment %} 
-            <div class="row mb-3">
-              <label class="col-sm-2 col-form-label">Quantity</label>
-              <div class="col-sm-10">
-                  <div class="row">
-                      <div class="col-sm-6 col-md-3 mb-3">
-                          <label for="silverQuantity" class="mb-2">Silver</label>
-                          <input type="number" class="form-control" name="silver" value={{prod.colorvarient_set.all.0.quantity}} min="0" >
-                      </div>
-                      <div class="col-sm-6 col-md-3 mb-3">
-                          <label for="goldQuantity" class="mb-2">Gold</label>
-                          <input type="number" class="form-control" name="gold" value={{prod.colorvarient_set.all.1.quantity}} min="0" >
-                      </div>
-                      <div class="col-sm-6 col-md-3 mb-3">
-                          <label for="blackQuantity"  class="mb-2">Black</label>
-                          <input type="number" class="form-control" name="black" value={{prod.colorvarient_set.all.2.quantity}} min="0" >
-                      </div>
-                      <div class="col-sm-6 col-md-3 mb-3">
-                          <label for="brownQuantity"  class="mb-2">Brown</label>
-                          <input type="number" class="form-control" name="brown" value={{prod.colorvarient_set.all.3.quantity}} min="0">
-                      </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-sm-6 col-md-3 mb-3">
-                        <input class="form-control" type="file" id="formFile" name="images_silver" multiple>
-                    </div>
-                    <div class="col-sm-6 col-md-3 mb-3">
-                        <input class="form-control" type="file" id="formFile" name="images_gold" multiple>
-                    </div>
-                    <div class="col-sm-6 col-md-3 mb-3">
-                        <input class="form-control" type="file" id="formFile" name="images_black" multiple>
-                    </div>
-                    <div class="col-sm-6 col-md-3 mb-3">
-                        <input class="form-control" type="file" id="formFile" name="images_brown" multiple>
-                    </div>
-                </div>
-              </div>
-          </div> {% endcomment %}
-
-          <br><br>
+            <br><br>
             <div class="row mb-3">
               <label class="col-sm-2 col-form-label">Submit</label>
               <div class="col-sm-10">
                 <button type="submit" class="btn btn-primary">Edit Product</button>
               </div>
             </div>
-          
-
-          </form>
-          <!-- End General Form Elements -->
-
-          {% comment %} <form action='' method='POST' enctype="multipart/form-data">
-            {% csrf_token %}
-              <div class="row mb-3">
-                <label for="inputText" class="col-sm-2 col-form-label">Product Name</label>
-                <div class="col-sm-10">
-                  <input type="text" class="form-control" name="name"  value="{{prod.name}}" required>
-                </div>
-              </div>
-              <div class="row mb-3">
-                  <label for="inputPassword" class="col-sm-2 col-form-label">Description</label>
-                  <div class="col-sm-10">
-                    <textarea class="form-control" style="height: 100px" name="description">{{prod.description}}</textarea>
-                  </div>
-              </div>
-              <div class="row mb-3">
-                  <label for="inputNumber" class="col-sm-2 col-form-label">Price</label>
-                  <div class="col-sm-10 col-md-4">
-                    <input type="number" min="1" class="form-control" width="100px" name="price" value="{{prod.price}}" required>
-                  </div>
-              </div>
-              <div class="row mb-3">
-                  <label for="inputNumber" class="col-sm-2 col-form-label">Discount</label>
-                  <div class="col-sm-10 col-md-4">
-                    <input type="number" class="form-control" width="100px"  name="discount" value="{{prod.discount}}" required>
-                  </div>
-              </div>
-              <div class="row mb-3">
-                <label for="inputNumber" class="col-sm-2 col-form-label">Discounted price</label>
-                <div class="col-sm-10 col-md-4">
-                  <input type="number" min="1" class="form-control" width="100px" name="discounted_price"  value="{{prod.discounted_price}}" required>
-                </div>
-            </div>
-              <div class="row mb-3">
-                  <label class="col-sm-2 col-form-label">Category</label>
-                  <div class="col-sm-10">
-                    <select class="form-select" aria-label="Default select example" name="category" required>
-                      <option selected disabled required>Select Category</option>
-                      {% for item in cat %}
-                      <option value="{{item.id}}" {% if item.id == prod.category.id %}selected{% endif %}>{{item.name}}</option>
-                      {% endfor %}
-                    </select>
-                  </div>
-              </div>
-              <div class="row mb-3">
-                  <label class="col-sm-2 col-form-label">Brand</label>
-                  <div class="col-sm-10">
-                    <select class="form-select" aria-label="Default select example" name="brand" required>
-                      <option selected disabled required>Select Brand</option>
-                      {% for item in bnd %}
-                      <option value="{{item.id}}" {% if item.id == prod.brands.id %}selected{% endif %}>{{item.name}}</option>
-                      {% endfor %}
-                    </select>
-                  </div>
-              </div>
-  
-              <div class="row mb-3">
-                  <label for="inputNumber" class="col-sm-2 col-form-label">Images</label>
-                  <div class="col-sm-10">
-                    <input class="form-control" type="file" id="formFile" name="images" multiple>
-                  </div>
-              </div>
-  
-  
-              <div class="row mb-3">
-                <label class="col-sm-2 col-form-label">Quantity</label>
-                <div class="col-sm-10">
-                    <div class="row">
-                        <div class="col-sm-6 col-md-3 mb-3">
-                            <label for="silverQuantity" class="mb-2">Silver</label>
-                            <input type="number" class="form-control" name="silver" min="0" value="{{ colors.0.quantity }}" required>
-                        </div>
-                        <div class="col-sm-6 col-md-3 mb-3">
-                            <label for="goldQuantity" class="mb-2">Gold</label>
-                            <input type="number" class="form-control" name="gold" min="0" value="{{ colors.1.quantity }}" required>
-                        </div>
-                        <div class="col-sm-6 col-md-3 mb-3">
-                            <label for="blackQuantity"  class="mb-2">Black</label>
-                            <input type="number" class="form-control" name="black" min="0" value="{{ colors.2.quantity }}" required>
-                        </div>
-                        <div class="col-sm-6 col-md-3 mb-3">
-                            <label for="brownQuantity"  class="mb-2">Brown</label>
-                            <input type="number" class="form-control" name="brown" min="0" value="{{ colors.3.quantity }}" required>
-                        </div>
-                    </div>
-                </div>
-            </div>
-  
-            <br><br>
-              <div class="row mb-3">
-                <label class="col-sm-2 col-form-label">Submit</label>
-                <div class="col-sm-10">
-                  <button type="submit" class="btn btn-primary">Update Product</button>
-                </div>
-              </div>
-            
-  
-            </form><!-- End General Form Elements --> {% endcomment %}
-
+          </form><!-- End General Form Elements -->
         </div>
-      </div>
-
     </div>
+</div>
+</main>
 
+<script>
+    function validateForm() {
+      // Get the value of the "name" input field
+      var nameField = document.getElementById("nameField");
+      var nameValue = nameField.value;
+      
+      // Define a regular expression for alphanumeric characters
+      var alphaNumericRegex = /^[A-Za-z0-9]+$/;
 
-    </main><!-- End #main -->
+      // Validate the name
+      if (nameValue.length < 2) {
+        document.getElementById("nameError").textContent = "Name must be at least 2 characters long";
+        return false;
+      }  else if (nameValue.includes("  ")) {
+        document.getElementById("nameError").textContent = "Name cannot contain more than 2 consecutive spaces";
+        return false;
+      } else {
+        document.getElementById("nameError").textContent = ""; // Clear error message
+      }
+
+      // Additional validation for product name (modify as needed)
+      // Example: Ensure the product name contains at least 5 characters
+      if (nameValue.length < 5) {
+        document.getElementById("nameError").textContent = "Product name must be at least 5 characters long";
+        return false;
+      }
+
+      return true;
+    }
+</script>
+
 {% endblock content %}

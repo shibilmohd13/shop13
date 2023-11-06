@@ -23,9 +23,4 @@ urlpatterns = [
     path('edit_varients/<str:id>',views.edit_varients, name='edit_varients'),
 
 
-
-
-
-
-
 ]

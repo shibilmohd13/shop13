@@ -8,6 +8,8 @@ from orders.models import *
 
 # Create your views here.
 
+
+# Admin Login view
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def admin_login(request):
     if request.method == 'POST':
@@ -26,11 +28,15 @@ def admin_login(request):
             return redirect('admin_login')
     return render(request, 'admin_panel/admin_login.html')
 
+
+# Dashboard with Sales report
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 @user_passes_test(lambda u:u.is_superuser, login_url='admin_login')
 def admin_dash(request):
     return render(request, 'admin_panel/admin_dash.html')
 
+
+# List Users
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 @user_passes_test(lambda u:u.is_superuser, login_url='admin_login')
 def users(request):
@@ -38,6 +44,8 @@ def users(request):
     context = { 'users' : users }
     return render(request, 'admin_panel/users.html', context)
 
+
+# Change User status Block / Unbloak
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 @user_passes_test(lambda u:u.is_superuser, login_url='admin_login')
 def user_status(request, id):
@@ -50,6 +58,8 @@ def user_status(request, id):
         user.save()
     return redirect('users')
 
+
+# Admin Logout
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 @user_passes_test(lambda u:u.is_superuser, login_url='admin_login')
 def admin_logout(request):
@@ -57,12 +67,15 @@ def admin_logout(request):
     return redirect('admin_login')
 
 
+# List Orders
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 @user_passes_test(lambda u: u.is_superuser, login_url='admin_login')
 def orders(request):
     order_items = OrdersItem.objects.all().order_by("order_id")
     return render(request, 'admin_panel/orders.html' , {'items' : order_items})
 
+
+# Detiled view of each Order
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 @user_passes_test(lambda u: u.is_superuser, login_url='admin_login')
 def view_order_details(request, id):

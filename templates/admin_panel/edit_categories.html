@@ -19,17 +19,18 @@
     <a href="{% url 'categories' %}" class="btn btn-danger btn-rounded h-50">Cancel</a>
 </div>
 
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">Update Existing Category</h5>
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Update Existing Category</h5>
 
         <!-- General Form Elements -->
-        <form method="POST">
+        <form method="POST" onsubmit="return validateForm()">
           {% csrf_token %}
             <div class="row mb-3">
               <label for="inputText" class="col-sm-2 col-form-label">Category Name</label>
               <div class="col-sm-10">
-                <input type="text" class="form-control" name='name' value={{cat.name}} required>
+                <input type="text" class="form-control" name='name' id="nameField" value="{{cat.name}}" required>
+                <span id="nameError" class="error-message text-danger mt-2"></span>
               </div>
             </div>
             <br><br>
@@ -39,14 +40,43 @@
                 <button type="submit" class="btn btn-primary">Update Category</button>
               </div>
             </div>
-
           </form><!-- End General Form Elements -->
-
         </div>
-      </div>
-
     </div>
+</div>
+</main>
 
+<script>
+    function validateForm() {
+      // Get the value of the "name" input field
+      var nameField = document.getElementById("nameField");
+      var nameValue = nameField.value;
+      
+      // Define a regular expression for alphanumeric characters
+      var alphaNumericRegex = /^[A-Za-z0-9]+$/;
 
-    </main><!-- End #main -->
+      // Validate the name
+      if (nameValue.length < 2) {
+        document.getElementById("nameError").textContent = "Name must be at least 2 characters long";
+        return false;
+      }  else if (nameValue.includes("  ")) {
+        document.getElementById("nameError").textContent = "Name cannot contain more than 2 consecutive spaces";
+        return false;
+      } else {
+        document.getElementById("nameError").textContent = ""; // Clear error message
+      }
+
+      // Additional validation for category name
+      var categoryNameRegex = /^[A-Za-z\s]{3,}$/;
+
+      // Validate the category name
+      if (!categoryNameRegex.test(nameValue)) {
+        document.getElementById("nameError").textContent = "Category name must contain at least 3 letters and cannot have 2 consecutive spaces";
+        return false;
+      }
+
+      return true;
+    }
+</script>
+
 {% endblock content %}

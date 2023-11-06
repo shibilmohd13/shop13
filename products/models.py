@@ -1,6 +1,8 @@
 from django.db import models
 # Create your models here.
 
+
+# Model for categories
 class Category(models.Model):
     name = models.CharField(max_length=50)
     is_listed = models.BooleanField(default=True)
@@ -9,6 +11,7 @@ class Category(models.Model):
         return self.name
 
 
+# Model for Brands
 class Brand(models.Model):
     name = models.CharField(max_length=50)
     is_listed = models.BooleanField(default=True)
@@ -17,6 +20,7 @@ class Brand(models.Model):
         return self.name
 
 
+# model for products
 class Product(models.Model):
     name = models.CharField(max_length=50)
     description = models.TextField()
@@ -26,7 +30,6 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
-
 
 
 # model for product variants 

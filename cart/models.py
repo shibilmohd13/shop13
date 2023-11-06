@@ -4,6 +4,8 @@ from products.models import *
 
 # Create your models here.
 
+
+# Cart Model
 class Cart(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     product = models.ForeignKey(ColorVarient, on_delete=models.CASCADE)

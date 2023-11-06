@@ -1,6 +1,6 @@
 {% extends 'admin_panel/admin_base.html' %}
 {% load static %}
-{% block title %} Add Varient{% endblock title %}
+{% block title %} Add Variant{% endblock title %}
 {% block products %}{% endblock products %}
 {% block content %}
 
@@ -8,13 +8,13 @@
 
   <div class="d-flex justify-content-between">
     <div class="pagetitle">
-        <h1>Add Varient</h1>
+        <h1>Add Variant</h1>
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item">Admin</li>
                 <li class="breadcrumb-item">Products</li>
-                <li class="breadcrumb-item ">Varients</li>
-                <li class="breadcrumb-item active">Add Varient</li>
+                <li class="breadcrumb-item ">Variants</li>
+                <li class="breadcrumb-item active">Add Variant</li>
             </ol>
         </nav>
     </div><!-- End Page Title -->
@@ -23,121 +23,65 @@
 
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title">Add a new Varient for the product</h5>
+                <h5 class="card-title">Add a new Variant for the product</h5>
 
         <!-- General Form Elements -->
-        <form action='' method='POST' enctype="multipart/form-data">
+        <form action='' method='POST' enctype="multipart/form-data" onsubmit="return validateForm()">
           {% csrf_token %}
             <div class="row mb-3">
               <label for="inputText" class="col-sm-2 col-form-label">Product Name</label>
               <div class="col-sm-10">
-                <input type="text" class="form-control" name="name" value="{{product.name}}" required disabled>
+                <input type="text" class="form-control" name="name" value="{{product.name}}" disabled>
               </div>
             </div>
             <div class="row mb-3">
               <label for="inputText" class="col-sm-2 col-form-label">Color</label>
               <div class="col-sm-10">
                 <input type="text" class="form-control" name="color" required>
+                <span id="colorError" class="error-message text-danger mt-2"></span>
               </div>
             </div>
             <div class="row mb-3">
               <label for="inputNumber" class="col-sm-2 col-form-label">Quantity</label>
               <div class="col-sm-10 col-md-4">
-                <input type="number" min="1" class="form-control" width="100px" name="quantity" required>
+                <input type="number" min="1" class="form-control" width="100px" name="quantity" >
+                <span id="quantityError" class="error-message text-danger mt-2"></span>
               </div>
-          </div>
+            </div>
             <div class="row mb-3">
                 <label for="inputNumber" class="col-sm-2 col-form-label">Price</label>
                 <div class="col-sm-10 col-md-4">
-                  <input type="number" min="1" class="form-control" width="100px" name="price" required>
+                  <input type="number" min="0.01" step="0.01" class="form-control" width="100px" name="price" >
+                  <span id="priceError" class="error-message text-danger mt-2"></span>
                 </div>
             </div>
             <div class="row mb-3">
                 <label for="inputNumber" class="col-sm-2 col-form-label">Discount</label>
                 <div class="col-sm-10 col-md-4">
-                  <input type="number" class="form-control" width="100px"  name="discount" required>
+                  <input type="number" min="0" max="99.99" step="0.01" class="form-control" width="100px"  name="discount" >
+                  <span id="discountError" class="error-message text-danger mt-2"></span>
                 </div>
             </div>
             <div class="row mb-3">
               <label for="inputNumber" class="col-sm-2 col-form-label">Discounted price</label>
               <div class="col-sm-10 col-md-4">
-                <input type="number" min="1" class="form-control" width="100px" name="discounted_price" required>
+                <input type="number" min="0.01" step="0.01" class="form-control" width="100px" name="discounted_price" >
+                <span id="discountedPriceError" class="error-message text-danger mt-2"></span>
               </div>
           </div>
-
-            {% comment %} <div class="row mb-3">
-                <label class="col-sm-2 col-form-label">Category</label>
-                <div class="col-sm-10">
-                  <select class="form-select" aria-label="Default select example" name="category" required>
-                    <option selected disabled required>Select Category</option>
-                    {% for item in cat %}
-                    <option value="{{item.id}}">{{item.name}}</option>
-                    {% endfor %}
-                  </select>
-                </div>
+          <div class="row mb-3">
+            <label for="inputNumber" class="col-sm-2 col-form-label">Images</label>
+            <div class="col-sm-10 col-md-4">
+              <input class="form-control" type="file" id="formFile" name="images" multiple >
+              <span id="imagesError" class="error-message text-danger mt-2"></span>
             </div>
-            <div class="row mb-3">
-                <label class="col-sm-2 col-form-label">Brand</label>
-                <div class="col-sm-10">
-                  <select class="form-select" aria-label="Default select example" name="brand" required>
-                    <option selected disabled required>Select Brand</option>
-                    {% for item in bnd %}
-                    <option value="{{item.id}}">{{item.name}}</option>
-                    {% endfor %}
-                  </select>
-                </div>
-            </div> {% endcomment %}
-            <div class="row mb-3">
-              <label for="inputNumber" class="col-sm-2 col-form-label">Images</label>
-              <div class="col-sm-10 col-md-4">
-                <input class="form-control" type="file" id="formFile" name="images" multiple>
-              </div>
           </div>
-
-{% comment %} 
-            <div class="row mb-3">
-              <label class="col-sm-2 col-form-label">Quantity</label>
-              <div class="col-sm-10">
-                  <div class="row">
-                      <div class="col-sm-6 col-md-3 mb-3">
-                          <label for="silverQuantity" class="mb-2">Silver</label>
-                          <input type="number" class="form-control" name="silver" min="0" >
-                      </div>
-                      <div class="col-sm-6 col-md-3 mb-3">
-                          <label for="goldQuantity" class="mb-2">Gold</label>
-                          <input type="number" class="form-control" name="gold" min="0" >
-                      </div>
-                      <div class="col-sm-6 col-md-3 mb-3">
-                          <label for="blackQuantity"  class="mb-2">Black</label>
-                          <input type="number" class="form-control" name="black" min="0" >
-                      </div>
-                      <div class="col-sm-6 col-md-3 mb-3">
-                          <label for="brownQuantity"  class="mb-2">Brown</label>
-                          <input type="number" class="form-control" name="brown" min="0">
-                      </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-sm-6 col-md-3 mb-3">
-                        <input class="form-control" type="file" id="formFile" name="images_silver" multiple>
-                    </div>
-                    <div class="col-sm-6 col-md-3 mb-3">
-                        <input class="form-control" type="file" id="formFile" name="images_gold" multiple>
-                    </div>
-                    <div class="col-sm-6 col-md-3 mb-3">
-                        <input class="form-control" type="file" id="formFile" name="images_black" multiple>
-                    </div>
-                    <div class="col-sm-6 col-md-3 mb-3">
-                        <input class="form-control" type="file" id="formFile" name="images_brown" multiple>
-                    </div>
-                </div>
-              </div>
-          </div> {% endcomment %}
 
           <br><br>
             <div class="row mb-3">
               <label class="col-sm-2 col-form-label">Submit</label>
               <div class="col-sm-10">
-                <button type="submit" class="btn btn-primary">Add Varient</button>
+                <button type="submit" class="btn btn-primary">Add Variant</button>
               </div>
             </div>
           
@@ -148,16 +92,90 @@
       </div>
 
     </div>
+</main>
 
+<script>
+  function validateForm() {
+    // Get the value of the "color" input field
+    var colorField = document.querySelector('input[name="color"]');
+    var colorValue = colorField.value;
 
-    </main><!-- End #main -->
+    // Define a regular expression for consecutive spaces
+    var consecutiveSpacesRegex = /  +/;
 
+    // Get the value of the "quantity" input field
+    var quantityField = document.querySelector('input[name="quantity"]');
+    var quantityValue = quantityField.value;
+
+    // Get the value of the "price" input field
+    var priceField = document.querySelector('input[name="price"]');
+    var priceValue = priceField.value;
+
+    // Get the value of the "discount" input field
+    var discountField = document.querySelector('input[name="discount"]');
+    var discountValue = discountField.value;
+
+    // Get the value of the "discounted price" input field
+    var discountedPriceField = document.querySelector('input[name="discounted_price"]');
+    var discountedPriceValue = discountedPriceField.value;
+
+    // Get the value of the "images" input field
+    var imagesField = document.querySelector('input[name="images"]');
+    var imagesValue = imagesField.files;
+
+    // Define a regular expression for alphabet or space
+    var alphaSpaceRegex = /^[A-Za-z\s]*$/;
+
+    // Validate the color
+    if (colorValue.trim().length < 3 || !alphaSpaceRegex.test(colorValue) || consecutiveSpacesRegex.test(colorValue)) {
+      document.getElementById("colorError").textContent = "Color must contain at least 3 alphabetical characters and cannot have consecutive spaces.";
+      return false;
+    } else {
+      document.getElementById("colorError").textContent = ""; // Clear error message
+    }
+
+    // Validate the quantity
+    if (quantityValue < 0) {
+      document.getElementById("quantityError").textContent = "Quantity must be a positive number.";
+      return false;
+    } else {
+      document.getElementById("quantityError").textContent = ""; // Clear error message
+    }
+
+    // Validate the price
+    if (priceValue <= 0) {
+      document.getElementById("priceError").textContent = "Price must be greater than 0.";
+      return false;
+    } else {
+      document.getElementById("priceError").textContent = ""; // Clear error message
+    }
+
+    // Validate the discount
+    if (discountValue < 0 || discountValue >= 100) {
+      document.getElementById("discountError").textContent = "Discount must be a positive number less than 100.";
+      return false;
+    } else {
+      document.getElementById("discountError").textContent = ""; // Clear error message
+    }
+
+    // Validate the discounted price
+    if (discountedPriceValue <= 0) {
+      document.getElementById("discountedPriceError").textContent = "Discounted price must be greater than 0.";
+      return false;
+    } else {
+      document.getElementById("discountedPriceError").textContent = ""; // Clear error message
+    }
+
+    // Validate the images
+    if (imagesValue.length === 0) {
+      document.getElementById("imagesError").textContent = "Please choose at least one image.";
+      return false;
+    } else {
+      document.getElementById("imagesError").textContent = ""; // Clear error message
+    }
+
+    return true;
+  }
+</script>
 
 {% endblock content %}
-
-  
-  
-  
-  
-  
-  

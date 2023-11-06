@@ -5,13 +5,16 @@ from django.contrib.auth import authenticate
 
 # Create your views here.
 
+
+# View for user profile
 def profile(request):
-    print(request.user)
     email = request.session['email']
     user = CustomUser.objects.get(email=email)
     user_data = Address.objects.filter(user=user,is_present=True)
     return render(request, 'user_profile/profile.html',{'user_data' : user_data})
 
+
+# Update profile details
 def update_profile(request):
     if request.method == 'POST':
         email = request.session['email']
@@ -31,6 +34,8 @@ def update_profile(request):
 
     return redirect('profile')
 
+
+# change the password
 def change_password(request):
     if request.method == 'POST':
         email = request.session['email']
@@ -55,10 +60,11 @@ def change_password(request):
             messages.error(request, "NOt same")
             return redirect('profile')
 
+
+# Add address from the User profile
 def add_address(request):
     email = request.session['email']
     user = CustomUser.objects.get(email=email)
-    
     name = request.POST['name']
     phone = request.POST['phone']
     street_address = request.POST['street_address']
@@ -79,6 +85,8 @@ def add_address(request):
                 
     return redirect('profile')
 
+
+# Edit address from the user Profile
 def edit_address(request, id):
     address = Address.objects.get(id=id)
 
