@@ -1,5 +1,5 @@
 from multiprocessing import reduction
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 import uuid
 from userlogin.models import CustomUser
 from orders.models import *
@@ -14,7 +14,6 @@ def orders(request):
         user = CustomUser.objects.get(email=email)
         orders = Orders.objects.filter(user=user)
         order_items = OrdersItem.objects.filter(order__in=orders)
-
     return render(request, "home/orders.html", {'order_items': order_items})
 
 
@@ -25,4 +24,13 @@ def view_orders(request):
     context= {
         "current_order" : current_order
     }
-    return render(request, 'home/view_order.html', context)
+    return render(request, 'home/order_success.html', context)
+
+
+def cancel_order(request, id):
+    order = OrdersItem.objects.get(id=id)
+    order.status = "Cancelled"
+    order.variant.quantity += order.quantity
+    order.save()
+    order.variant.save()
+    return redirect('orders')

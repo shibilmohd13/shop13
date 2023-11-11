@@ -1,3 +1,4 @@
+from cart.models import Cart
 from products.models import *
 from userlogin.models import *
 
@@ -12,3 +13,11 @@ def navbar_elements(request):
         return {'users' : user, 'categories_nav' : categories_nav , 'brands_nav' : brands_nav, 'user_obj' : user_obj}
     except:
         return {'users' : 'Login Now', 'categories_nav' : categories_nav , 'brands_nav' :brands_nav}
+
+def cart_count_badge(request):
+    count = 0
+    if 'email' in request.session:
+        email = request.session['email']
+        user = CustomUser.objects.get(email=email)
+        count = Cart.objects.filter(user=user).count()
+    return {'cart_count' : count}

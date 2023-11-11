@@ -25,7 +25,7 @@
         <div class="row detail_1">
             <div class="col-md-6">
                 <div class="detail_1l">
-                    <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
+                    <div id="carouselExampleCaptions" class="carousel slide " >
                         
                         <div class="carousel-indicators">
                             {% for i in item.productimage_set.all %}
@@ -34,11 +34,11 @@
                             {% endfor %}
                         </div>
 
-                        <div class="carousel-inner">
+                        <div class="carousel-inner main-image">
                             {% for i in item.productimage_set.all %}
                             <div class="carousel-item {% if forloop.last %} active{% endif %}">
                                 <center>
-                                <img src="{{i.image.url}}" class="d-block " height='500px' alt="abc">
+                                <img src="{{i.image.url}}" class="d-block " height='500px' alt="abc" id="main-img-{{forloop.counter0}}">
                                 </center>
                             </div>
                             {% endfor %}
@@ -88,7 +88,7 @@
                     <div class="d-flex f-row">
 
                     {% if item.quantity == 0 %}
-                    <h6 class="text-uppercase ms-1 mt-4"><button class="button border-0 bg-secondary" href="#" id="addtocart">Add to Cart</button></h6>
+                    <h6 class="text-uppercase ms-1 mt-4"><button class="button border-0 bg-secondary" href="#" id="addtocart" disabled>Add to Cart</button></h6>
                     {% else %}
                     <h6 class="text-uppercase ms-1 mt-4"><button class="button border-0 bg-warning" href="#" id="addtocart">Add to Cart</button></h6>
                     {% endif %}
@@ -145,6 +145,8 @@
                           text: 'Your item has been added to the cart.',
                           icon: 'success',
                         });
+                        // Update the cart count badge
+                        $('#cart-count-badge').text(response.cart_count);
                       } else {
                         Swal.fire({
                           title: 'Error',
@@ -186,14 +188,16 @@
                     // Create and append new carousel items based on the image URLs
                     imageUrls.forEach(function (imageUrl, index) {
                         var isActive = index === 0 ? 'active' : '';
+                        var id = `main-img-${index}`;
                         var carouselItem = `
                             <div class="carousel-item ${isActive}">
                                 <center>
-                                    <img src="${imageUrl}" class="d-block" height="500px" alt="abc">
+                                    <img src="${imageUrl}" class="d-block" height="500px" alt="abc" id="${id}">
                                 </center>
                             </div>`;
                         $('.carousel-inner').append(carouselItem);
                     });
+                    
 
                     // Assume you have a new product ID from a response, e.g., from an API call
                     var newProductId = response.id;
@@ -222,7 +226,108 @@
     });
 </script>
 
+<script>
+    // Zoom 0
+  {
+  const mainImage = document.querySelector('.main-image');
+  const img = document.getElementById('main-img-0');
+  
+  mainImage.addEventListener('mousemove', zoomIn);
+  mainImage.addEventListener('mouseleave', zoomOut);
+  
+  function zoomIn(event) {
+    const boundingRect = mainImage.getBoundingClientRect();
+    const mouseX = event.clientX - boundingRect.left;
+    const mouseY = event.clientY - boundingRect.top;
+  
+    const offsetX = (mouseX / boundingRect.width) * 100;
+    const offsetY = (mouseY / boundingRect.height) * 100;
+  
+    img.style.transformOrigin = `${offsetX}% ${offsetY}%`;
+    img.style.transform = 'scale(2)'; // Adjust the scale factor as desired
+  }
+  
+  function zoomOut() {
+    img.style.transform = 'scale(1)';
+  }
+  }
+  
+  // Zoom 1
+  {
+  const mainImage1 = document.querySelector('.main-image');
+  const img1 = document.getElementById('main-img-1');
+  
+  mainImage1.addEventListener('mousemove', zoomIn1);
+  mainImage1.addEventListener('mouseleave', zoomOut1);
+  
+  function zoomIn1(event) {
+    const boundingRect1 = mainImage1.getBoundingClientRect();
+    const mouseX1 = event.clientX - boundingRect1.left;
+    const mouseY1 = event.clientY - boundingRect1.top;
+  
+    const offsetX1 = (mouseX1 / boundingRect1.width) * 100;
+    const offsetY1 = (mouseY1 / boundingRect1.height) * 100;
+  
+    img1.style.transformOrigin = `${offsetX1}% ${offsetY1}%`;
+    img1.style.transform = 'scale(2)'; // Adjust the scale factor as desired
+  }
+  
+  function zoomOut1() {
+    img1.style.transform = 'scale(1)';
+  }
+  }
+  
+  // Zoom 2
+  {
+  const mainImage2 = document.querySelector('.main-image');
+  const img2 = document.getElementById('main-img-2');
+  
+  mainImage2.addEventListener('mousemove', zoomIn2);
+  mainImage2.addEventListener('mouseleave', zoomOut2);
+  
+  function zoomIn2(event) {
+    const boundingRect2 = mainImage2.getBoundingClientRect();
+    const mouseX2 = event.clientX - boundingRect2.left;
+    const mouseY2 = event.clientY - boundingRect2.top;
+  
+    const offsetX2 = (mouseX2 / boundingRect2.width) * 100;
+    const offsetY2 = (mouseY2 / boundingRect2.height) * 100;
+  
+    img2.style.transformOrigin = `${offsetX2}% ${offsetY2}%`;
+    img2.style.transform = 'scale(2)'; // Adjust the scale factor as desired
+  }
+  
+  function zoomOut2() {
+    img2.style.transform = 'scale(1)';
+  }
+  }
+  
+  // Zoom 3
+  {
+  const mainImage3 = document.querySelector('.main-image');
+  const img3 = document.getElementById('main-img-3');
+  
+  mainImage3.addEventListener('mousemove', zoomIn3);
+  mainImage3.addEventListener('mouseleave', zoomOut3);
+  
+  function zoomIn3(event) {
+    const boundingRect3 = mainImage3.getBoundingClientRect();
+    const mouseX3 = event.clientX - boundingRect3.left;
+    const mouseY3 = event.clientY - boundingRect3.top;
+  
+    const offsetX3 = (mouseX3 / boundingRect3.width) * 100;
+    const offsetY3 = (mouseY3 / boundingRect3.height) * 100;
+  
+    img3.style.transformOrigin = `${offsetX3}% ${offsetY3}%`;
+    img3.style.transform = 'scale(2)'; // Adjust the scale factor as desired
+  }
+  
+  function zoomOut3() {
+    img3.style.transform = 'scale(1)';
+  }
+  }
+  
+  </script>
 
-    </script>
-  {% endblock scripts %}
+{% endblock scripts %}
 

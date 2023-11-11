@@ -29,6 +29,7 @@ urlpatterns = [
     path('accounts/',include("allauth.urls")),
     path('profile/',include("user_profile.urls")),
     path('orders/',include('orders.urls')),
+    path('wallet/',include('wallet.urls')),
     
 ]
 

@@ -22,6 +22,7 @@
     <div class="row center_o1 text-center">
       <div class="col-md-12">
         <h1>MY ORDERS</h1>
+
       </div>
     </div>
   </div>
@@ -53,13 +54,48 @@
           <td>{{order.quantity}}</td>
           <td>{{order.total_price}}</td>
           {% comment %} <td><a class="btn btn-sm btn-outline-secondary">View Order<a></td> {% endcomment %}
-          <td><span class="badge text-warning">{{order.status}}<span></td>
-          <td><a class="btn btn-sm btn-outline-danger">Cancel Order<a></td>
+          <td><span class="badge {% if order.status == "Cancelled" %}text-danger {% elif order.status == "Delivered" %} text-success {% elif order.status == "Order confirmed" %} text-warning {% else %}text-primary{% endif %}">{{order.status}}<span></td>
+          {% if order.status == "Cancelled" %}
+          <td><a href="../product_details/{{order.variant.id}}" class="btn btn-sm btn-outline-primary">View Product<a></td>
+          {% elif order.status == "Delivered" %}
+          <td><a href="" class="btn btn-sm btn-outline-secondary">Return Order<a></td>
+          {% else %}
+          <td><a href="#deleteAddress-{{forloop.counter}}" class="delete btn btn-sm btn-outline-danger" data-toggle="modal">Cancel Order<a></td>
+          {% endif %}
         </tr>
         {% endfor %}
       </tbody>
     </table>
+
+    {% comment %} Cancel Modal {% endcomment %}
+    {% for order in order_items %}
+    <div id="deleteAddress-{{forloop.counter}}" class="modal fade">
+      <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+              <div class="modal-header">						
+                  <h4 class="modal-title">Cancel Order!</h4>
+                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+              </div>
+              <div class="modal-body">					
+                  <p>Are you sure to Cancel this Order?</p>
+                  <p class="text-warning"><small>{{order.variant.product.name}}, {{order.variant.color}}</small></p>
+              </div>
+              <div class="modal-footer">
+                  <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+                  <a href="cancel_order/{{order.id}}" type="submit" class="btn btn-danger">Cancel Order</a>
+              </div>
+          </div>
+      </div>
+  </div>
+  {% endfor %}
+
   </div>
 </section>
 
 {% endblock %}
+{% block scripts %}
+
+<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.bundle.min.js"></script>
+
+{% endblock scripts %}

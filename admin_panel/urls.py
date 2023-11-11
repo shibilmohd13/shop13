@@ -9,4 +9,5 @@ urlpatterns = [
     path('admin_logout',views.admin_logout, name='admin_logout'),
     path('orders',views.orders, name='admin_orders'),
     path('view_order_details/<str:id>', views.view_order_details,name="view_order_details"),
+    path('change_order_status/<str:id>', views.change_order_status,name="change_order_status"),
 ]

@@ -6,6 +6,7 @@ from orders.models import Orders,OrdersItem
 from django.http import JsonResponse,HttpResponse
 from django.utils import timezone  # Import timezone module
 from datetime import timedelta
+import razorpay
 
 # Create your views here.
 
@@ -44,7 +45,9 @@ def addtocart(request):
                     if product_check.quantity >= prod_qty:
                         product = ColorVarient.objects.get(id=prod_id)
                         Cart.objects.create(user=user, product=product, prod_quantity=prod_qty, cart_price=product.discounted_price, created_at=timezone.now())
-                        return JsonResponse({'status' : "Product added successfully",'success' : True})
+                        cart_count = Cart.objects.filter(user=user).count()
+                        print(f"Cart s ajax count: {cart_count}")
+                        return JsonResponse({'status' : "Product added successfully",'success' : True, "cart_count" : cart_count})
                     else:
                         return JsonResponse({'status' : f"Only {str(product_check.quantity)} Quantity available"})
             else:
@@ -82,9 +85,7 @@ def update_cart(request):
             change = int(request.POST.get('change'))
             variant_id = request.POST.get('variantId')
             varient_obj = ColorVarient.objects.get(id=variant_id)
-            quantity = request.POST.get('quantity')
-            print(varient_obj)
-            print(user)            
+          
             cart = Cart.objects.get(user=use, product=varient_obj)
 
             if change == 1:
@@ -96,8 +97,7 @@ def update_cart(request):
                     else:
                         cart.prod_quantity = 10
                         cart.save()
-                else:
-                    pass
+                
             else:
                 if cart.prod_quantity > 1:
                     cart.prod_quantity -= 1
@@ -124,13 +124,15 @@ def update_cart(request):
 
 # View checkout page
 def checkout(request):
-    email = request.session['email']
-    user = CustomUser.objects.get(email=email)
-    address = Address.objects.filter(user=user,is_present=True)
-    cart_items = Cart.objects.filter(user=user)
-    total = sum(cart_items.values_list('cart_price',flat=True))
+    if 'email' in request.session:
+        email = request.session['email']
+        user = CustomUser.objects.get(email=email)
+        address = Address.objects.filter(user=user,is_present=True)
+        cart_items = Cart.objects.filter(user=user)
+        total = sum(cart_items.values_list('cart_price',flat=True))
 
-    return render(request, "cart/checkout.html" , {'addresses' : address , 'cart_items' : cart_items , 'total' : total})
+        return render(request, "cart/checkout.html" , {'addresses' : address , 'cart_items' : cart_items , 'total' : total})
+    return redirect('signin')
 
 
 # Add address view in checkout
@@ -253,3 +255,26 @@ def place_order(request):
 
     return JsonResponse({"error": 'User not authenticated'})
 
+
+client = razorpay.Client(auth=("rzp_test_364uDI7fwiadCE", "ePLDxAKYVU5LybscC7YNuTqL"))
+
+def place_order_razorpay(request):
+    email = request.session['email']
+    user = CustomUser.objects.get(email=email)
+    print(user)
+    cart = Cart.objects.filter(user=user)
+    cart_total = 0
+    for item in cart :
+        cart_total += (item.product.discounted_price * item.prod_quantity)
+    
+    print(client)
+    data = { "amount": cart_total, "currency": "INR" }
+    print(data)
+    payment = client.order.create(data=data)
+    
+
+    
+
+    return JsonResponse({
+        'total_price' : cart_total, "success" : True, 'payment' : payment,'payment_id': payment['id']
+    })

@@ -81,3 +81,19 @@
   </div>
 </section>
 {% endblock %}
+
+{% block scripts %}
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Trigger SweetAlert when the page loads
+    Swal.fire({
+      icon: 'success',
+      title: 'Order Placed Successfully!',
+      text: 'Thank you for your order.',
+      confirmButtonText: 'OK',
+    });
+  });
+</script>
+
+{% endblock scripts %}

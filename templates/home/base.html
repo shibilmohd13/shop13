@@ -20,7 +20,22 @@
   <script src="https://kit.fontawesome.com/d059fb7515.js" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-
+  <style>
+    .cart-count-badge {
+      position: absolute;
+      top: 18px;
+      margin-left:18px;
+      background: #ff0000;
+      color: #fff;
+      border-radius: 50%;
+      padding: 3px 9px;
+      font-size: 12px;
+  }
+  .fa-cart-shopping{
+    position:relative !important;
+  }
+  
+  </style>
 
 </head>
 
@@ -56,7 +71,9 @@
                 <a href="#"><i class="fa-solid fa-heart header-icons" style="color: #f7ba01;"></i></a>
               </li>
               <li class="nav-item  d-inline-block font_13 me-2">
-                <a class="text-light" href="{% url "cart" %}"><i class="fa-solid fa-cart-shopping header-icons" style="color: #f7ba01 ;"></i></a>
+                <a class="text-light" href="{% url "cart" %}"><i class="fa-solid fa-cart-shopping header-icons" style="color: #f7ba01 ;"></i>
+                  <div class="cart-count-badge" id="cart-count-badge">{{cart_count}}</div>
+                </a>
               </li>
               <li class="nav-item  d-inline-block font_13 border-0 d-flex f-row">
             <a class="nav-link dropdown-toggle p-0 text-black d-flex f-row align-items-center" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
@@ -82,9 +99,14 @@
                     My orders</a>
                 </li>
                 <li>
+                  <a class="dropdown-item" href="{% url "wallet" %}"><i class="fa fa-caret-right me-1 col_yell"></i>
+                    My Wallet</a>
+                </li>
+                <li>
                   <a class="dropdown-item border-0" href="{% url 'logout' %}"><i class="fa fa-caret-right me-1 col_yell"></i>
                     Logout</a>
                 </li>
+
                 {% endif %}
               </ul>
               </li>

@@ -173,8 +173,12 @@
           <label class="form-check-label" for="customCheck1">Check Payments</label>
       </div> {% endcomment %}
            <div class="form-check mt-2">
-          <input type="radio" class="form-check-input" id="customCheck1" value="COD" name="payment" checked>
-          <label class="form-check-label" for="customCheck1">Cash On Delivery</label>
+            <input type="radio" class="form-check-input" id="customCheck1" value="COD" name="payment" checked>
+            <label class="form-check-label" for="customCheck1">Cash On Delivery</label><br>
+            <input type="radio" class="form-check-input" id="customCheck2" value="razorpay" name="payment" >
+            <label class="form-check-label" for="customCheck1">Razorpay</label><br>
+            <input type="radio" class="form-check-input" id="customCheck3" value="wallet" name="payment" >
+            <label class="form-check-label" for="customCheck1">Wallet</label>
       </div>
            {% comment %} <div class="form-check mt-2">
           <input type="radio" class="form-check-input" id="customCheck1">
@@ -190,53 +194,130 @@
 
   {% endblock content %}
   {% block scripts %}
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-<script type="text/javascript">
-    $(document).ready(function () {
-        $('#placeOrderButton').click(function (event) {
-            event.preventDefault();
+  <script type="text/javascript">
+      $(document).ready(function () {
+          $('#placeOrderButton').click(function (event) {
+              event.preventDefault();
+  
+              // Get the selected address ID
+              var selectedAddress = $("input[name='selected_address']:checked").val();
+              // Get the selected payment method
+              var selectedPayment = $("input[name='payment']:checked").val();
+  
+              // Get the CSRF token from a hidden input field
+              var csrfToken = $("input[name='csrfmiddlewaretoken']").val();
+  
+              // Make sure both address and payment method are selected
+              if (selectedAddress && selectedPayment) {
+                  // Create a data object to send in the request
+                  var data = {
+                      selected_address: selectedAddress,
+                      payment: selectedPayment,
+                      csrfmiddlewaretoken: csrfToken, // Include the CSRF token
+                  };
+                  
+                  if (selectedPayment === 'razorpay') {
+                    // Send the AJAX request
+                    $.ajax({
+                        type: 'GET',
+                        url: 'place_order_razorpay',
+                        success: function (response) {
+                            if (response.success){
+                                var options = {
+                                    "key": "rzp_test_364uDI7fwiadCE", // Enter the Key ID generated from the Dashboard
+                                    "amount": response.total_price * 100  / 1000 , // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+                                    "currency": "INR",
+                                    "name": "SHOP13",
+                                    "description": "Online Payment",
+                                    "image": "https://img.goodfon.com/wallpaper/big/e/a5/13-tsifry-chislo.jpg",
+                                    "order_id": response.payment_id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+                                    "handler": function (responseb){
+                                        // alert(responseb.razorpay_order_id);
+                                        // alert(responseb.razorpay_payment_id);
+                                        // alert(responseb.razorpay_signature)
+                                        var data = {
+                                            selected_address: selectedAddress,
+                                            payment: selectedPayment,
+                                            csrfmiddlewaretoken: csrfToken, // Include the CSRF token
+                                            payment_id : responseb.razorpay_payment_id ,
+                                        };
+                                        $.ajax({
+                                            type: 'POST',
+                                            url: 'place_order',
+                                            data: data,
+                                            success: function (responsec) {
+                                                if (responsec.success){
+                                                  window.location.href = '../orders/view_order'
 
-            // Get the selected address ID
-            var selectedAddress = $("input[name='selected_address']:checked").val();
-            // Get the selected payment method
-            var selectedPayment = $("input[name='payment']:checked").val();
-
-            // Get the CSRF token from a hidden input field
-            var csrfToken = $("input[name='csrfmiddlewaretoken']").val();
-
-            // Make sure both address and payment method are selected
-            if (selectedAddress && selectedPayment) {
-                // Create a data object to send in the request
-                var data = {
-                    selected_address: selectedAddress,
-                    payment: selectedPayment,
-                    csrfmiddlewaretoken: csrfToken, // Include the CSRF token
-                };
-
-                // Send the AJAX request
-                $.ajax({
-                    type: 'POST',
-                    url: 'place_order',
-                    data: data,
-                    success: function (response) {
-                        if (response.success){
-                            window.location.href = '../orders/view_order'
+                                                }
+                                                else{
+                                                    alert('Error :' + responsec.message)
+                                                }
+                                            }
+                        
+                                        });
+                                    },
+                                    "prefill": {
+                                        "name": "",
+                                        "email": "",
+                                        "contact": ""
+                                    },
+                                    "notes": {
+                                        "address": "Razorpay Corporate Office"
+                                    },
+                                    "theme": {
+                                        "color": "#3399cc"
+                                    }
+                                };
+                                var rzp1 = new Razorpay(options);
+                                 rzp1.on('payment.failed', function (response){
+                                     alert(response.error.code);
+                                       
+                                 });
+                                rzp1.open()
+                            }
+                            else{
+                                alert('Error' + response.message)
+                            }
                         }
-                        else{
-                            alert('Error' + response.message)
-                        }
-                        }
+    
+                    });
+                } else if (selectedPayment === 'COD') {
+                    // Send the AJAX request
+                    $.ajax({
+                        type: 'POST',
+                        url: 'place_order',
+                        data: data,
+                        success: function (response) {
+                            if (response.success){
+                                
+                                console.log("Placing order")
 
-                });
-            } else {
-                alert("Please select an address and payment method.");
-            }
-        });
-    });
-</script>
+                              window.location.href = '../orders/view_order'
+                            }
+                            else{
+                                alert('Error' + response.message)
+                            }
+                        }
+    
+                    });
+                }
+              } else {
+                  alert("Please select an address and payment method.");
+              }
+          });
+      });
+  </script>
 
-</script>
+
+
+
+
+
   {% endblock scripts %}
 
   

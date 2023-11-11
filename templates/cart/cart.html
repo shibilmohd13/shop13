@@ -106,6 +106,16 @@
           </div>
         </div>
         {% endfor %}
+        {% if not cart_items %}
+        <div class="empty-cart-message">
+          <center>
+            <img src="{% static 'home/image/empty-cart.svg' %} " height="100px" class="my-3 opacity-75">
+            <h2 class="cart-heading" >Your Cart is Empty</h2>
+            <p class="cart-subheading text-secondary">There are no items in your cart. <br> Add items to the cart</p>
+            <a href="{% url "shop" %}" class="btn btn-warning rounded-0 shop-now-btn text-light fw-bold px-4 py-2">SHOP NOW</a>
+          </center>
+        </div>
+        {% endif %}
       </form>
       </div>
       <div class="col-md-4">
@@ -126,9 +136,15 @@
             <h6 class="head_1">TOTAL</h6>
             <h5 class="text-center col_yell mt-3 total_price">&#8377;{{total}}</h5>
             <hr />
+            {% if cart_items %}
             <h6 class="text-center mt-3">
               <a class="button" href='{% url "checkout" %}'>PROCEED TO CHECKOUT</a>
             </h6>
+            {% else %}
+            <h6 class="text-center mt-3">
+              <div class="button bg-secondary">PROCEED TO CHECKOUT</div>
+            </h6>
+            {% endif %}
             <br />
           </div>
       </div>

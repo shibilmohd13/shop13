@@ -43,7 +43,6 @@ def get_color_variant_details(request, id):
             'quantity': color_variant.quantity,
             'id': color_variant.id,
             'image_urls': image_urls # Get image URLs
-
         }
         return JsonResponse(data)
     except ColorVarient.DoesNotExist:

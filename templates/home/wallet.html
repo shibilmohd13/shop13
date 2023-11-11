@@ -1,0 +1,197 @@
+{% extends 'home/base.html' %}
+{% load static %}
+{% block title %}Wallet{% endblock title %}
+{% block css %}<link href="{% static 'home/css/about.css' %}" rel="stylesheet" />
+<style>
+  
+
+    .wallet-container {
+      margin-top: 50px;
+    }
+
+    .balance-section {
+      background-color: #1D4289;
+      color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      {% comment %} box-shadow: 0px 0px 6px  black; {% endcomment %}
+    
+    }
+
+    .history-list {
+      background-color: #fff;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 20px;
+    }
+    .add_button{
+        width:180px;
+    }
+    
+</style>
+
+{% endblock css %}
+
+
+{% block content %}
+  
+  <section id="center" class="center_o pt-4 pb-4 bg-light">
+    <div class="container-xl">
+      <div class="row center_o1 text-center">
+       <div class="col-md-12">
+         <h1>MY WALLET</h1>
+       </div>
+      </div>
+    </div>
+  </section>
+  
+  
+<div class="container">
+  <div class="container wallet-container ">
+    <div class="row justify-content-center">
+      <!-- Balance Section -->
+      <div class="col-10 mb-5">
+        <div class="balance-section d-flex justify-content-between align-items-center">
+          <div >
+              <p>Wallet Balance</p>
+              <h1>&#8377;{{balance}}</h1>
+          </div>
+          <div >
+              <label>Add Amount to Wallet : </label>
+              {% csrf_token %}
+              <div class="d-flex align-items-center">
+                  <input type="number" class="form-control rounded-left">
+                  <button class="btn btn-warning add-to-wallet-btn add_button rounded-right">Add Amount</button>
+              </div>
+              
+          </div>
+          <!-- Add more balance-related information or actions here -->
+        </div>
+      </div>
+  
+      <!-- History List Section -->
+      
+      <div class="col-lg-12 ">
+          
+          <center>
+        <div class="history-list col-10 mb-5">
+          <table class="table">
+            <h4>Payment History</h4>
+              <thead>
+                
+                <tr>
+                  <th>Date</th>
+                  <th>Time</th>
+                  <th>Payment Details</th>
+                  <th>Payment Type</th>
+                  <th>Amount</th>
+                  <th>Balance</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for item in wallet %}
+                <tr>
+                  <td>{{item.date.date}}</td>
+                  <td>{{item.date.time}}</td>
+                  <td>{{item.transaction_details}}</td>
+                  <td class= "fw-bold {% if item.transaction_type == 'Credit' %}text-success{% else %}text-danger{% endif %}">{{item.transaction_type}}</td>
+                  <td>{{item.amount}}</td>
+                  <td>{{item.balance}}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+        </div>
+      </center>
+      
+      </div>
+    </div>  
+  </div>
+</div>
+
+  
+  {% endblock content %}
+
+  {% block scripts %}
+  <!-- Your existing code here -->
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+  <script>
+    
+    $(document).ready(function () {
+      $(".add-to-wallet-btn").click(function () {
+        // Get the entered amount
+        var amount = $("input[type='number']").val();
+
+        var csrfToken = $("input[name='csrfmiddlewaretoken']").val();
+
+        // Validate the amount
+        if (
+          amount &&
+          !isNaN(amount) &&
+          parseFloat(amount) > 0 &&
+          /^[0-9]+$/.test(amount) &&
+          parseFloat(amount) <= 100000
+        ) {
+          // AJAX request to send the amount to the server
+          $.ajax({
+            type: "POST",
+            url: "add_to_wallet",  // Replace with the actual URL for your add amount view
+            data: { amount: amount,
+              csrfmiddlewaretoken: csrfToken, // Include the CSRF token
+             },
+            success: function (data) {
+              // Handle success response
+              console.log("Amount added successfully:", data);
+              // You can update the UI or perform additional actions here
+              var options = {
+                "key": "rzp_test_364uDI7fwiadCE", // Enter the Key ID generated from the Dashboard
+                "amount": data.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+                "currency": "INR",
+                "name": "Acme Corp",
+                "description": "Test Transaction",
+                "image": "https://example.com/your_logo",
+                "order_id": data.payment_id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+                "handler": function (response){
+                    window.location.href= "../wallet/update_wallet"
+                  
+                },
+                "prefill": {
+                    "name": "Gaurav Kumar",
+                    "email": "gaurav.kumar@example.com",
+                    "contact": "9000090000"
+                },
+                "notes": {
+                    "address": "Razorpay Corporate Office"
+                },
+                "theme": {
+                    "color": "#3399cc"
+                }
+            };
+            var rzp1 = new Razorpay(options);
+            rzp1.on('payment.failed', function (response){
+                    alert(response.error.code);
+                    alert(response.error.description);
+                    alert(response.error.source);
+                    alert(response.error.step);
+                    alert(response.error.reason);
+                    alert(response.error.metadata.order_id);
+                    alert(response.error.metadata.payment_id);
+            });
+            rzp1.open();
+            },
+            error: function (xhr, status, error) {
+              // Handle error response
+              console.log("Error adding amount:", error);
+            },
+          });
+        } else {
+          // Display an error message or perform other actions for invalid input
+          alert("Invalid amount entered");
+        }
+      });
+    });
+  </script>
+
+  {% endblock scripts %}

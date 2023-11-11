@@ -82,3 +82,21 @@ def view_order_details(request, id):
     obj = OrdersItem.objects.get(id=id)
     print(obj)
     return render(request,'admin_panel/order_details.html',{'obj':obj})
+
+
+
+# Change order status
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@user_passes_test(lambda u: u.is_superuser, login_url='admin_login')
+def change_order_status(request, id):
+    order = OrdersItem.objects.get(id=id)
+    status = request.POST.get('btnradio')
+    if status == "Cancelled":
+        order.status = status
+        order.variant.quantity += order.quantity
+        order.save()
+        order.variant.save() 
+    else:
+        order.status = status
+        order.save()
+    return redirect('view_order_details',id=id)

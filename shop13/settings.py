@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'cart',
     'user_profile',
     'orders',
+    'wallet',
 
     'allauth',
     'allauth.account',
@@ -93,10 +94,12 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'home.context_processors.navbar_elements',
+                'home.context_processors.cart_count_badge'
             ],
         },
     },
 ]
+
 
 WSGI_APPLICATION = 'shop13.wsgi.application'
 
@@ -191,3 +194,5 @@ AUTHENTICATION_BACKENDS = (
 
 LOGIN_DIRECT_URL = '/'
 LOGOUT_REDIRECT_URL ='/'
+
+SECURE_CROSS_ORIGIN_OPENER_POLICY = "same-origin-allow-popups"
