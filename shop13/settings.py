@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'user_profile',
     'orders',
     'wallet',
+    'coupons',
 
     'allauth',
     'allauth.account',

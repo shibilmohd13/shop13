@@ -90,14 +90,9 @@ def update_cart(request):
             cart = Cart.objects.get(user=use, product=varient_obj)
 
             if change == 1:
-
                 if varient_obj.quantity > cart.prod_quantity:
-                    if cart.prod_quantity < 10:
-                        cart.prod_quantity += 1
-                        cart.save()
-                    else:
-                        cart.prod_quantity = 10
-                        cart.save()
+                    cart.prod_quantity += 1
+                    cart.save()
                 
             else:
                 if cart.prod_quantity > 1:

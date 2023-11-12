@@ -1,0 +1,180 @@
+{% extends 'admin_panel/admin_base.html' %}
+{% load static %}
+{% block title %} Edit Coupons{% endblock title %}
+{% block coupons %}{% endblock coupons %}
+{% block content %}
+
+<main id="main" class="main">
+    <div class="d-flex justify-content-between">
+        <div class="pagetitle">
+            <h1>Edit Coupons</h1>
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">Admin</li>
+                    <li class="breadcrumb-item">Coupons</li>
+                    <li class="breadcrumb-item active">Edit Coupons</li>
+                </ol>
+            </nav>
+        </div><!-- End Page Title -->
+        <a href="{% url 'coupons' %}" class="btn btn-danger btn-rounded h-50">Cancel</a>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Edit a Existing Coupon</h5>
+            <!-- General Form Elements -->
+            <form method='POST' id="couponForm">
+                {% csrf_token %}
+
+                <div class="row mb-3">
+                    <label for="inputText" class="col-sm-2 col-form-label">Coupon Name</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" name='name' value='{{coupon.name}}' required>
+                        <span class="error-message" id="coupon-name-error"></span>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <label for="inputText" class="col-sm-2 col-form-label">Coupon Code</label>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" name='code' value='{{coupon.code}}' required>
+                        <span class="error-message" id="coupon-code-error"></span>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <label for="inputText" class="col-sm-2 col-form-label">Discount Type</label>
+                    <div class="col-sm-6">
+                        <select class="form-control" id="discount" name="type">
+                            <option value="flat" {% if coupon.discount_type == 'flat' %} selected{% endif %}>Flat</option>
+                            <option value="percentage"  {% if coupon.discount_type == 'percentage' %} selected{% endif %}>Percentage</option>
+                        </select>
+                        <span class="error-message" id="discount-type-error"></span>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <label for="inputText" class="col-sm-2 col-form-label">Discount Value</label>
+                    <div class="col-sm-4">
+                        <input type="number" class="form-control" name='discount_value' value='{{coupon.discount_value}}' required>
+                        <span class="error-message" id="discount-value-error"></span>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <label for="inputText" class="col-sm-2 col-form-label">Min. Purchase</label>
+                    <div class="col-sm-6">
+                        <input type="number" class="form-control" name='min_purchase' value='{{coupon.minimum_purchase}}'>
+                        <span class="error-message" id="min-purchase-error"></span>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <label for="inputText" class="col-sm-2 col-form-label">Expiration Date</label>
+                    <div class="col-sm-6">
+                        <input type="date" class="form-control" name='expiry_date' value='{{ coupon.expiration_date | date:"Y-m-d" }}' required>
+                        <span class="error-message" id="expiry-date-error"></span>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <label for="inputText" class="col-sm-2 col-form-label">Usage Limit</label>
+                    <div class="col-sm-4">
+                        <input type="number" class="form-control" name='usage_limit' value='{{coupon.usage_limit}}' required>
+                        <span class="error-message" id="usage-limit-error"></span>
+                    </div>
+                </div>
+
+                <br><br>
+                <div class="row mb-3">
+                    <label class="col-sm-2 col-form-label">Submit</label>
+                    <div class="col-sm-10">
+                        <button type="submit" class="btn btn-primary">Update Coupon</button>
+                    </div>
+                </div>
+            </form><!-- End General Form Elements -->
+
+        </div>
+    </div>
+</main><!-- End #main -->
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        $("#couponForm").validate({
+            rules: {
+                name: {
+                    required: true,
+                    minlength: 3,
+                    maxlength: 30,
+                    noConsecutiveSpaces: true
+                },
+                code: {
+                    required: true,
+                    alphanumeric: true
+                },
+                discount_value: {
+                    required: true,
+                    positiveInteger: true
+                },
+                min_purchase: {
+                    positiveInteger: true
+                },
+                expiry_date: {
+                    required: true
+                },
+                usage_limit: {
+                    required: true,
+                    positiveInteger: true
+                }
+            },
+            messages: {
+                name: {
+                    required: "Please enter the coupon name",
+                    minlength: "Coupon name should be at least 3 characters",
+                    maxlength: "Coupon name should not exceed 30 characters",
+                    noConsecutiveSpaces: "Coupon name should not contain 2 consecutive spaces"
+                },
+                code: {
+                    required: "Please enter the coupon code",
+                    alphanumeric: "Coupon code should be alphanumeric with no spaces or symbols"
+                },
+                discount_value: {
+                    required: "Please enter the discount value",
+                    positiveInteger: "Discount value should be a positive integer"
+                },
+                min_purchase: {
+                    positiveInteger: "Min. purchase should be a positive integer"
+                },
+                expiry_date: {
+                    required: "Please enter the expiration date"
+                },
+                usage_limit: {
+                    required: "Please enter the usage limit",
+                    positiveInteger: "Usage limit should be a positive integer"
+                }
+            },
+            errorClass: "is-invalid",
+            errorPlacement: function(error, element) {
+                error.addClass("invalid-feedback");
+                error.insertAfter(element);
+            }
+        });
+
+        // Custom validation methods
+        $.validator.addMethod("noConsecutiveSpaces", function(value, element) {
+            return !/\s{2,}/.test(value);
+        }, "Coupon name should not contain 2 consecutive spaces");
+
+        $.validator.addMethod("alphanumeric", function(value, element) {
+            return /^[a-zA-Z0-9]+$/.test(value);
+        }, "Coupon code should be alphanumeric with no spaces or symbols");
+
+        $.validator.addMethod("positiveInteger", function(value, element) {
+            return /^\d*\.?\d+$/.test(value);
+        }, "Please enter a positive integer");
+    });
+</script>
+
+{% endblock content %}
