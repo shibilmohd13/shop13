@@ -39,7 +39,7 @@
           <th scope="col">Price</th>
           <th scope="col">Quantity</th>
           <th scope="col">Total Price</th>
-          {% comment %} <th scope="col">Order Details</th> {% endcomment %}
+          <th scope="col">Payment method</th>
           <th scope="col">Order Status</th>
           <th scope="col">Actions</th>
         </tr>
@@ -53,12 +53,13 @@
           <td>{{order.price}}</td>
           <td>{{order.quantity}}</td>
           <td>{{order.total_price}}</td>
-          {% comment %} <td><a class="btn btn-sm btn-outline-secondary">View Order<a></td> {% endcomment %}
+          <td>{{order.order.payment_method}}</td>
           <td><span class="badge {% if order.status == "Cancelled" %}text-danger {% elif order.status == "Delivered" %} text-success {% elif order.status == "Order confirmed" %} text-warning {% else %}text-primary{% endif %}">{{order.status}}<span></td>
-          {% if order.status == "Cancelled" %}
+          {% if order.status == "Cancelled" or order.status == "Returned" %}
           <td><a href="../product_details/{{order.variant.id}}" class="btn btn-sm btn-outline-primary">View Product<a></td>
           {% elif order.status == "Delivered" %}
-          <td><a href="" class="btn btn-sm btn-outline-secondary">Return Order<a></td>
+          <td><a href="#Return-{{forloop.counter}}" class="btn btn-sm btn-outline-secondary" data-toggle="modal">Return Order<a></td>
+
           {% else %}
           <td><a href="#deleteAddress-{{forloop.counter}}" class="delete btn btn-sm btn-outline-danger" data-toggle="modal">Cancel Order<a></td>
           {% endif %}
@@ -88,6 +89,28 @@
       </div>
   </div>
   {% endfor %}
+
+{% comment %} Return Modal {% endcomment %}
+{% for order in order_items %}
+<div id="Return-{{forloop.counter}}" class="modal fade">
+  <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+          <div class="modal-header">						
+              <h4 class="modal-title">Return Order!</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          </div>
+          <div class="modal-body">					
+              <p>Are you sure to Return this Order?</p>
+              <p class="text-warning"><small>{{order.variant.product.name}}, {{order.variant.color}}</small></p>
+          </div>
+          <div class="modal-footer">
+              <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+              <a href="return_order/{{order.id}}" type="submit" class="btn btn-secondary">Return Order</a>
+          </div>
+      </div>
+  </div>
+</div>
+{% endfor %}
 
   </div>
 </section>

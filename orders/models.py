@@ -28,18 +28,11 @@ class Orders(models.Model):
 # Define the OrdersItem model
 # Model for the Each items in the Orders Model
 class OrdersItem(models.Model):
-    ORDER_STATUS_CHOICES = (
-        ('Order confirmed', 'Order confirmed'),
-        ('Shipped', 'Shipped'),
-        ('Out for delivery', 'Out for delivery'),
-        ('Delivered', 'Delivered'),
-        ('Cancelled', 'Cancelled'),
-    )
     order = models.ForeignKey(Orders, on_delete=models.CASCADE)
     variant = models.ForeignKey(ColorVarient, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField()
     price = models.DecimalField(max_digits=10, decimal_places=2)
-    status = models.CharField(max_length=20, choices=ORDER_STATUS_CHOICES, default="Order confirmed")
+    status = models.CharField(max_length=20, default="Order confirmed")
 
 
     def total_price(self): # To Calculate the price * Quantity and provide the total price

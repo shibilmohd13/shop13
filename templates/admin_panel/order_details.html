@@ -78,11 +78,18 @@
                             <input type="radio" class="btn-check" name="btnradio" id="btnradio3" value="Out for delivery" autocomplete="off" {% if obj.status == "Out for delivery" %}checked{% endif %}{% if obj.status == "Cancelled" or obj.status == "Delivered" %}disabled{% endif %}>
                             <label class="btn btn-outline-primary" for="btnradio3">Out for delivery</label>
 
+                          </div>
+                          
+                          <div class="btn-group mt-2" role="group" aria-label="Basic radio toggle button group">
+                            
                             <input type="radio" class="btn-check" name="btnradio" id="btnradio4" value="Delivered" autocomplete="off" {% if obj.status == "Delivered" %}checked{% endif %}{% if obj.status == "Cancelled" %}disabled{% endif %}>
                             <label class="btn btn-outline-success" for="btnradio4">Delivered</label>
                           
                             <input type="radio" class="btn-check" name="btnradio" id="btnradio5" value="Cancelled" autocomplete="off" {% if obj.status == "Cancelled" %}checked{% endif %} {% if obj.status == "Delivered" %}disabled{% endif %}>
                             <label class="btn btn-outline-danger" for="btnradio5">Cancelled</label>
+
+                            <input type="radio" class="btn-check" name="btnradio" id="btnradio6" value="Returned" autocomplete="off" {% if obj.status == "Returned" %}checked{% endif %}>
+                            <label class="btn btn-outline-info" for="btnradio6">Returned</label>
                           </div>
                           <br><br>
                           <button class="btn btn-primary border-0">Change Status</button>

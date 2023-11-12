@@ -1,6 +1,5 @@
 from msilib.schema import CustomAction
 from django.shortcuts import render,redirect
-
 from userlogin.models import CustomUser
 from .models import Wallet
 from django.http import JsonResponse
@@ -15,6 +14,7 @@ def wallet(request):
         balance= wallet.first().balance
     else: 
         balance=0
+
     return render(request, "home/wallet.html", {'wallet' : wallet, 'balance' : balance})
 
 client = razorpay.Client(auth=("rzp_test_364uDI7fwiadCE", "ePLDxAKYVU5LybscC7YNuTqL"))

@@ -12,6 +12,7 @@ urlpatterns = [
     path('edit_address_checkout/<str:id>',views.edit_address_checkout, name='edit_address_checkout'),
     path('place_order',views.place_order,name='place_order'),
     path('place_order_razorpay',views.place_order_razorpay,name='place_order_razorpay'),
+    path('place_order_wallet',views.place_order_wallet,name='place_order_wallet')
     
 
 ]

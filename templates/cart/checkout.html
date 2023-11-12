@@ -294,8 +294,7 @@
                         data: data,
                         success: function (response) {
                             if (response.success){
-                                
-                                console.log("Placing order")
+
 
                               window.location.href = '../orders/view_order'
                             }
@@ -305,6 +304,31 @@
                         }
     
                     });
+                }else if (selectedPayment === 'wallet') {
+                    // Send the AJAX request
+                    $.ajax({
+                        type: 'POST',
+                        url: 'place_order_wallet',
+                        data: data,
+                        success: function (response) {
+                            if (response.success){
+                                
+                                console.log("Placing order")
+                              window.location.href = '../orders/view_order'
+                            }
+                            else{
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error!',
+                                    text: 'Your order could not be placed.\n ' + response.message,
+                                    confirmButtonText: 'OK',
+                                });
+                                
+                            }
+                        }
+    
+                    });
+                    
                 }
               } else {
                   alert("Please select an address and payment method.");

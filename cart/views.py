@@ -3,6 +3,7 @@ from userlogin.models import *
 from products.models import *
 from cart.models import Cart
 from orders.models import Orders,OrdersItem
+from wallet.models import Wallet
 from django.http import JsonResponse,HttpResponse
 from django.utils import timezone  # Import timezone module
 from datetime import timedelta
@@ -273,8 +274,101 @@ def place_order_razorpay(request):
     payment = client.order.create(data=data)
     
 
-    
-
     return JsonResponse({
         'total_price' : cart_total, "success" : True, 'payment' : payment,'payment_id': payment['id']
     })
+
+def place_order_wallet(request):
+    if 'email' in request.session:
+        email = request.session.get("email")
+        user = CustomUser.objects.get(email=email)
+
+        address_id = request.POST.get('selected_address')
+        print(address_id)
+        address = Address.objects.get(id=address_id)
+        print(address)
+
+        payment_method = request.POST.get("payment")
+
+        cart_items = Cart.objects.filter(user=user)
+        
+        if cart_items.exists():
+            wallet = Wallet.objects.filter(user=user).order_by("-id")
+
+            if wallet:
+                balance = wallet.first().balance
+            else: 
+                balance = 0
+
+            total_cart_price =  sum(cart_items.values_list('cart_price',flat=True))
+
+            
+            if balance >= total_cart_price:
+                # Create an Orders object
+                order = Orders.objects.create(
+                    user=user,
+                    address=address,
+                    payment_method=payment_method,
+                    total_amount=0,  # You'll calculate the total amount in the next step
+                    quantity=0,  # You'll calculate the total quantity in the next step
+
+                )
+
+                order.expected_delivery_date = order.order_date + timedelta(days=7)
+
+                # Initialize total_amount and quantity to 0
+                total_amount = 0
+                total_quantity = 0
+
+                # Create OrdersItem objects and calculate the total amount and quantity
+                for item in cart_items:
+                    order_item = OrdersItem.objects.create(
+                        order=order,
+                        variant=item.product,
+                        quantity=item.prod_quantity,
+                        price=item.product.discounted_price,
+                        status='Order confirmed',  # Set the default status here
+
+                    )
+                    order_item.save()
+
+                    # Calculate the total amount and quantity
+                    total_amount += item.prod_quantity * item.product.discounted_price
+                    total_quantity += item.prod_quantity
+
+                    # Reduce the quantity of the ColorVariant in the order
+                    color_variant = item.product
+                    color_variant.quantity -= item.prod_quantity
+                    color_variant.save()
+
+                # Update the total_amount and quantity in the Orders object
+                order.total_amount = total_amount
+                order.quantity = total_quantity
+                order.save()
+                print("order sucess")
+
+                # Updating wallet
+                
+                new_balance = balance - total_amount
+                Wallet.objects.create(
+                    user=user,
+                    amount=total_amount,
+                    balance=new_balance,
+                    transaction_type = "Debit",
+                    transaction_details = f"Debited Money through Purchase"
+                )
+
+                # Moving order id into session for future use
+                request.session['order_id'] = str(order.order_id)
+                
+
+                # Clear the user's cart after the order is placed
+                cart_items.delete()
+            else:
+                return JsonResponse({'success' : False , 'message' : "You have no enough balance"})
+
+            return JsonResponse({"success": 'Order placed successfully'})
+        else:
+            return JsonResponse({'success' : False , 'message' : "your cart is empty"})
+
+    return JsonResponse({"error": 'User not authenticated'})

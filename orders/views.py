@@ -1,8 +1,8 @@
-from multiprocessing import reduction
 from django.shortcuts import render,redirect
 import uuid
 from userlogin.models import CustomUser
 from orders.models import *
+from wallet.models import Wallet
 
 # Create your views here.
 
@@ -28,9 +28,66 @@ def view_orders(request):
 
 
 def cancel_order(request, id):
+    email = request.session['email']
+    user = CustomUser.objects.get(email=email)
     order = OrdersItem.objects.get(id=id)
     order.status = "Cancelled"
+
+    if order.order.payment_method == "COD":
+        order.variant.quantity += order.quantity
+        order.save()
+        order.variant.save()
+    else:
+        order.variant.quantity += order.quantity
+    
+        amount = order.price * order.quantity
+
+        user_wallet = Wallet.objects.filter(user=user).order_by('-id').first()
+
+        if not user_wallet:
+            balance = 0
+        else:
+            balance = user_wallet.balance
+        
+        new_balance = balance+amount
+        Wallet.objects.create(
+            user=user,
+            amount=amount,
+            balance=new_balance,
+            transaction_type = "Credit",
+            transaction_details = f"Recieved Money through Order Cancel"
+        )
+        order.save()
+        order.variant.save()
+    return redirect('orders')
+
+def return_order(request, id):
+    email = request.session['email']
+    user = CustomUser.objects.get(email=email)
+
+    order = OrdersItem.objects.get(id=id)
+    order.status = "Returned"
     order.variant.quantity += order.quantity
+    
+    amount = order.price * order.quantity
+
+    user_wallet = Wallet.objects.filter(user=user).order_by('-id').first()
+
+    if not user_wallet:
+        balance = 0
+    else:
+        balance = user_wallet.balance
+    
+    new_balance = balance+amount
+    Wallet.objects.create(
+        user=user,
+        amount=amount,
+        balance=new_balance,
+        transaction_type = "Credit",
+        transaction_details = f"Recieved Money through Refund"
+    )
+
     order.save()
     order.variant.save()
-    return redirect('orders')
+    
+    return redirect("orders")
