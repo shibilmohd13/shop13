@@ -62,11 +62,22 @@
     </div>
     <div class="cart_3 row mt-3">
       <div class="col-md-8">
+        
         <div class="cart_3l">
           <h6>PRODUCT</h6>
         </div>
         <form method="POST">
         {% csrf_token %}
+        {% if not cart_items %}
+        <div class="empty-cart-message">
+          <center>
+            <img src="{% static 'home/image/empty-cart.svg' %} " height="100px" class="my-3 opacity-75">
+            <h2 class="cart-heading" >Your Cart is Empty</h2>
+            <p class="cart-subheading text-secondary">There are no items in your cart. <br> Add items to the cart</p>
+            <a href="{% url "shop" %}" class="btn btn-warning rounded-0 shop-now-btn text-light fw-bold px-4 py-2">SHOP NOW</a>
+          </center>
+        </div>
+        {% else %}
         {% for item in cart_items %}
 
         <div class="cart_3l1 mt-3 row ms-0 me-0">
@@ -106,15 +117,7 @@
           </div>
         </div>
         {% endfor %}
-        {% if not cart_items %}
-        <div class="empty-cart-message">
-          <center>
-            <img src="{% static 'home/image/empty-cart.svg' %} " height="100px" class="my-3 opacity-75">
-            <h2 class="cart-heading" >Your Cart is Empty</h2>
-            <p class="cart-subheading text-secondary">There are no items in your cart. <br> Add items to the cart</p>
-            <a href="{% url "shop" %}" class="btn btn-warning rounded-0 shop-now-btn text-light fw-bold px-4 py-2">SHOP NOW</a>
-          </center>
-        </div>
+        
         {% endif %}
       </form>
       </div>

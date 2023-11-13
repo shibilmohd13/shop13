@@ -38,21 +38,20 @@ def addtocart(request):
             user = CustomUser.objects.get(email=email)
             prod_id = int(request.POST.get('product_id'))
             product_check = ColorVarient.objects.get(id=prod_id)
-            if (product_check):
-                if (Cart.objects.filter(user= user, product= product_check)):
-                    return JsonResponse({'status' : "Product already in cart"})
-                else:
-                    prod_qty = 1
-                    if product_check.quantity >= prod_qty:
-                        product = ColorVarient.objects.get(id=prod_id)
-                        Cart.objects.create(user=user, product=product, prod_quantity=prod_qty, cart_price=product.discounted_price, created_at=timezone.now())
-                        cart_count = Cart.objects.filter(user=user).count()
-                        print(f"Cart s ajax count: {cart_count}")
-                        return JsonResponse({'status' : "Product added successfully",'success' : True, "cart_count" : cart_count})
-                    else:
-                        return JsonResponse({'status' : f"Only {str(product_check.quantity)} Quantity available"})
+            
+            if (Cart.objects.filter(user= user, product= product_check)):
+                return JsonResponse({'status' : "Product already in cart"})
             else:
-                return JsonResponse({'status' : "No such product"})
+                prod_qty = 1
+                if product_check.quantity >= prod_qty:
+                    product = ColorVarient.objects.get(id=prod_id)
+                    Cart.objects.create(user=user, product=product, prod_quantity=prod_qty, cart_price=product.discounted_price, created_at=timezone.now())
+                    cart_count = Cart.objects.filter(user=user).count()
+                    print(f"Cart s ajax count: {cart_count}")
+                    return JsonResponse({'status' : "Product added successfully",'success' : True, "cart_count" : cart_count})
+                else:
+                    return JsonResponse({'status' : f"Only {str(product_check.quantity)} Quantity available"})
+
         else:
             return redirect('signin')
 

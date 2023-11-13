@@ -103,7 +103,7 @@
                     </div>
                 </form>
 
-                    <h6 class="mt-4"><a href="#"><i class="fa fa-heart-o col_yell me-1"></i> Add To Wishlist</a>
+                    <h6 class="mt-4"><a href="" id='addtowishlist'><i class="fa fa-heart-o col_yell me-1"></i> Add To Wishlist</a href="">
                     </h6>
                     <hr>
                     <h6 class="font_13 col_light">BRAND : <a class="col_light" href="#">{{item.product.brands.name}}</a> / <a class="col_light" href="#" id="color">{{item.color}}</a></h6>
@@ -124,7 +124,6 @@
             e.preventDefault();
             console.log('clicked');
             var product_id = $(this).closest('.product_data').find('.prod_id').val();
-            {% comment %} var product_qty = $(this).closest('.product_data').find('.qty-input').val(); {% endcomment %}
             var token = $('input[name=csrfmiddlewaretoken]').val();
             console.log('clicked');
             
@@ -161,6 +160,47 @@
                 }
             });
         });
+        $('#addtowishlist').click(function (e) {
+            e.preventDefault();
+            console.log('clicked');
+            var product_id = $(this).closest('.product_data').find('.prod_id').val();
+            var token = $('input[name=csrfmiddlewaretoken]').val();
+            console.log('clicked');
+            
+            $.ajax({
+                method: "POST",
+                url: "/wishlist/addtowishlist", // Update the URL to the correct endpoint
+                data: {
+                    'product_id': product_id,
+                    csrfmiddlewaretoken: token
+                },
+                dataType: 'json', // or the appropriate data type
+                success: function (response) {
+                    console.log(response);
+                    // You can handle the response here, e.g., show a success message or update the wishlist icon.
+                    if (response.success) {
+                        Swal.fire({
+                            title: 'Item Added to Wishlist',
+                            text: 'Your item has been added to the wishlist.',
+                            icon: 'success',
+                        });
+                        // Update the wishlist count badge if needed
+                        $('#wishlist-count-badge').text(response.wishlist_count);
+                    } else {
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'Already in wishlist',
+                            icon: 'error',
+                        });
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.log("Error:", error);
+                    // Handle the error, e.g., display an error message.
+                }
+            });
+        });
+        
 
         // Add an event listener to each color image
         $('.color-images a').click(function (e) {

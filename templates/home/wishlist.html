@@ -1,0 +1,103 @@
+{% extends 'home/base.html' %}
+{% load static %}
+{% block title %} My WISHLIST{% endblock title %}
+{% block css %}<link href="{% static 'home/css/cart.css' %}" rel="stylesheet" />  
+<style>
+  td, th{
+    text-align: center;
+    vertical-align: middle;
+  }
+  th{
+    height:50px;
+  }
+  
+
+</style>
+
+{% endblock css %}
+
+{% block content %}
+  
+<section id="center" class="center_o pt-4 pb-4 bg-light">
+  <div class="container-xl">
+    <div class="row center_o1 text-center">
+      <div class="col-md-12">
+        <h1>MY WISHLIST</h1>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="cart_page" class="cart pt-4 pb-4">
+  <div class="container-xl col-md-8">
+    {% if not wishlist %}
+        <div class="empty-cart-message">
+          <center>
+            <i class="fa-solid fa-heart my-3 opacity-75" style="color: #000000; font-size:90px"></i>
+            <h2 class="cart-heading" >Your Wishlist is Empty</h2>
+            <p class="cart-subheading text-secondary">There are no items in your Wishlist. <br> Add items to the Wishlist</p>
+            <a href="{% url "shop" %}" class="btn btn-warning rounded-0 shop-now-btn text-light fw-bold px-4 py-2">SHOP NOW</a>
+          </center>
+        </div>
+      {% else %}
+    <table class="table table-light ">
+      <thead> 
+        <tr class="custom-th">
+          <th scope="col">Product Image</th>
+          <th scope="col">Product</th>
+          <th scope="col">Color</th>
+          <th scope="col">Price</th>
+          <th scope="col">Remove</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in wishlist %}
+        <tr>
+          <td><img src='{{item.variant.productimage_set.last.image.url}}' height='100px'></td>
+          <td>{{item.variant.product.name}}</td>
+          <td>{{item.variant.color}}</td>
+          <td>{{item.variant.discounted_price}}</td>
+          <td><a href="#Return-{{forloop.counter}}" class="delete btn btn-sm btn-outline-danger" data-toggle="modal">Remove<a></td>
+          </tr>
+        {% endfor %}
+        
+      </tbody>
+    </table>
+    {% endif %}
+
+
+
+{% comment %} Return Modal {% endcomment %}
+{% for item in wishlist %}
+<div id="Return-{{forloop.counter}}" class="modal fade">
+  <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+          <div class="modal-header">						
+              <h4 class="modal-title">Remove from Wishlist!</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          </div>
+          <div class="modal-body">					
+              <p>Are you sure to Remove this from Wishlist?</p>
+              <p class="text-warning"><small>{{item.variant.product.name}}, {{item.variant.color}}</small></p>
+          </div>
+          <div class="modal-footer">
+              <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+              <a href="remove_wishlist/{{item.id}}" type="submit" class="btn btn-danger">Remove Item</a>
+          </div>
+      </div>
+  </div>
+</div>
+{% endfor %}
+
+
+  </div>
+</section>
+
+{% endblock %}
+{% block scripts %}
+
+<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.bundle.min.js"></script>
+
+{% endblock scripts %}
