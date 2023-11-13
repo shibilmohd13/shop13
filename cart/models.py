@@ -14,6 +14,7 @@ class Cart(models.Model):
     created_at = models.DateTimeField(auto_now_add=False)
 
 
+
     def __str__(self):
         return f"{self.user.fullname}'s Cart - Prod : {self.product.product.name} {self.product.color} , Quantity : {self.prod_quantity}"
 

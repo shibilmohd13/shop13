@@ -43,8 +43,7 @@
                             <tr>
                                 <td>{{coupon.name}}</td>
                                 <td>{{coupon.code}}</td>
-                                <td>{{coupon.discount_type}}</td>
-                                <td>{% if coupon.discount_type == "flat" %}&#8377;{{coupon.discount_value}}{% else %}{{coupon.discount_value}}%{% endif %}</td>
+                                <td>&#8377;{{coupon.discount_value}}</td>
                                 <td>{{coupon.minimum_purchase}}</td>
                                 <td>{{coupon.expiration_date}}</td>
                                 <td>{{coupon.usage_limit}}</td>

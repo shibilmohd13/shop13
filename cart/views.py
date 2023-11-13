@@ -7,6 +7,7 @@ from wallet.models import Wallet
 from django.http import JsonResponse,HttpResponse
 from django.utils import timezone  # Import timezone module
 from datetime import timedelta
+from coupons.models import CouponUsage, Coupons
 import razorpay
 
 # Create your views here.
@@ -258,9 +259,12 @@ def place_order_razorpay(request):
     user = CustomUser.objects.get(email=email)
     print(user)
     cart = Cart.objects.filter(user=user)
+    # is_apply = True
     cart_total = 0
     for item in cart :
         cart_total += (item.product.discounted_price * item.prod_quantity)
+        # if is_apply:
+        #     cart_total 
     
     print(client)
     data = { "amount": cart_total, "currency": "INR" }
@@ -366,3 +370,36 @@ def place_order_wallet(request):
             return JsonResponse({'success' : False , 'message' : "your cart is empty"})
 
     return JsonResponse({"error": 'User not authenticated'})
+
+
+# views.py
+
+
+def apply_coupons(request):
+    if request.method == 'POST':
+        email = request.session.get("email")
+        user = CustomUser.objects.get(email=email)
+
+        coupon_code = request.POST.get('couponCode', '')
+        coupen_check = Coupons.objects.filter(code=coupon_code,is_active=True).first()
+        if coupen_check:
+            if CouponUsage.objects.filter(user=user,coupon=coupen_check).exists():
+                return JsonResponse({'error':'Coupon already applied.'})
+            else:
+                if coupen_check.used_count <= coupen_check.usage_limit:
+                    cart_total = sum(Cart.objects.filter(user=user).values_list('cart_price',flat=True))
+                    if cart_total >= coupen_check.minimum_purchase:
+                        total = cart_total - coupen_check.discount_value 
+                        response_data = {'success': 'added', 'total': total, 'coupon_code': coupon_code ,'discount_amount' : coupen_check.discount_value }
+                        return JsonResponse(response_data)
+                    else:
+                        return JsonResponse({'error': f'Minimum purchase amount of {round(coupen_check.minimum_purchase)} required'})
+
+
+                else:
+                    return JsonResponse({'error':'Sorry! This code has reached its usage limit.'})
+                
+        else:   
+            return JsonResponse({'error': 'invalid coupon'})
+
+    return JsonResponse({'error': 'Invalid request'})

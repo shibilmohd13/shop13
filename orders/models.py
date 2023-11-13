@@ -19,6 +19,7 @@ class Orders(models.Model):
     delivered_date = models.DateField(null=True, blank=True)
     total_amount = models.DecimalField(max_digits=10, decimal_places=2)
     quantity = models.PositiveIntegerField()
+    
 
 
     def __str__(self):

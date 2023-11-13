@@ -156,7 +156,22 @@
       {% endfor %}
       
        <div class="col-md-4">
+        {% csrf_token %}
+
          <div class="checkout_1r">
+            <div class="cart_3r1 mt-3">
+                <h5>APPLY COUPONS</h5>
+                <hr />
+              <h6 class="font_13">Enter your coupon code</h6>
+              <input id="couponCode" class="form-control" type="text" />
+              <span id="couponError" class="text-danger"></span>
+              <h6 class="text-center mt-3">
+                  <a class="button" href="#" onclick="applyCoupon()">APPLY</a>
+                  <a class="button_1" href="#">REMOVE</a>
+                
+                  <br><br>
+              </h6>
+            </div>
            <h5 class="mt-4">CART TOTALS</h5>
            <hr class="line">
            {% for item in cart_items %}
@@ -164,8 +179,9 @@
            {% endfor %}
            <h6 class="fw-bold font_13">Sub Total <span class="pull-right">&#8377;{{total}}</span></h6>
            <h6 class="fw-bold mt-3 font_13">(+) Shipping <span class="pull-right">Free shipping</span></h6>
+           <h6 class="fw-bold mt-3 font_13 m-0">Coupon discount <span class="pull-right">-<span class="coupon-discount"><span></span></h6>
           <hr> 
-          <h6 class="fw-bold">Total <span class="pull-right">&#8377;{{total}}</span></h6><br>
+          <h6 class="fw-bold">Total <span class="pull-right">&#8377;<span class="final-total">{{total}}</span></span></h6><br>
            <h5>PAYMENTS</h5>
            <hr class="line">
            {% comment %} <div class="form-check mt-3">
@@ -281,7 +297,12 @@
                                 rzp1.open()
                             }
                             else{
-                                alert('Error' + response.message)
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error!',
+                                    text: response.message,
+                                    confirmButtonText: 'OK',
+                                });
                             }
                         }
     
@@ -299,7 +320,13 @@
                               window.location.href = '../orders/view_order'
                             }
                             else{
-                                alert('Error' + response.message)
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error!',
+                                    text: response.message,
+                                    confirmButtonText: 'OK',
+                                });
+                            
                             }
                         }
     
@@ -337,6 +364,46 @@
       });
   </script>
 
+  <script type="text/javascript">
+    function getCSRFToken() {
+        // Implement the logic to retrieve the CSRF token
+        // This might involve selecting an input element or using a different method
+        return document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+      }
+    function applyCoupon() {
+        var couponCode = $('#couponCode').val();
+
+        $.ajax({
+            url: 'apply_coupons',
+            type: 'POST',
+            data: {
+                couponCode: couponCode,
+                csrfmiddlewaretoken: getCSRFToken()
+            },
+            success: function (data) {
+                // Handle the response from the server, e.g., update total prices
+                console.log(data);
+
+                if ('error' in data) {
+                    // Display the error message below the input field
+                    $('#couponError').text(data.error);
+                } else {
+                    $('.coupon-discount').text(data.discount_amount);
+                    $('.final-total').text(data.total);
+                    
+                    // Clear the error message on success
+                    $('#couponError').text('');
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.error('Error:', errorThrown);
+
+                // Display a generic error message below the input field
+                $('#couponError').text('Error applying coupon. Please try again.');
+            }
+        });
+    }
+</script>
 
 
 
