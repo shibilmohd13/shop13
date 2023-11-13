@@ -126,8 +126,9 @@ def checkout(request):
         address = Address.objects.filter(user=user,is_present=True)
         cart_items = Cart.objects.filter(user=user)
         total = sum(cart_items.values_list('cart_price',flat=True))
+        coupons = Coupons.objects.all()
 
-        return render(request, "cart/checkout.html" , {'addresses' : address , 'cart_items' : cart_items , 'total' : total})
+        return render(request, "cart/checkout.html" , {'addresses' : address , 'cart_items' : cart_items , 'total' : total , 'coupons': coupons})
     return redirect('signin')
 
 
@@ -186,25 +187,31 @@ def place_order(request):
     if 'email' in request.session:
         email = request.session.get("email")
         user = CustomUser.objects.get(email=email)
+        
+        print("!!!!!!!!!!!!!!!!!!!!!!!!!enterd!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
 
         address_id = request.POST.get('selected_address')
-        address = Address.objects.get(id=address_id)
-
+        new_address = Address.objects.get(id=address_id)
+        print(f'!!!!!!!!!!!!!!!!!!!!!!!!!{new_address}!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
         payment_method = request.POST.get("payment")
 
         cart_items = Cart.objects.filter(user=user)
-        
+
+        total_amount_coupon=request.POST.get('total_amount')
+        print(f'total_amount_coupon: {total_amount_coupon}')
+
+        print("!!!!!!!!!!!!!!!!!!!!!!! Going to create!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
         if cart_items.exists():
             # Create an Orders object
             order = Orders.objects.create(
                 user=user,
-                address=address,
+                address=new_address,
                 payment_method=payment_method,
-                total_amount=0,  # You'll calculate the total amount in the next step
+                total_amount=total_amount_coupon,  # You'll calculate the total amount in the next step
                 quantity=0,  # You'll calculate the total quantity in the next step
 
             )
-
+            print("!!!!!!!!!!!!!!!!!!!!!  created  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
             order.expected_delivery_date = order.order_date + timedelta(days=7)
 
             # Initialize total_amount and quantity to 0
@@ -233,7 +240,7 @@ def place_order(request):
                 color_variant.save()
 
             # Update the total_amount and quantity in the Orders object
-            order.total_amount = total_amount
+            order.total_amount = total_amount_coupon
             order.quantity = total_quantity
             order.save()
             print("order sucess")
@@ -259,13 +266,14 @@ def place_order_razorpay(request):
     user = CustomUser.objects.get(email=email)
     print(user)
     cart = Cart.objects.filter(user=user)
-    # is_apply = True
-    cart_total = 0
-    for item in cart :
-        cart_total += (item.product.discounted_price * item.prod_quantity)
-        # if is_apply:
-        #     cart_total 
-    
+
+    # cart_total = 0
+    # for item in cart :
+    #     cart_total += (item.product.discounted_price * item.prod_quantity)
+
+    cart_total = int(float(request.POST.get('total_amount')))
+    print(cart_total)
+
     print(client)
     data = { "amount": cart_total, "currency": "INR" }
     print(data)
@@ -280,6 +288,7 @@ def place_order_wallet(request):
     if 'email' in request.session:
         email = request.session.get("email")
         user = CustomUser.objects.get(email=email)
+        print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
 
         address_id = request.POST.get('selected_address')
         print(address_id)
@@ -300,18 +309,19 @@ def place_order_wallet(request):
 
             total_cart_price =  sum(cart_items.values_list('cart_price',flat=True))
 
-            
-            if balance >= total_cart_price:
+            total_amount_coupon=int(float(request.POST['total_amount']))
+            print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+            if balance >= total_amount_coupon:
                 # Create an Orders object
                 order = Orders.objects.create(
                     user=user,
                     address=address,
                     payment_method=payment_method,
-                    total_amount=0,  # You'll calculate the total amount in the next step
+                    total_amount=total_amount_coupon,  # You'll calculate the total amount in the next step
                     quantity=0,  # You'll calculate the total quantity in the next step
 
                 )
-
+                print("###################################################")
                 order.expected_delivery_date = order.order_date + timedelta(days=7)
 
                 # Initialize total_amount and quantity to 0
@@ -340,17 +350,17 @@ def place_order_wallet(request):
                     color_variant.save()
 
                 # Update the total_amount and quantity in the Orders object
-                order.total_amount = total_amount
+                order.total_amount = total_amount_coupon
                 order.quantity = total_quantity
                 order.save()
                 print("order sucess")
 
                 # Updating wallet
                 
-                new_balance = balance - total_amount
+                new_balance = balance - total_amount_coupon
                 Wallet.objects.create(
                     user=user,
-                    amount=total_amount,
+                    amount=total_amount_coupon,
                     balance=new_balance,
                     transaction_type = "Debit",
                     transaction_details = f"Debited Money through Purchase"
@@ -401,5 +411,20 @@ def apply_coupons(request):
                 
         else:   
             return JsonResponse({'error': 'invalid coupon'})
+
+    return JsonResponse({'error': 'Invalid request'})
+
+    # views.py
+
+def remove_coupon(request):
+    if request.method == 'POST':
+        email = request.session.get("email")
+        user = CustomUser.objects.get(email=email)
+
+        # Update the cart total
+        total = sum(Cart.objects.filter(user=user).values_list('cart_price', flat=True))
+
+        response_data = {'success': 'removed', 'total': total}
+        return JsonResponse(response_data)
 
     return JsonResponse({'error': 'Invalid request'})

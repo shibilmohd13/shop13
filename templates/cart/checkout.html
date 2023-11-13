@@ -160,14 +160,19 @@
 
          <div class="checkout_1r">
             <div class="cart_3r1 mt-3">
-                <h5>APPLY COUPONS</h5>
+                <div class='d-flex justify-content-between'>
+                    <h5 class='mt-2'>APPLY COUPONS</h5>
+                    <button type="button" class="btn btn-sm btn-outline-warning" data-bs-toggle="modal" data-bs-target="#couponModal">
+                        Available Coupons
+                    </button>
+                </div>
                 <hr />
               <h6 class="font_13">Enter your coupon code</h6>
               <input id="couponCode" class="form-control" type="text" />
               <span id="couponError" class="text-danger"></span>
               <h6 class="text-center mt-3">
                   <a class="button" href="#" onclick="applyCoupon()">APPLY</a>
-                  <a class="button_1" href="#">REMOVE</a>
+                  <a class="button_1" href="#" onclick="removeCoupon()">REMOVE</a>
                 
                   <br><br>
               </h6>
@@ -196,6 +201,39 @@
             <input type="radio" class="form-check-input" id="customCheck3" value="wallet" name="payment" >
             <label class="form-check-label" for="customCheck1">Wallet</label>
       </div>
+
+      <div class="modal fade" id="couponModal" tabindex="-1" aria-labelledby="couponModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="couponModalLabel">Available Coupons</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                {% for coupon in coupons %}
+                    <div class="coupon-item">
+                        <p class="text-muted mb-1">Coupon Name: {{coupon.name}}</p>
+                        <h4 style="color:#1d4289;">{{coupon.code}}</h4>
+                        <p class="mb-0"><strong>Expiry Date:</strong> {{coupon.expiration_date}}</p>
+                        <p class="mb-0"><strong>Discount Value:</strong> Flat:  &#8377;{{coupon.discount_value}} off</p>
+                        <p class="mb-0"><strong>Minimum Purchase:</strong> &#8377;{{coupon.minimum_purchase}}</p>
+                    </div>
+                    <hr>
+                {% endfor %}
+                
+                    <!-- Add more coupons as needed -->
+                
+                </div>
+                
+                
+                {% comment %} <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div> {% endcomment %}
+            </div>
+        </div>
+    </div>
+    
            {% comment %} <div class="form-check mt-2">
           <input type="radio" class="form-check-input" id="customCheck1">
           <label class="form-check-label" for="customCheck1">PayPal</label>
@@ -226,21 +264,27 @@
   
               // Get the CSRF token from a hidden input field
               var csrfToken = $("input[name='csrfmiddlewaretoken']").val();
-  
+
+              // Total amount calculated after the coupon applied
+              var totalAmount = $('.final-total').text().trim();
+
+            console.log(totalAmount)
               // Make sure both address and payment method are selected
               if (selectedAddress && selectedPayment) {
                   // Create a data object to send in the request
                   var data = {
                       selected_address: selectedAddress,
                       payment: selectedPayment,
+                      total_amount: totalAmount, // Include the total amount in the data object
                       csrfmiddlewaretoken: csrfToken, // Include the CSRF token
                   };
                   
                   if (selectedPayment === 'razorpay') {
                     // Send the AJAX request
                     $.ajax({
-                        type: 'GET',
+                        type: 'POST',
                         url: 'place_order_razorpay',
+                        data: data,
                         success: function (response) {
                             if (response.success){
                                 var options = {
@@ -259,6 +303,7 @@
                                             selected_address: selectedAddress,
                                             payment: selectedPayment,
                                             csrfmiddlewaretoken: csrfToken, // Include the CSRF token
+                                            total_amount: totalAmount, // Include the total amount in the data object
                                             payment_id : responseb.razorpay_payment_id ,
                                         };
                                         $.ajax({
@@ -393,6 +438,11 @@
                     
                     // Clear the error message on success
                     $('#couponError').text('');
+                    Swal.fire({
+                        icon: 'success',
+                        title: "Coupon Applied Successfully",
+                        confirmButtonText: 'OK',
+                    });
                 }
             },
             error: function (jqXHR, textStatus, errorThrown) {
@@ -403,6 +453,45 @@
             }
         });
     }
+    function removeCoupon() {
+        var couponCode = $('#couponCode').val();
+    
+        $.ajax({
+            url: 'remove_coupon',
+            type: 'POST',
+            data: {
+                couponCode: couponCode,
+                csrfmiddlewaretoken: getCSRFToken()
+            },
+            success: function (data) {
+                // Handle the response from the server, e.g., update total prices
+                console.log(data);
+    
+                if ('error' in data) {
+                    // Display the error message below the input field
+                    $('#couponError').text(data.error);
+                } else {
+                    $('.coupon-discount').text(''); // Clear the coupon discount display
+                    $('.final-total').text(data.total);
+    
+                    // Clear the error message on success
+                    $('#couponError').text('');
+                    Swal.fire({
+                        icon: 'success',
+                        title: "Coupon Removed Successfully",
+                        confirmButtonText: 'OK',
+                    });
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.error('Error:', errorThrown);
+    
+                // Display a generic error message below the input field
+                $('#couponError').text('Error removing coupon. Please try again.');
+            }
+        });
+    }
+    
 </script>
 
 

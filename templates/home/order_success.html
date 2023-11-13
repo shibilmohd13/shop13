@@ -57,6 +57,7 @@
       <h2>Order Details</h2>
       <p><strong>Order ID:</strong> {{current_order.order_id}}</p>
       <p><strong>Order Date:</strong> {{current_order.order_date}}</p>
+      <p><strong>Order Amount:</strong> {{current_order.total_amount}}</p>
       <p><strong>Shipping Address:</strong> {{current_order.address.name}}, {{current_order.address.street_address}}, {{current_order.address.phone}}, {{current_order.address.pin_code}}</p>
 
       {% for item in current_order.ordersitem_set.all %}
@@ -67,8 +68,8 @@
         <p><strong>Product Name:</strong> {{ item.variant.product.name }}</p>
         <p><strong>Color:</strong> {{ item.variant.color }}</p>
         <p><strong>Quantity:</strong> {{ item.quantity }}</p>
-        <p><strong>Price:</strong> {{ item.price }}</p>
-        <p><strong>Subtotal:</strong> {{ item.total_price }}</p>
+        {% comment %} <p><strong>Price:</strong> {{ item.price }}</p>
+        <p><strong>Subtotal:</strong> {{ item.total_price }}</p> {% endcomment %}
       </div>
       <div style="flex: 1;">
         <img style=" float:right;" src="{{ item.variant.productimage_set.last.image.url }}" alt="Product A Image" height="150px">

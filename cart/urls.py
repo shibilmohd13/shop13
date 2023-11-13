@@ -14,6 +14,7 @@ urlpatterns = [
     path('place_order_razorpay',views.place_order_razorpay,name='place_order_razorpay'),
     path('place_order_wallet',views.place_order_wallet,name='place_order_wallet'),
     path('apply_coupons', views.apply_coupons, name='apply_coupons'),
+    path('remove_coupon', views.remove_coupon, name='remove_coupon'),
 
     
 
