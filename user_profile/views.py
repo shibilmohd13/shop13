@@ -15,22 +15,35 @@ def profile(request):
 
 
 # Update profile details
+import re
+
 def update_profile(request):
     if request.method == 'POST':
         email = request.session['email']
         user = CustomUser.objects.get(email=email)
-        new_phone = request.POST.get('phone')
-        if CustomUser.objects.exclude(id=user.id).filter(phone=new_phone).exists():
-            messages.error(request, "phone number already exist in the database")
-            print("already there")
-            return redirect('user_profile')
         
-        user.fullname = request.POST.get('fullname', user.fullname)
-        user.phone = request.POST.get('phone', user.phone)
-        user.save()
+        # Validate Full Name
+        new_fullname = request.POST.get('fullname')
+        if not re.match(r'^[a-zA-Z]{3,}(?: [a-zA-Z]+)*$', new_fullname):
+            messages.error(request, "Invalid full name.")
+            return redirect('profile')
 
+        # Validate Phone Number
+        new_phone = request.POST.get('phone')
+        if not re.match(r'^\+91[1-9]\d{9}$', new_phone):
+            messages.error(request, "Invalid phone number. Please enter a valid Indian phone number.")
+            return redirect('profile')
+
+        # Check if phone number already exists
+        if CustomUser.objects.exclude(id=user.id).filter(phone=new_phone).exists():
+            messages.error(request, "Phone number already exists in the database.")
+            return redirect('profile')
         
-        messages.success(request, "updated successfully")
+        user.fullname = new_fullname
+        user.phone = new_phone
+        user.save()
+        
+        messages.success(request, "Updated successfully")
 
     return redirect('profile')
 
@@ -54,10 +67,10 @@ def change_password(request):
                 print('Profile changed') 
                 return redirect('profile')
             else:
-                messages.error(request, "NOt same")
+                messages.error(request, "Passwords does not match")
                 return redirect('profile')
         else:
-            messages.error(request, "NOt same")
+            messages.error(request, "Current Password is not Correct")
             return redirect('profile')
 
 

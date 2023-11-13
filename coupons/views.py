@@ -1,11 +1,19 @@
 from django.shortcuts import render,redirect
 from .models import Coupons
+from django.contrib.auth.decorators import user_passes_test
+from django.views.decorators.cache import cache_control
+
+
 # Create your views here.
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@user_passes_test(lambda u: u.is_superuser, login_url='admin_login')
 def coupons(request):
     coupons = Coupons.objects.all().order_by("id")
     context={'coupons':coupons}
     return render(request,'admin_panel/coupons.html', context)
 
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@user_passes_test(lambda u: u.is_superuser, login_url='admin_login')
 def add_coupons(request):
     if request.method == "POST":
         name=request.POST['name']
@@ -29,6 +37,8 @@ def add_coupons(request):
         
     return render(request,'admin_panel/add_coupons.html')
 
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@user_passes_test(lambda u: u.is_superuser, login_url='admin_login')
 def edit_coupons(request,id):
     coupon = Coupons.objects.filter(id=id).first()
     if request.method=='POST':
@@ -52,6 +62,8 @@ def edit_coupons(request,id):
 
     return render(request, 'admin_panel/edit_coupons.html', {'coupon' : coupon})
 
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@user_passes_test(lambda u: u.is_superuser, login_url='admin_login')
 def coupon_status(request, id):
     coupon = Coupons.objects.filter(id=id).first()
     if coupon.is_active == True:

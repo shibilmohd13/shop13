@@ -5,6 +5,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import user_passes_test
 from django.views.decorators.cache import cache_control
 from orders.models import *
+from wallet.models import Wallet
 
 # Create your views here.
 
@@ -91,11 +92,33 @@ def view_order_details(request, id):
 def change_order_status(request, id):
     order = OrdersItem.objects.get(id=id)
     status = request.POST.get('btnradio')
-    if status == "Cancelled":
+    if status == "Cancelled" or status == "Returned":
+        if order.order.payment_method != "COD":
+            order.status = status
+            order.variant.quantity += order.quantity
+
+            wallet = Wallet.objects.filter(user=order.order.user).order_by("-id")
+
+            if wallet:
+                balance = wallet.first().balance
+            else: 
+                balance = 0
+
+            new_balance = balance + order.total_price()
+
+            Wallet.objects.create(
+                user=order.order.user,
+                amount=order.total_price(),
+                balance=new_balance,
+                transaction_type = "Credit",
+                transaction_details = f"Recieved money through Order {status} By Seller"
+            )
         order.status = status
         order.variant.quantity += order.quantity
         order.save()
-        order.variant.save() 
+        order.variant.save()
+        return redirect('view_order_details',id=id)
+
     else:
         order.status = status
         order.save()

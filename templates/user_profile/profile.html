@@ -155,6 +155,8 @@
         <label class="form-label">E-mail</label>
         <input type="text" class="form-control mb-1" name="email" value="{{user_obj.email}}" disabled>
         </div>
+        <div class="error text-danger">{% if messages %} {% for message in messages %} {% if message.tags == "error" %}{{message}}{% endif %} {% endfor %} {% endif %}</div>
+
         <div class="form-group">
         <label class="form-label">Primary Address</label>
         {% for address in user_data %}
@@ -190,6 +192,8 @@
             <label class="form-label">Repeat new password</label>
             <input type="password" class="form-control" name="password_confirm">
             </div>
+            <div class="error text-danger">{% if messages %} {% for message in messages %} {% if message.tags == "error" %}{{message}}{% endif %} {% endfor %} {% endif %}</div>
+
             
             <input type="submit" value="Save changes" class="btn btn-primary mt-4">
             <a href="{% url "profile" %}"><button type="button" class="btn btn-default mt-4">Cancel</button></a>
@@ -226,7 +230,7 @@
                         </div>
                         <div class="form-group">
                         <label class="form-label">Phone</label>
-                        <input type="text" class="form-control" name="phone">
+                        <input type="number" class="form-control" name="phone">
                         </div>
                         <div class="form-group">
                         <label class="form-label">Street address</label>
@@ -275,7 +279,7 @@
                                     </div>
                                     <div class="form-group">
                                     <label class="form-label">Phone</label>
-                                    <input type="text" class="form-control" name="phone" value="{{address.phone}}">
+                                    <input type="number" class="form-control" name="phone" value="{{address.phone}}">
                                     </div>
                                     <div class="form-group">
                                     <label class="form-label">Street address</label>
@@ -467,4 +471,61 @@
     </body>
 
 {% endblock content %}
-  
+{% block scripts %}
+
+<!-- Include jQuery library -->
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+<script>
+$(document).ready(function() {
+    // Function to validate Full Name
+    function validateFullName() {
+        var fullName = $('input[name="fullname"]').val();
+        var regex = /^(?!\s{2})[a-zA-Z]{3,}((?!\s{2})\s)?[a-zA-Z]{3,}$/;
+        return regex.test(fullName);
+      }
+      
+      
+
+    // Function to validate Indian Phone Number format
+    function validatePhoneNumber() {
+        var phoneNumber = $('input[name="phone"]').val();
+        var regex = /^(\+91-?)?(\d{10})$/;
+        return regex.test(phoneNumber.replace(/ /g, '').replace(/-/g, ''));
+    }
+
+    // Submit event handler for the form
+    $('#updateProfileForm').submit(function(event) {
+        // Remove previous error classes
+        $('input[name="fullname"]').removeClass('is-invalid');
+        $('input[name="phone"]').removeClass('is-invalid');
+        $('.invalid-feedback').hide();  // Hide previous error messages
+
+        // Validate Full Name
+        if (!validateFullName()) {
+            $('input[name="fullname"]').addClass('is-invalid');
+            $('input[name="fullname"] + .invalid-feedback').show();
+            event.preventDefault();
+            return;
+        }
+
+        // Validate Phone Number
+        if (!validatePhoneNumber()) {
+            $('input[name="phone"]').addClass('is-invalid');
+            $('input[name="phone"] + .invalid-feedback').show();
+            event.preventDefault();
+            return;
+        }
+
+        // Other validation or form submission logic can be added here
+    });
+});
+</script>
+
+<!-- Include Bootstrap JS for styling (optional) -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+
+{% endblock scripts %}

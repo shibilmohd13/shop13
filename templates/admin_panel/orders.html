@@ -28,7 +28,7 @@
                                 <th>Item Image</th>
                                 <th>Item Name</th>
                                 <th>User</th>
-                                <th>Expected Delivery</th>
+                                <th>Method</th>
                                 <th>Actions</th>
                                 <th>Status</th>
                             </tr>
@@ -42,7 +42,7 @@
                                 <td><center><img src="{{item.variant.productimage_set.last.image.url}}" height="80px"/><center></td>
                                     <td class="align-middle">{{item.variant.product.name}} - {{item.variant.color}} x {{item.quantity}}</td>
                                     <td class="align-middle">{{item.order.user.fullname}}</td>
-                                    <td class="align-middle">{{item.order.expected_delivery_date}}</td>
+                                    <td class="align-middle">{{item.order.payment_method}}</td>
                                     <td class="align-middle"><a href="view_order_details/{{item.id}}" class="btn btn-outline-dark">View Details</a></td>
                                     <td class="align-middle {% if item.status == "Cancelled" %}text-danger {% elif item.status == "Delivered" %} text-success {% elif item.status == "Order confirmed" %} text-warning {% else %}text-primary{% endif %}">{{item.status}}</td>
 
