@@ -38,9 +38,19 @@
                     <div class="col-sm-6">
                         <input type="text" class="form-control" name='code' required>
                         <span class="error-message" id="coupon-code-error"></span>
+                        {% if messages %}<span class="error text-danger">{% for message in messages %}{{message}}{% endfor %}</span>{% endif %}
                     </div>
                 </div>
+                
 
+
+                <div class="row mb-3">
+                    <label for="inputText" class="col-sm-2 col-form-label">Min. Purchase</label>
+                    <div class="col-sm-6">
+                        <input type="number" class="form-control" name='min_purchase'>
+                        <span class="error-message" id="min-purchase-error"></span>
+                    </div>
+                </div>
 
                 <div class="row mb-3">
                     <label for="inputText" class="col-sm-2 col-form-label">Discount Value</label>
@@ -50,13 +60,6 @@
                     </div>
                 </div>
 
-                <div class="row mb-3">
-                    <label for="inputText" class="col-sm-2 col-form-label">Min. Purchase</label>
-                    <div class="col-sm-6">
-                        <input type="number" class="form-control" name='min_purchase'>
-                        <span class="error-message" id="min-purchase-error"></span>
-                    </div>
-                </div>
 
                 <div class="row mb-3">
                     <label for="inputText" class="col-sm-2 col-form-label">Expiration Date</label>
@@ -106,7 +109,8 @@
                 },
                 discount_value: {
                     required: true,
-                    positiveInteger: true
+                    positiveInteger: true,
+                    lessThanMinPurchase: true
                 },
                 min_purchase: {
                     positiveInteger: true
@@ -132,7 +136,8 @@
                 },
                 discount_value: {
                     required: "Please enter the discount value",
-                    positiveInteger: "Discount value should be a positive integer"
+                    positiveInteger: "Discount value should be a positive integer",
+                    lessThanMinPurchase: "Discount value should be less than the Minimum Purchase amount"
                 },
                 min_purchase: {
                     positiveInteger: "Min. purchase should be a positive integer"
@@ -164,6 +169,15 @@
         $.validator.addMethod("positiveInteger", function(value, element) {
             return /^\d+$/.test(value);
         }, "Please enter a positive integer");
+        // Custom validation method for ensuring Discount Value is less than Minimum Purchase
+        $.validator.addMethod("lessThanMinPurchase", function(value, element) {
+            // Get the value of Minimum Purchase
+            var minPurchase = parseInt($("[name='min_purchase']").val(), 10);
+
+            // Check if Discount Value is less than Minimum Purchase
+            return parseInt(value, 10) < minPurchase;
+        }, "Discount value should be less than the Minimum Purchase amount");
+    
     });
 </script>
 

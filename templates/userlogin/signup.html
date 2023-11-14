@@ -69,16 +69,26 @@
         $('.error-message').html(''); // Clear error messages
   
         var fullname = $('#fullname').val();
-        var email = $('#email').val();
-        var phone = $('#phone').val();
-        var password = $('#password').val();
-        var confirm_password = $('#confirm_password').val();
-        var isValid = true;
-  
-        if (fullname === '') {
-          isValid = false;
-          $('#fullname-error').html('Full Name is required.');
-        }
+      var email = $('#email').val();
+      var phone = $('#phone').val();
+      var password = $('#password').val();
+      var confirm_password = $('#confirm_password').val();
+      var isValid = true;
+
+      // Validate Full Name
+      if (fullname === '') {
+        isValid = false;
+        $('#fullname-error').html('Full Name is required.');
+      } else if (fullname.length < 3) {
+        isValid = false;
+        $('#fullname-error').html('Full Name should be at least 3 characters long.');
+      } else if (/\s{3,}/.test(fullname)) {
+        isValid = false;
+        $('#fullname-error').html('No more than 2 consecutive spaces allowed.');
+      } else if (!isValidFullName(fullname)) {
+        isValid = false;
+        $('#fullname-error').html('Full Name should not contain numbers or special symbols.');
+      }
   
         if (email === '') {
           isValid = false;
@@ -101,7 +111,7 @@
           $('#password-error').html('Password is required.');
         } else if (!isValidPassword(password)) {
           isValid = false;
-          $('#password-error').html('Password must be at least 8 characters long, contain at least one uppercase letter, one lowercase letter, one number, and one special character.');
+          $('#password-error').html('Password must be <br>- at least 8 characters long<br>- contain at least one uppercase letter, one lowercase letter<br>- Contain one number, and one special character.');
         }
   
         if (confirm_password === '') {
@@ -158,6 +168,11 @@
       function isValidIndianPhoneNumber(phone) {
         var phoneRegex = /^[789]\d{9}$/;
         return phoneRegex.test(phone);
+    }
+    function isValidFullName(fullname) {
+      // Use a regular expression to check if the full name contains only letters and spaces
+      var nameRegex = /^[A-Za-z\s]+$/;
+      return nameRegex.test(fullname);
     }
     });
   </script>

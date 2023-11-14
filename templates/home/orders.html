@@ -30,21 +30,32 @@
 
 <section id="cart_page" class="cart pt-4 pb-4">
   <div class="container-xl">
-    <table class="table table-light ">
-      <thead> 
-        <tr class="custom-th">
-          <th scope="col">Product Image</th>
-          <th scope="col">Product</th>
-          <th scope="col">Color</th>
-          <th scope="col">Price</th>
-          <th scope="col">Quantity</th>
-          <th scope="col">Total Price</th>
-          <th scope="col">Payment method</th>
-          <th scope="col">Order Status</th>
-          <th scope="col">Actions</th>
-        </tr>
-      </thead>
-      <tbody>
+    
+        {% if not order_items %}
+        <div class="empty-cart-message">
+          <center>
+            <i class="fa-solid fa-bag-shopping my-3 opacity-75" style="color: #000000; font-size:90px"></i>
+            <h2 class="cart-heading" >You have no Orders Yet</h2>
+            <p class="cart-subheading text-secondary">There are no items in your Orders. <br> Order items from Shop13</p>
+            <a href="{% url "shop" %}" class="btn btn-warning rounded-0 shop-now-btn text-light fw-bold px-4 py-2">SHOP NOW</a>
+          </center>
+        </div>
+      {% else %}
+      <table class="table table-light ">
+        <thead> 
+          <tr class="custom-th">
+            <th scope="col">Product Image</th>
+            <th scope="col">Product</th>
+            <th scope="col">Color</th>
+            <th scope="col">Price</th>
+            <th scope="col">Quantity</th>
+            <th scope="col">Total Price</th>
+            <th scope="col">Payment method</th>
+            <th scope="col">Order Status</th>
+            <th scope="col">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
         {% for order in order_items %}
         <tr>
           <td><img src='{{order.variant.productimage_set.last.image.url}}' height='100px'></td>
@@ -65,9 +76,10 @@
           {% endif %}
         </tr>
         {% endfor %}
+        
       </tbody>
     </table>
-
+  {% endif %}
     {% comment %} Cancel Modal {% endcomment %}
     {% for order in order_items %}
     <div id="deleteAddress-{{forloop.counter}}" class="modal fade">

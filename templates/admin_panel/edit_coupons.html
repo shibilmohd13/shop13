@@ -20,9 +20,9 @@
     </div>
     <div class="card">
         <div class="card-body">
-            <h5 class="card-title">Edit a Existing Coupon</h5>
+            <h5 class="card-title">Edit an Existing Coupon</h5>
             <!-- General Form Elements -->
-            <form method='POST' id="couponForm">
+            <form method='POST' id="editCouponForm">
                 {% csrf_token %}
 
                 <div class="row mb-3">
@@ -38,14 +38,8 @@
                     <div class="col-sm-6">
                         <input type="text" class="form-control" name='code' value='{{coupon.code}}' required>
                         <span class="error-message" id="coupon-code-error"></span>
-                    </div>
-                </div>
+                        {% if messages %}<span class="error text-danger">{% for message in messages %}{{message}}{% endfor %}</span>{% endif %}
 
-                <div class="row mb-3">
-                    <label for="inputText" class="col-sm-2 col-form-label">Discount Value</label>
-                    <div class="col-sm-4">
-                        <input type="number" class="form-control" name='discount_value' value='{{coupon.discount_value}}' required>
-                        <span class="error-message" id="discount-value-error"></span>
                     </div>
                 </div>
 
@@ -54,6 +48,14 @@
                     <div class="col-sm-6">
                         <input type="number" class="form-control" name='min_purchase' value='{{coupon.minimum_purchase}}'>
                         <span class="error-message" id="min-purchase-error"></span>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <label for="inputText" class="col-sm-2 col-form-label">Discount Value</label>
+                    <div class="col-sm-4">
+                        <input type="number" class="form-control" name='discount_value' value='{{coupon.discount_value}}' required>
+                        <span class="error-message" id="discount-value-error"></span>
                     </div>
                 </div>
 
@@ -84,6 +86,7 @@
 
         </div>
     </div>
+</div>
 </main><!-- End #main -->
 
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
@@ -91,7 +94,7 @@
 
 <script>
     $(document).ready(function() {
-        $("#couponForm").validate({
+        $("#editCouponForm").validate({
             rules: {
                 name: {
                     required: true,
@@ -108,7 +111,9 @@
                     positiveInteger: true
                 },
                 min_purchase: {
-                    positiveInteger: true
+                    required: true,
+                    positiveInteger: true,
+                    greaterThanDiscount: true
                 },
                 expiry_date: {
                     required: true
@@ -134,7 +139,9 @@
                     positiveInteger: "Discount value should be a positive integer"
                 },
                 min_purchase: {
-                    positiveInteger: "Min. purchase should be a positive integer"
+                    required: "Please enter the minimum purchase",
+                    positiveInteger: "Minimum purchase should be a positive integer",
+                    greaterThanDiscount: "Minimum purchase should be greater than the Discount value"
                 },
                 expiry_date: {
                     required: "Please enter the expiration date"
@@ -163,6 +170,15 @@
         $.validator.addMethod("positiveInteger", function(value, element) {
             return /^\d*\.?\d+$/.test(value);
         }, "Please enter a positive integer");
+
+        // Custom validation method for ensuring Min. Purchase is greater than Discount Value
+        $.validator.addMethod("greaterThanDiscount", function(value, element) {
+            // Get the value of Discount Value
+            var discountValue = parseFloat($("[name='discount_value']").val());
+
+            // Check if Min. Purchase is greater than Discount Value
+            return parseFloat(value) > discountValue;
+        }, "Minimum purchase should be greater than the Discount value");
     });
 </script>
 

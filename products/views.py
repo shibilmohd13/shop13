@@ -167,26 +167,44 @@ def add_brands(request):
 
 # Edit categories
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
-@user_passes_test(lambda u:u.is_superuser, login_url='admin_login')
+@user_passes_test(lambda u: u.is_superuser, login_url='admin_login')
 def edit_categories(request, id):
     cat = Category.objects.get(id=id)
+
     if request.method == 'POST':
-        cat.name = request.POST.get('name')
-        cat.save()
-        return redirect('categories')
-    return render(request, 'admin_panel/edit_categories.html',{'cat':cat})
+        new_name = request.POST.get('name')
+
+        # Check if the new name already exists
+        if Category.objects.filter(name=new_name).exclude(id=cat.id).exists():
+            messages.error(request, 'Category with this name already exists.')
+        else:
+            cat.name = new_name
+            cat.save()
+            return redirect('categories')
+
+    return render(request, 'admin_panel/edit_categories.html', {'cat': cat})
+
 
 
 # Edit Brands
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
-@user_passes_test(lambda u:u.is_superuser, login_url='admin_login')
-def edit_brands(request,id):
+@user_passes_test(lambda u: u.is_superuser, login_url='admin_login')
+def edit_brands(request, id):
     brand = Brand.objects.get(id=id)
+
     if request.method == 'POST':
-        brand.name = request.POST.get('name')
-        brand.save()
-        return redirect('brands')
-    return render(request, 'admin_panel/edit_brands.html',{'brand': brand})
+        new_name = request.POST.get('name')
+
+        # Check if the new name already exists
+        if Brand.objects.filter(name=new_name).exclude(id=brand.id).exists():
+            messages.error(request, 'Brand with this name already exists.')
+        else:
+            brand.name = new_name
+            brand.save()
+            return redirect('brands')
+
+    return render(request, 'admin_panel/edit_brands.html', {'brand': brand})
+
 
 
 # show all categories
@@ -314,7 +332,7 @@ def edit_varients(request, id):
                 ProductImage.objects.create(varient=varient, image=image)
         return redirect('varient_details', id=varient.product.id)
 
-    return render(request, 'admin_panel/edit_varients.html', {'varient' : varient , 'product' : varient.product , 'images' : existing_images})
+    return render(request, 'admin_panel/edit_varients.html', {'variant' : varient , 'product' : varient.product , 'images' : existing_images})
 
 
 # Change varient Status

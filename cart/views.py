@@ -195,7 +195,13 @@ def place_order(request):
         print(f'!!!!!!!!!!!!!!!!!!!!!!!!!{new_address}!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
         payment_method = request.POST.get("payment")
 
+
         cart_items = Cart.objects.filter(user=user)
+        for item in cart_items:
+            if item.prod_quantity > item.product.quantity :
+                return JsonResponse({'success' : False , 'message' : "Some items Out of stock"})
+
+
 
         total_amount_coupon=request.POST.get('total_amount')
         print(f'total_amount_coupon: {total_amount_coupon}')
@@ -261,11 +267,16 @@ def place_order(request):
 
 client = razorpay.Client(auth=("rzp_test_364uDI7fwiadCE", "ePLDxAKYVU5LybscC7YNuTqL"))
 
+
 def place_order_razorpay(request):
     email = request.session['email']
     user = CustomUser.objects.get(email=email)
     print(user)
-    cart = Cart.objects.filter(user=user)
+
+    cart_items = Cart.objects.filter(user=user)
+    for item in cart_items:
+            if item.prod_quantity > item.product.quantity :
+                return JsonResponse({'success' : False , 'message' : "Some items Out of stock"})
 
     # cart_total = 0
     # for item in cart :
@@ -298,6 +309,9 @@ def place_order_wallet(request):
         payment_method = request.POST.get("payment")
 
         cart_items = Cart.objects.filter(user=user)
+        for item in cart_items:
+            if item.prod_quantity > item.product.quantity :
+                return JsonResponse({'success' : False , 'message' : "Some items Out of stock"})
         
         if cart_items.exists():
             wallet = Wallet.objects.filter(user=user).order_by("-id")
@@ -317,8 +331,8 @@ def place_order_wallet(request):
                     user=user,
                     address=address,
                     payment_method=payment_method,
-                    total_amount=total_amount_coupon,  # You'll calculate the total amount in the next step
-                    quantity=0,  # You'll calculate the total quantity in the next step
+                    total_amount=total_amount_coupon,  
+                    quantity=0,  # calculate the total quantity in the next step
 
                 )
                 print("###################################################")
@@ -396,11 +410,21 @@ def apply_coupons(request):
             if CouponUsage.objects.filter(user=user,coupon=coupen_check).exists():
                 return JsonResponse({'error':'Coupon already applied.'})
             else:
-                if coupen_check.used_count <= coupen_check.usage_limit:
+                if coupen_check.used_count < coupen_check.usage_limit:
+
                     cart_total = sum(Cart.objects.filter(user=user).values_list('cart_price',flat=True))
+
                     if cart_total >= coupen_check.minimum_purchase:
+
                         total = cart_total - coupen_check.discount_value 
+
                         response_data = {'success': 'added', 'total': total, 'coupon_code': coupon_code ,'discount_amount' : coupen_check.discount_value }
+                        
+                        coupen_check.used_count += 1
+                        coupen_check.save()
+
+                        CouponUsage.objects.create(user=user,coupon=coupen_check)
+
                         return JsonResponse(response_data)
                     else:
                         return JsonResponse({'error': f'Minimum purchase amount of {round(coupen_check.minimum_purchase)} required'})
@@ -417,14 +441,25 @@ def apply_coupons(request):
     # views.py
 
 def remove_coupon(request):
-    if request.method == 'POST':
-        email = request.session.get("email")
-        user = CustomUser.objects.get(email=email)
+    email = request.session.get("email")
+    user = CustomUser.objects.get(email=email)
 
-        # Update the cart total
-        total = sum(Cart.objects.filter(user=user).values_list('cart_price', flat=True))
+    coupon_code = request.POST.get('couponCode', '')
+    coupen_check = Coupons.objects.filter(code=coupon_code,is_active=True).first()
+    print(1)
+    if coupen_check:
+        print(2)
+        usage_check = CouponUsage.objects.filter(user=user,coupon=coupen_check).first()
+        if usage_check:
+            print(3)
+            coupen_check.used_count -= 1
+            coupen_check.save()
+            usage_check.delete()
 
-        response_data = {'success': 'removed', 'total': total}
-        return JsonResponse(response_data)
+    print(4)
+    # Update the cart total
+    total = sum(Cart.objects.filter(user=user).values_list('cart_price', flat=True))
 
-    return JsonResponse({'error': 'Invalid request'})
+    response_data = {'success': 'removed', 'total': total}
+    return JsonResponse(response_data)
+

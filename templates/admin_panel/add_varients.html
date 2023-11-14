@@ -21,161 +21,148 @@
     <a href="{% url "products" %}" class="btn btn-danger btn-rounded h-50">Cancel</a>
 </div>
 
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">Add a new Variant for the product</h5>
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Add a new Variant for the product</h5>
 
         <!-- General Form Elements -->
-        <form action='' method='POST' enctype="multipart/form-data" onsubmit="return validateForm()">
-          {% csrf_token %}
+        <form action='' method='POST' id="variantForm" enctype="multipart/form-data">
+            {% csrf_token %}
             <div class="row mb-3">
-              <label for="inputText" class="col-sm-2 col-form-label">Product Name</label>
-              <div class="col-sm-10">
-                <input type="text" class="form-control" name="name" value="{{product.name}}" disabled>
-              </div>
+                <label for="inputText" class="col-sm-2 col-form-label">Product Name</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" name="name" value="{{product.name}}" disabled>
+                </div>
             </div>
             <div class="row mb-3">
-              <label for="inputText" class="col-sm-2 col-form-label">Color</label>
-              <div class="col-sm-10">
-                <input type="text" class="form-control" name="color" required>
-                <span id="colorError" class="error-message text-danger mt-2"></span>
-              </div>
+                <label for="inputText" class="col-sm-2 col-form-label">Color</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" name="color" id="colorField" required>
+                    <span class="error-message text-danger mt-2" id="color-error"></span>
+                </div>
             </div>
             <div class="row mb-3">
-              <label for="inputNumber" class="col-sm-2 col-form-label">Quantity</label>
-              <div class="col-sm-10 col-md-4">
-                <input type="number" min="1" class="form-control" width="100px" name="quantity" >
-                <span id="quantityError" class="error-message text-danger mt-2"></span>
-              </div>
+                <label for="inputNumber" class="col-sm-2 col-form-label">Quantity</label>
+                <div class="col-sm-10 col-md-4">
+                    <input type="number" min="1" class="form-control" width="100px" name="quantity" id="quantityField">
+                    <span class="error-message text-danger mt-2" id="quantity-error"></span>
+                </div>
             </div>
             <div class="row mb-3">
                 <label for="inputNumber" class="col-sm-2 col-form-label">Price</label>
                 <div class="col-sm-10 col-md-4">
-                  <input type="number" min="0.01" step="0.01" class="form-control" width="100px" name="price" >
-                  <span id="priceError" class="error-message text-danger mt-2"></span>
+                    <input type="number" min="0.01" step="0.01" class="form-control" width="100px" name="price" id="priceField">
+                    <span class="error-message text-danger mt-2" id="price-error"></span>
                 </div>
             </div>
             <div class="row mb-3">
                 <label for="inputNumber" class="col-sm-2 col-form-label">Discount</label>
                 <div class="col-sm-10 col-md-4">
-                  <input type="number" min="0" max="99.99" step="0.01" class="form-control" width="100px"  name="discount" >
-                  <span id="discountError" class="error-message text-danger mt-2"></span>
+                    <input type="number" min="0" max="99.99" step="0.01" class="form-control" width="100px" name="discount" id="discountField">
+                    <span class="error-message text-danger mt-2" id="discount-error"></span>
                 </div>
             </div>
             <div class="row mb-3">
-              <label for="inputNumber" class="col-sm-2 col-form-label">Discounted price</label>
-              <div class="col-sm-10 col-md-4">
-                <input type="number" min="0.01" step="0.01" class="form-control" width="100px" name="discounted_price" >
-                <span id="discountedPriceError" class="error-message text-danger mt-2"></span>
-              </div>
-          </div>
-          <div class="row mb-3">
-            <label for="inputNumber" class="col-sm-2 col-form-label">Images</label>
-            <div class="col-sm-10 col-md-4">
-              <input class="form-control" type="file" id="formFile" name="images" multiple >
-              <span id="imagesError" class="error-message text-danger mt-2"></span>
+                <label for="inputNumber" class="col-sm-2 col-form-label">Discounted price</label>
+                <div class="col-sm-10 col-md-4">
+                    <input type="number" min="0.01" step="0.01" class="form-control" width="100px" name="discounted_price" id="discountedPriceField">
+                    <span class="error-message text-danger mt-2" id="discountedPrice-error"></span>
+                </div>
             </div>
-          </div>
-
-          <br><br>
             <div class="row mb-3">
-              <label class="col-sm-2 col-form-label">Submit</label>
-              <div class="col-sm-10">
-                <button type="submit" class="btn btn-primary">Add Variant</button>
-              </div>
+                <label for="inputNumber" class="col-sm-2 col-form-label">Images</label>
+                <div class="col-sm-10 col-md-4">
+                    <input class="form-control" type="file" id="formFile" name="images" multiple>
+                    <span class="error-message text-danger mt-2" id="images-error"></span>
+                </div>
             </div>
-          
 
-          </form><!-- End General Form Elements -->
+            <br><br>
+            <div class="row mb-3">
+                <label class="col-sm-2 col-form-label">Submit</label>
+                <div class="col-sm-10">
+                    <button type="submit" class="btn btn-primary">Add Variant</button>
+                </div>
+            </div>
 
-        </div>
-      </div>
+        </form><!-- End General Form Elements -->
 
     </div>
+</div>
+
+</div>
 </main>
 
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+
 <script>
-  function validateForm() {
-    // Get the value of the "color" input field
-    var colorField = document.querySelector('input[name="color"]');
-    var colorValue = colorField.value;
+    $(document).ready(function () {
+        $("#variantForm").validate({
+            rules: {
+                color: {
+                    required: true,
+                    minlength: 3,
+                    noConsecutiveSpaces: true
+                },
+                quantity: {
+                    required: true,
+                    min: 0
+                },
+                price: {
+                    required: true,
+                    min: 1
+                },
+                discount: {
+                    required: true,
+                    range: [0, 99.99]
+                },
+                discounted_price: {
+                    required: true,
+                    min: 1
+                },
+                images: {
+                    required: true
+                }
+            },
+            messages: {
+                color: {
+                    required: "Please enter the color",
+                    minlength: "Color must contain at least 3 alphabetical characters",
+                    noConsecutiveSpaces: "Color cannot have consecutive spaces"
+                },
+                quantity: {
+                    required: "Please enter the quantity",
+                    min: "Quantity must be a positive number"
+                },
+                price: {
+                    required: "Please enter the price",
+                    min: "Price must be greater than 0"
+                },
+                discount: {
+                    required: "Please enter the discount",
+                    range: "Discount must be a positive number less than 100"
+                },
+                discounted_price: {
+                    required: "Please enter the discounted price",
+                    min: "Discounted price must be greater than 0"
+                },
+                images: {
+                    required: "Please choose at least one image"
+                }
+            },
+            errorClass: "is-invalid",
+            errorPlacement: function (error, element) {
+                error.addClass("invalid-feedback");
+                error.insertAfter(element);
+            }
+        });
 
-    // Define a regular expression for consecutive spaces
-    var consecutiveSpacesRegex = /  +/;
-
-    // Get the value of the "quantity" input field
-    var quantityField = document.querySelector('input[name="quantity"]');
-    var quantityValue = quantityField.value;
-
-    // Get the value of the "price" input field
-    var priceField = document.querySelector('input[name="price"]');
-    var priceValue = priceField.value;
-
-    // Get the value of the "discount" input field
-    var discountField = document.querySelector('input[name="discount"]');
-    var discountValue = discountField.value;
-
-    // Get the value of the "discounted price" input field
-    var discountedPriceField = document.querySelector('input[name="discounted_price"]');
-    var discountedPriceValue = discountedPriceField.value;
-
-    // Get the value of the "images" input field
-    var imagesField = document.querySelector('input[name="images"]');
-    var imagesValue = imagesField.files;
-
-    // Define a regular expression for alphabet or space
-    var alphaSpaceRegex = /^[A-Za-z\s]*$/;
-
-    // Validate the color
-    if (colorValue.trim().length < 3 || !alphaSpaceRegex.test(colorValue) || consecutiveSpacesRegex.test(colorValue)) {
-      document.getElementById("colorError").textContent = "Color must contain at least 3 alphabetical characters and cannot have consecutive spaces.";
-      return false;
-    } else {
-      document.getElementById("colorError").textContent = ""; // Clear error message
-    }
-
-    // Validate the quantity
-    if (quantityValue < 0) {
-      document.getElementById("quantityError").textContent = "Quantity must be a positive number.";
-      return false;
-    } else {
-      document.getElementById("quantityError").textContent = ""; // Clear error message
-    }
-
-    // Validate the price
-    if (priceValue <= 0) {
-      document.getElementById("priceError").textContent = "Price must be greater than 0.";
-      return false;
-    } else {
-      document.getElementById("priceError").textContent = ""; // Clear error message
-    }
-
-    // Validate the discount
-    if (discountValue < 0 || discountValue >= 100) {
-      document.getElementById("discountError").textContent = "Discount must be a positive number less than 100.";
-      return false;
-    } else {
-      document.getElementById("discountError").textContent = ""; // Clear error message
-    }
-
-    // Validate the discounted price
-    if (discountedPriceValue <= 0) {
-      document.getElementById("discountedPriceError").textContent = "Discounted price must be greater than 0.";
-      return false;
-    } else {
-      document.getElementById("discountedPriceError").textContent = ""; // Clear error message
-    }
-
-    // Validate the images
-    if (imagesValue.length === 0) {
-      document.getElementById("imagesError").textContent = "Please choose at least one image.";
-      return false;
-    } else {
-      document.getElementById("imagesError").textContent = ""; // Clear error message
-    }
-
-    return true;
-  }
+        // Custom validation method
+        $.validator.addMethod("noConsecutiveSpaces", function (value, element) {
+            return !/\s{2,}/.test(value);
+        }, "Color cannot have consecutive spaces");
+    });
 </script>
 
 {% endblock content %}

@@ -1,6 +1,6 @@
 {% extends 'admin_panel/admin_base.html' %}
 {% load static %}
-{% block title %} Edit Varient{% endblock title %}
+{% block title %} Edit Variant{% endblock title %}
 {% block products %}{% endblock products %}
 {% block content %}
 
@@ -8,13 +8,13 @@
 
   <div class="d-flex justify-content-between">
     <div class="pagetitle">
-        <h1>Edit Varient</h1>
+        <h1>Edit Variant</h1>
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item">Admin</li>
                 <li class="breadcrumb-item">Products</li>
-                <li class="breadcrumb-item ">Varients</li>
-                <li class="breadcrumb-item active">Edit Varient</li>
+                <li class="breadcrumb-item ">Variants</li>
+                <li class="breadcrumb-item active">Edit Variant</li>
             </ol>
         </nav>
     </div><!-- End Page Title -->
@@ -23,10 +23,10 @@
 
 <div class="card">
     <div class="card-body">
-        <h5 class="card-title">Edit an existing Varient for the product</h5>
+        <h5 class="card-title">Edit an existing Variant for the product</h5>
 
         <!-- General Form Elements -->
-        <form action='' method='POST' enctype="multipart/form-data" onsubmit="return validateForm()">
+        <form action='' method='POST' id="variantForm" enctype="multipart/form-data">
           {% csrf_token %}
             <div class="row mb-3">
               <label for="inputText" class="col-sm-2 col-form-label">Product Name</label>
@@ -37,43 +37,43 @@
             <div class="row mb-3">
               <label for="inputText" class="col-sm-2 col-form-label">Color</label>
               <div class="col-sm-10">
-                <input type="text" class="form-control" name="color" id="colorField" value="{{varient.color}}" required>
-                <span id="colorError" class="error-message text-danger mt-2"></span>
+                <input type="text" class="form-control" name="color" id="colorField" value="{{variant.color}}" required>
+                <span class="error-message text-danger mt-2" id="color-error"></span>
               </div>
             </div>
             <div class="row mb-3">
               <label for="inputNumber" class="col-sm-2 col-form-label">Quantity</label>
               <div class="col-sm-10 col-md-4">
-                <input type="number" class="form-control" value="{{varient.quantity}}" width="100px" name="quantity" id="quantityField" required>
-                <span id="quantityError" class="error-message text-danger mt-2"></span>
+                <input type="number" class="form-control" value="{{variant.quantity}}" width="100px" name="quantity" id="quantityField" required>
+                <span class="error-message text-danger mt-2" id="quantity-error"></span>
               </div>
             </div>
             <div class="row mb-3">
                 <label for="inputNumber" class="col-sm-2 col-form-label">Price</label>
                 <div class="col-sm-10 col-md-4">
-                  <input type="number" min="0" class="form-control" value="{{varient.price}}" width="100px" name="price" id="priceField" required>
-                  <span id="priceError" class="error-message text-danger mt-2"></span>
+                  <input type="number" min="0" class="form-control" value="{{variant.price}}" width="100px" name="price" id="priceField" required>
+                  <span class="error-message text-danger mt-2" id="price-error"></span>
                 </div>
             </div>
             <div class="row mb-3">
                 <label for="inputNumber" class="col-sm-2 col-form-label">Discount</label>
                 <div class="col-sm-10 col-md-4">
-                  <input type="number" min="0" max="100" class="form-control" value="{{varient.discount}}" width="100px" name="discount" id="discountField" required>
-                  <span id="discountError" class="error-message text-danger mt-2"></span>
+                  <input type="number" min="0" max="100" class="form-control" value="{{variant.discount}}" width="100px" name="discount" id="discountField" required>
+                  <span class="error-message text-danger mt-2" id="discount-error"></span>
                 </div>
             </div>
             <div class="row mb-3">
               <label for="inputNumber" class="col-sm-2 col-form-label">Discounted price</label>
               <div class="col-sm-10 col-md-4">
-                <input type="number" min="0" class="form-control" value="{{varient.discounted_price}}" width="100px" name="discounted_price" id="discountedPriceField" required>
-                <span id="discountedPriceError" class="error-message text-danger mt-2"></span>
+                <input type="number" min="0" class="form-control" value="{{variant.discounted_price}}" width="100px" name="discounted_price" id="discountedPriceField" required>
+                <span class="error-message text-danger mt-2" id="discountedPrice-error"></span>
               </div>
           </div>
             <div class="row mb-3">
               <label for="inputNumber" class="col-sm-2 col-form-label">Images</label>
               <div class="col-sm-10 col-md-4">
                 <input class="form-control" type="file" id="formFile" name="images" multiple>
-                <span id="imagesError" class="error-message text-danger mt-2"></span>
+                <span class="error-message text-danger mt-2" id="images-error"></span>
               </div>
           </div>
           
@@ -90,74 +90,84 @@
             <div class="row mb-3">
               <label class="col-sm-2 col-form-label">Submit</label>
               <div class="col-sm-10">
-                <button type="submit" class="btn btn-primary">Update Varient</button>
+                <button type="submit" class="btn btn-primary">Update Variant</button>
               </div>
             </div>
           
 
           </form><!-- End General Form Elements -->
 
-        </div>
-      </div>
-
     </div>
+  </div>
 
-
+</div>
 </main>
 
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+
 <script>
-  function validateForm() {
-    var colorField = document.getElementById("colorField");
-    var quantityField = document.getElementById("quantityField");
-    var priceField = document.getElementById("priceField");
-    var discountField = document.getElementById("discountField");
-    var discountedPriceField = document.getElementById("discountedPriceField");
-    var imagesField = document.getElementById("formFile");
-    var errorFlag = false;
-    
-    // Regular expression for validating color (alphabet, space, no consecutive 2 spaces)
-    var colorRegex = /^[A-Za-z\s]{3,}$/;
-    
-    // Validate the color
-    if (!colorRegex.test(colorField.value)) {
-      document.getElementById("colorError").textContent = "Color should contain alphabet or space, no consecutive 2 spaces, and at least 3 characters.";
-      errorFlag = true;
-    } else {
-      document.getElementById("colorError").textContent = "";
-    }
-    
-    // Validate the quantity (positive number)
-    if (isNaN(quantityField.value) || quantityField.value < 0) {
-      document.getElementById("quantityError").textContent = "Quantity should be a positive number.";
-      errorFlag = true;
-    } else {
-      document.getElementById("quantityError").textContent = "";
-    }
-    
-    // Validate the price and discounted price (greater than 0)
-    if (isNaN(priceField.value) || priceField.value <= 0 || isNaN(discountedPriceField.value) || discountedPriceField.value <= 0) {
-      document.getElementById("priceError").textContent = "Price and discounted price should be greater than 0.";
-      errorFlag = true;
-    } else {
-      document.getElementById("priceError").textContent = "";
-    }
-    
-    // Validate the discount (positive, less than 100)
-    if (isNaN(discountField.value) || discountField.value < 0 || discountField.value >= 100) {
-      document.getElementById("discountError").textContent = "Discount should be a positive number and less than 100.";
-      errorFlag = true;
-    } else {
-      document.getElementById("discountError").textContent = "";
-    }
+    $(document).ready(function () {
+        $("#variantForm").validate({
+            rules: {
+                color: {
+                    required: true,
+                    minlength: 3,
+                    noConsecutiveSpaces: true
+                },
+                quantity: {
+                    required: true,
+                    min: 0
+                },
+                price: {
+                    required: true,
+                    min: 1
+                },
+                discount: {
+                    required: true,
+                    range: [0, 99.99]
+                },
+                discounted_price: {
+                    required: true,
+                    min: 1
+                },
+            },
+            messages: {
+                color: {
+                    required: "Please enter the color",
+                    minlength: "Color must contain at least 3 alphabetical characters",
+                    noConsecutiveSpaces: "Color cannot have consecutive spaces"
+                },
+                quantity: {
+                    required: "Please enter the quantity",
+                    min: "Quantity must be a positive number"
+                },
+                price: {
+                    required: "Please enter the price",
+                    min: "Price must be greater than 0"
+                },
+                discount: {
+                    required: "Please enter the discount",
+                    range: "Discount must be a positive number less than 100"
+                },
+                discounted_price: {
+                    required: "Please enter the discounted price",
+                    min: "Discounted price must be greater than 0"
+                },
+                
+            },
+            errorClass: "is-invalid",
+            errorPlacement: function (error, element) {
+                error.addClass("invalid-feedback");
+                error.insertAfter(element);
+            }
+        });
 
-
-    if (errorFlag) {
-      return false; // Prevent form submission if there are validation errors
-    }
-
-    return true; // Allow form submission if all fields are valid
-  }
+        // Custom validation method
+        $.validator.addMethod("noConsecutiveSpaces", function (value, element) {
+            return !/\s{2,}/.test(value);
+        }, "Color cannot have consecutive spaces");
+    });
 </script>
-
 
 {% endblock content %}

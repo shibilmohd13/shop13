@@ -21,13 +21,13 @@
     <div class="card-body">
       <h5 class="card-title">Add a new Product to the database</h5>
       <!-- General Form Elements -->
-      <form action='' method='POST' enctype="multipart/form-data" onsubmit="return validateForm()">
+      <form action='' method='POST' id="productForm" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="row mb-3">
           <label for="inputText" class="col-sm-2 col-form-label">Product Name</label>
           <div class="col-sm-10">
-            <input type="text" class="form-control" name="name" required>
-            <span id="nameError" class="error-message text-danger mt-2">{% if messages %} {% for message in messages %}{{message}}{% endfor %} {% endif %}</span>
+            <input type="text" class="form-control" name="name" id="nameField" required>
+            <span class="error-message" id="name-error"></span>
           </div>
         </div>
         <div class="row mb-3">
@@ -68,29 +68,39 @@
   </div>
 </div>
 </main>
-<script>
-  function validateForm() {
-    // Get the value of the "name" input field
-    var nameField = document.querySelector('input[name="name"]');
-    var nameValue = nameField.value;
-    
-    // Define a regular expression for checking consecutive spaces
-    var consecutiveSpacesRegex = /  +/;
 
-    // Validate the name
-    if (nameValue.length < 3) {
-      document.getElementById("nameError").textContent = "Name must contain at least 3 letters";
-      return false;
-    } else if (consecutiveSpacesRegex.test(nameValue)) {
-      document.getElementById("nameError").textContent = "Name cannot contain 2 consecutive spaces";
-      return false;
-    } else if (nameValue.trim().length < 1) {
-      document.getElementById("nameError").textContent = "Name must contain at least 1 character";
-      return false;
-    } else {
-      document.getElementById("nameError").textContent = ""; // Clear error message
-      return true;
-    }
-  }
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+
+<script>
+  $(document).ready(function() {
+    $("#productForm").validate({
+      rules: {
+        name: {
+          required: true,
+          minlength: 3,
+          noConsecutiveSpaces: true
+        },
+      },
+      messages: {
+        name: {
+          required: "Please enter the product name",
+          minlength: "Product name must be at least 3 characters long",
+          noConsecutiveSpaces: "Product name cannot contain 2 consecutive spaces"
+        },
+      },
+      errorClass: "is-invalid",
+      errorPlacement: function(error, element) {
+        error.addClass("invalid-feedback");
+        error.insertAfter(element);
+      }
+    });
+
+    // Custom validation method
+    $.validator.addMethod("noConsecutiveSpaces", function(value, element) {
+      return !/\s{2,}/.test(value);
+    }, "Product name cannot contain more than 2 consecutive spaces");
+  });
 </script>
+
 {% endblock content %}

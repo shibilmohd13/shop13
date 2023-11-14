@@ -13,7 +13,7 @@ def orders(request):
         email = request.session['email']
         user = CustomUser.objects.get(email=email)
         orders = Orders.objects.filter(user=user)
-        order_items = OrdersItem.objects.filter(order__in=orders)
+        order_items = OrdersItem.objects.filter(order__in=orders).order_by('-id')
     return render(request, "home/orders.html", {'order_items': order_items})
 
 

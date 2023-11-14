@@ -6,7 +6,7 @@ import smtplib
 from . models import Contact
 from django.contrib.auth import logout
 from django.http import JsonResponse
-from django.db.models import Q
+from django.db.models import Q,Count
 
 # Create your views here.
 

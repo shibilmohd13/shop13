@@ -289,7 +289,7 @@
                             if (response.success){
                                 var options = {
                                     "key": "rzp_test_364uDI7fwiadCE", // Enter the Key ID generated from the Dashboard
-                                    "amount": response.total_price * 100  / 1000 , // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+                                    "amount": response.total_price * 100, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
                                     "currency": "INR",
                                     "name": "SHOP13",
                                     "description": "Online Payment",
@@ -455,6 +455,7 @@
     }
     function removeCoupon() {
         var couponCode = $('#couponCode').val();
+        console.log("clicked")
     
         $.ajax({
             url: 'remove_coupon',
