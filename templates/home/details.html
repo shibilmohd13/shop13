@@ -74,9 +74,13 @@
                         </span>
                         - 2 Customer Reviews
                     </h6>
-                    <h4 class="mt-3"><span class="col_yell">&#8377;</span><span class="col_yell me-3" id='discounted_price'>{{item.discounted_price}}</span> 
-                        <span class="font_14  text-decoration-line-through col_light">&#8377;</span><span class="font_14  text-decoration-line-through col_light" id='price'>{{item.price}}</span></h4>
-                    <p>{{item.product.description}}</p>
+                    <h4 class="mt-3 d-flex align-items-end"><span class="col_yell">&#8377;</span><span class="col_yell me-3" id='discounted_price'>{{item.discounted_price}}</span> 
+                        {% if item.discount > 0 %}
+                        <div class="font_14  text-decoration-line-through col_light" id="price-span">&#8377;<span class="font_14  text-decoration-line-through col_light" id='price'>{{item.price}}</span></div>
+                        {% endif %}
+                    </h4>
+                        
+                        <p>{{item.product.description}}</p>
                     
                     <form>
                         {% csrf_token %}
@@ -213,11 +217,20 @@
                 dataType: 'json',
                 success: function (response) {
                     // Update the price, discount price, and color on the page
-                    $('#price').text(response.price);
+                    if(response.discount > 0){
+                        $('#price-span').show();  // Show the #price element
+                        $('#price').text(response.price);
+                    }else{
+                        $('#price-span').hide();  // Hide the #price element
+
+                    }
                     $('#discounted_price').text(response.discounted_price);
                     $('#color').text(response.color);
                     $('#quantity').text(response.quantity);
                     $('#id').text(response.id);
+
+                   
+
 
                     // Assume you have a list of image URLs for the selected color variant
                     var imageUrls = response.image_urls;

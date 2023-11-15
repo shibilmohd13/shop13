@@ -13,7 +13,7 @@ from django.db.models import Q,Count
 
 # View to show the Home page of the Website ( Landing page )
 def home(request):
-    obj = Product.objects.prefetch_related('colorvarient_set__productimage_set').filter(is_listed=True).order_by('id')
+    obj = Product.objects.prefetch_related('colorvarient_set__productimage_set').filter(is_listed=True).order_by('-id')[:8]
     return render(request, 'home/home.html', {'obj': obj})
 
 
@@ -37,12 +37,13 @@ def get_color_variant_details(request, id):
         image_urls = [img.image.url for img in color_variant.productimage_set.all()] # Get image URLs
         image_urls.reverse()
         data = {
-            'discounted_price': color_variant.discounted_price,
+            'discounted_price': color_variant.discounted_price(),
             'price': color_variant.price,
             'color': color_variant.color,
             'quantity': color_variant.quantity,
             'id': color_variant.id,
-            'image_urls': image_urls # Get image URLs
+            'image_urls': image_urls , # Get image URLs,
+            'discount': color_variant.discount
         }
         return JsonResponse(data)
     except ColorVarient.DoesNotExist:

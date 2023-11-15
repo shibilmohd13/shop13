@@ -39,9 +39,14 @@ class ColorVarient(models.Model):
     quantity = models.PositiveIntegerField()
     price = models.IntegerField()
     discount = models.DecimalField(max_digits=5, decimal_places=2,default=0)
-    discounted_price = models.IntegerField(default=0)
     is_listed = models.BooleanField(default=True)
 
+    
+    def discounted_price(self):
+        if self.discount > 0:
+            return self.price - ((self.price * self.discount) / 100)
+        else:
+            return self.price
 
     def __str__(self):
         return f"{self.product.name} - {self.color}"

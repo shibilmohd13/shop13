@@ -6,7 +6,7 @@ from orders.models import Orders,OrdersItem
 from wallet.models import Wallet
 from django.http import JsonResponse,HttpResponse
 from django.utils import timezone  # Import timezone module
-from datetime import timedelta
+from datetime import timedelta,datetime
 from coupons.models import CouponUsage, Coupons
 import razorpay
 
@@ -46,7 +46,7 @@ def addtocart(request):
                 prod_qty = 1
                 if product_check.quantity >= prod_qty:
                     product = ColorVarient.objects.get(id=prod_id)
-                    Cart.objects.create(user=user, product=product, prod_quantity=prod_qty, cart_price=product.discounted_price, created_at=timezone.now())
+                    Cart.objects.create(user=user, product=product, prod_quantity=prod_qty, cart_price=product.discounted_price(), created_at=timezone.now())
                     cart_count = Cart.objects.filter(user=user).count()
                     print(f"Cart s ajax count: {cart_count}")
                     return JsonResponse({'status' : "Product added successfully",'success' : True, "cart_count" : cart_count})
@@ -102,7 +102,7 @@ def update_cart(request):
                     cart.prod_quantity = 1
                     cart.save()
 
-            priceOfInstance = varient_obj.discounted_price
+            priceOfInstance = varient_obj.discounted_price()
             prodtotal = cart.prod_quantity * priceOfInstance
             cart.cart_price = prodtotal
             cart.save()
@@ -230,14 +230,14 @@ def place_order(request):
                     order=order,
                     variant=item.product,
                     quantity=item.prod_quantity,
-                    price=item.product.discounted_price,
+                    price=item.product.discounted_price(),
                     status='Order confirmed',  # Set the default status here
 
                 )
                 order_item.save()
 
                 # Calculate the total amount and quantity
-                total_amount += item.prod_quantity * item.product.discounted_price
+                total_amount += item.prod_quantity * item.product.discounted_price()
                 total_quantity += item.prod_quantity
 
                 # Reduce the quantity of the ColorVariant in the order
@@ -282,7 +282,7 @@ def place_order_razorpay(request):
     # for item in cart :
     #     cart_total += (item.product.discounted_price * item.prod_quantity)
 
-    cart_total = int(float(request.POST.get('total_amount')))
+    cart_total = int(float(request.POST.get('total_amount'))) * 100
     print(cart_total)
 
     print(client)
@@ -348,14 +348,14 @@ def place_order_wallet(request):
                         order=order,
                         variant=item.product,
                         quantity=item.prod_quantity,
-                        price=item.product.discounted_price,
+                        price=item.product.discounted_price(),
                         status='Order confirmed',  # Set the default status here
 
                     )
                     order_item.save()
 
                     # Calculate the total amount and quantity
-                    total_amount += item.prod_quantity * item.product.discounted_price
+                    total_amount += item.prod_quantity * item.product.discounted_price()
                     total_quantity += item.prod_quantity
 
                     # Reduce the quantity of the ColorVariant in the order
@@ -415,7 +415,12 @@ def apply_coupons(request):
                     cart_total = sum(Cart.objects.filter(user=user).values_list('cart_price',flat=True))
 
                     if cart_total >= coupen_check.minimum_purchase:
+                        print(coupen_check.expiration_date)
+                        print(datetime.now().date())
+                        if coupen_check.expiration_date < datetime.now().date():
+                            return JsonResponse({'error': f'Coupon Expired'})
 
+                        
                         total = cart_total - coupen_check.discount_value 
 
                         response_data = {'success': 'added', 'total': total, 'coupon_code': coupon_code ,'discount_amount' : coupen_check.discount_value }

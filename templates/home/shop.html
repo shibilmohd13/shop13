@@ -109,11 +109,13 @@
                     >
                       NEW
                     </h6>
+                    {% if item.colorvarient_set.first.discount > 0 %}
                     <h6
                       class="bg_yell d-inline-block pt-1 pb-1 font_13 text-white ps-3 pe-3 pull-right"
                     >
                       {{item.colorvarient_set.first.discount}}%
                     </h6>
+                    {% endif %}
                   </div>
                   <div
                     class="prod_2in clearfix position-absolute bg-light w-100 p-3 text-center"
@@ -149,9 +151,9 @@
                   </h6>
                   <hr />
                   <h6 class="fw-normal mb-0">
-                    <span class="text-decoration-line-through col_light"
-                      >	&#8377;{{item.colorvarient_set.first.price}}</span
-                    >
+                    {% if item.colorvarient_set.first.discount > 0 %}
+                    <span class="text-decoration-line-through col_light">	&#8377;{{item.colorvarient_set.first.price}}</span>
+                    {% endif %}
                     <span class="pull-right fw-bold col_yell">&#8377;{{item.colorvarient_set.first.discounted_price}}</span>
                   </h6>
                 </div>
