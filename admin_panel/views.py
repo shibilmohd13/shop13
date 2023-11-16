@@ -123,3 +123,13 @@ def change_order_status(request, id):
         order.status = status
         order.save()
     return redirect('view_order_details',id=id)
+
+
+def offers(request):
+    return render(request, 'admin_panel/offers.html')
+
+def product_offers(request):
+    return render(request, 'admin_panel/offers_product.html')
+
+def category_offers(request):
+    return render(request, 'admin_panel/offers_category.html')   

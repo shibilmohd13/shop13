@@ -1,0 +1,72 @@
+{% extends 'admin_panel/admin_base.html' %}
+{% load static %}
+{% block title %} Category Offers{% endblock title %}
+{% block offers %}{% endblock offers %}
+{% block content %}
+
+<main id="main" class="main">
+    <div class="d-flex justify-content-between">
+        <div class="pagetitle">
+            <h1>Offers</h1>
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">Admin</li>
+                    <li class="breadcrumb-item ">Offers</li>
+                    <li class="breadcrumb-item active">Category Offers</li>
+                </ol>
+            </nav>
+        </div><!-- End Page Title -->
+        <a href="{% url "add_coupons" %}" class="btn btn-primary btn-rounded h-50">Add Category Offers</a>
+    </div>
+        <!-- Recent Sales -->
+        <div class="col-12">
+            <div class="card recent-sales overflow-auto">
+
+                <div class="card-body">
+                    <table class="table table-borderless mt-3">
+                        <thead>
+                            <tr>
+                                <th>Coupon Name</th>
+                                <th>Code</th>
+                                <th>Discount</th>
+                                <th>Min. Purchase</th>
+                                <th>Expiry</th>
+                                <th>Limit</th>
+                                <th>Count</th>
+                                <th>List / Unlist</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            
+                        {% for coupon in coupons %}
+                            <tr>
+                                <td>{{coupon.name}}</td>
+                                <td>{{coupon.code}}</td>
+                                <td>&#8377;{{coupon.discount_value}}</td>
+                                <td>{{coupon.minimum_purchase}}</td>
+                                <td>{{coupon.expiration_date}}</td>
+                                <td>{{coupon.usage_limit}}</td>
+                                <td>{{coupon.used_count}}</td>
+                                {% if coupon.is_active %}
+                                <td class="align-middle"><a href='coupon_status/{{coupon.id}}'><span class="btn btn-danger">Unlist</span></a></td>
+                                {% else %}
+                                <td class="align-middle"><a href='coupon_status/{{coupon.id}}'><span class="btn btn-success">List</span></a></td>
+                                {% endif %}
+                                <td class="align-middle" style='font-size:20px'><a href="edit_coupons/{{coupon.id}}" class="btn btn-warning">Edit</a></td>
+                                
+                            </tr>
+
+                        
+                        {% endfor %}
+
+                        </tbody>
+                    </table>
+
+                </div>
+
+            </div>
+        </div><!-- End Recent Sales -->
+
+    </main><!-- End #main -->
+{% endblock content %}

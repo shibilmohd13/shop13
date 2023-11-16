@@ -40,11 +40,11 @@
                                 <td>{{cat.id}}</td>
                                 <td>{{cat.name}}</td>
                                 {% if cat.is_listed %}
-                                <td><a href='category_status/{{cat.id}}'><span class="badge bg-danger">Unlist</span></a></td>
+                                <td><a href='category_status/{{cat.id}}'><span class="btn btn-danger">Unlist</span></a></td>
                                 {% else %}
-                                <td><a href='category_status/{{cat.id}}'><span class="badge bg-success">List</span></a></td>
+                                <td><a href='category_status/{{cat.id}}'><span class="btn btn-success">List</span></a></td>
                                 {% endif %}
-                                <td style='font-size:20px'>&nbsp;&nbsp;&nbsp;&nbsp;<a href="edit_categories/{{cat.id}}"><i class="bi bi-pencil-square text-warning"></i></a></td>
+                                <td style='font-size:20px'><a href="edit_categories/{{cat.id}}"><i class="bi bi-pencil-square text-warning"></i></a></td>
                             </tr>
 
                         

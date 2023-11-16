@@ -17,5 +17,4 @@ urlpatterns = [
     path('remove_coupon', views.remove_coupon, name='remove_coupon'),
 
     
-
 ]

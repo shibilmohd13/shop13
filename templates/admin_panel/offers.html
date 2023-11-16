@@ -1,0 +1,107 @@
+{% extends 'admin_panel/admin_base.html' %}
+{% load static %}
+{% block title %} Offers{% endblock title %}
+{% block offers %}{% endblock offers %}
+
+{% block content %}
+<style>
+
+.starter-template {
+        padding: 0px 15px;
+        text-align: center;
+    }
+
+span.lower-text {
+        color: #ffc300;
+        font-size: 25px;
+        display: block;
+    }
+    
+    .hover-div {
+        padding: 20px 20px;
+        text-align: center;
+    }
+    
+    .hover-div {
+        border-top: 1px solid #f8f8f8;
+        background: #f8f8f8;
+        box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.2);
+        -webkit-transition: all 0.3s;
+        transition: all 0.3s;
+        margin: 10px 0px;
+    }
+    
+    .hover-div:hover {
+        -webkit-transform: translateY(-5px);
+        -ms-transform: translateY(-5px);
+        transform: translateY(-5px);
+        box-shadow: 0 10px 23px rgba(0, 0, 0, 0.2);
+        cursor: pointer;
+        border-radius: 5px;
+        border:solid #0b5ed7 1px;
+    }
+
+</style>
+
+<main id="main" class="main">
+
+    <div class="d-flex justify-content-between">
+        <div class="pagetitle">
+            <h1>Offers</h1>
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">Admin</li>
+                    <li class="breadcrumb-item active">Offers</li>
+                </ol>
+            </nav>
+        </div><!-- End Page Title -->
+    </div>
+
+    <div class="container">
+        <div class="card recent-sales overflow-auto">
+
+            <div class="card-body">
+        <h2 class="text-center text-bold my-4">Choose any Offer</h2>
+              <div class="starter-template">
+                  <div class="row">
+
+                      <div class="col-md-6" onclick="window.location.href = '{% url "product_offers" %}'">
+                          <section class="hover-div"> <i class="bi bi-watch" style="font-size:90px;"></i>
+                              <div class="hover-div_inner">
+                                  <h3><a href="{% url "product_offers" %}">Product Offers</a></h3>
+                                  <p class="text-center">Choose any Product and provide offers for the specific one</p>
+                              </div>
+                          </section>
+                      </div>
+
+                      <div class="col-md-6"  onclick="window.location.href = '{% url "category_offers" %}'">
+                          <section class="hover-div"> <i class="bi bi-inboxes-fill" style="font-size:90px;"></i>
+                              <div class="hover-div_inner">
+                                  <h3><a href="{% url "category_offers" %}">Category Offers</a></h3>
+                                  <p class="text-center">Provide offers for a specific Category only</p>
+                                
+                              </div>
+                          </section>
+                      </div> 
+
+                  </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+
+</main><!-- End #main -->
+<script>
+
+    $(document).ready(function () {
+        $('.hover-div').hover(function () {
+            $('.hover-div').stop().fadeTo('fast', 0.3);
+            $(this).stop().fadeTo('fast', 1);
+        }, function () {
+            $('.hover-div').stop().fadeTo('fast', 1);
+        });
+    });
+
+</script>
+{% endblock content %}
