@@ -11,6 +11,7 @@ class CustomUser(AbstractUser):
     phone = models.CharField(max_length=50)
     fullname = models.CharField(max_length=100)
     otp = models.CharField(max_length=6, blank=True ,null=True)
+    referral_code = models.CharField(max_length=6,blank=True,null=True)
 
     def __str__(self) :
         return self.email

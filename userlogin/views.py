@@ -3,8 +3,9 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth import authenticate
 from userlogin.models import CustomUser
+from wallet.models import Wallet
 import random
-import smtplib
+import string
 
 # Create your views here.
 
@@ -14,10 +15,11 @@ def signup(request):
     if request.method == 'POST':
         fullname = request.POST['fullname']
         phone = request.POST['phone']
-        print(type(phone))
         email = request.POST['email']
         password = request.POST['password']
+        referred_code = request.POST['referred_code']
 
+        is_referred = False
         is_valid = 1
 
         if CustomUser.objects.filter(phone=phone).exists():
@@ -28,12 +30,56 @@ def signup(request):
             is_valid = 0
             messages.error(request, 'Email is taken')
 
+        if referred_code:
+            if not CustomUser.objects.filter(referral_code=referred_code).exists():
+                is_valid = 0
+                messages.info(request, 'Referral code is not valid')
+            else:
+                is_referred = True
+
+
         if is_valid==0:
             return redirect('signup')
 
         else:
             otp_sent = str(random.randint(100000,999999))
-            user = CustomUser.objects.create_user(username=email, phone=phone, email=email, password=password,fullname=fullname,is_active=False, otp=otp_sent)
+
+            characters = string.digits + string.ascii_uppercase
+            referral_code = ''.join(random.choice(characters) for i in range(6))
+
+            user = CustomUser.objects.create_user(username=email, phone=phone, email=email, password=password,fullname=fullname,referral_code=referral_code,is_active=False, otp=otp_sent)
+            
+            if is_referred:
+                balance = 100
+                amount = 100
+                Wallet.objects.create(
+                    user=user,
+                    amount=amount,
+                    balance=balance,
+                    transaction_type = "Credit",
+                    transaction_details = f"Recieved Login bonus through Referral"
+                )
+
+                referred_user = CustomUser.objects.filter(referral_code=referred_code).first()
+
+                reffered_user_wallet = Wallet.objects.filter(user=referred_user).order_by('-id').first()
+
+                if not reffered_user_wallet:
+                    reffered_user_balance = 0
+                else:
+                    reffered_user_balance = reffered_user_wallet.balance
+                
+                new_balance = reffered_user_balance + amount
+
+                Wallet.objects.create(
+                    user=referred_user,
+                    amount=amount,
+                    balance=new_balance,
+                    transaction_type = "Credit",
+                    transaction_details = f"Recieved Refferal Bonus by Inviting Friend"
+                )
+
+            
             request.session['email'] = email
             request.session['user_id'] = user.id
             return redirect('otp')

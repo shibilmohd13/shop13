@@ -16,8 +16,11 @@ def navbar_elements(request):
 
 def cart_count_badge(request):
     count = 0
-    if 'email' in request.session:
-        email = request.session['email']
-        user = CustomUser.objects.get(email=email)
-        count = Cart.objects.filter(user=user).count()
+    try:
+        if 'email' in request.session:
+            email = request.session['email']
+            user = CustomUser.objects.get(email=email)
+            count = Cart.objects.filter(user=user).count()
+    except:
+        count=0
     return {'cart_count' : count}
