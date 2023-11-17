@@ -277,13 +277,11 @@ def add_varients(request, id):
         color = request.POST.get('color')
         quantity = request.POST.get('quantity')
         price = request.POST.get('price')
-        discount = request.POST.get('discount')
         variant = ColorVarient(
                 product=product,
                 color=color,
                 quantity=quantity,
                 price=price,
-                discount=discount,
             )
         variant.save()
         # Handle image uploads
@@ -308,13 +306,11 @@ def edit_varients(request, id):
         color = request.POST.get('color')
         quantity = request.POST.get('quantity')
         price = request.POST.get('price')
-        discount = request.POST.get('discount')
 
         # Update the variant with the new data
         varient.color = color
         varient.quantity = quantity
         varient.price = price
-        varient.discount = discount
 
         varient.save()
 

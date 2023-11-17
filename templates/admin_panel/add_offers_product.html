@@ -1,0 +1,86 @@
+{% extends 'admin_panel/admin_base.html' %}
+{% load static %}
+{% block title %} Add Product Offers{% endblock title %}
+{% block offers %}{% endblock offers %}
+{% block content %}
+<main id="main" class="main">
+  <div class="d-flex justify-content-between">
+    <div class="pagetitle">
+      <h1>Add Product Offers</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">Admin</li>
+          <li class="breadcrumb-item">Offers</li>
+          <li class="breadcrumb-item">Product offers</li>
+          <li class="breadcrumb-item active">Add Product Offers</li>
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
+    <a href="{% url 'product_offers' %}" class="btn btn-danger btn-rounded h-50">Cancel</a>
+  </div>
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title">Add a new Product Offer</h5>
+      <!-- General Form Elements -->
+      <form action='' method='POST' id="productForm">
+        {% csrf_token %}
+        <div class="row mb-3">
+          <label for="inputText" class="col-sm-2 col-form-label">Choose Product</label>
+          <div class="col-sm-10">
+            <select class="form-select" aria-label="Default select example" name="product" required>
+              <option disabled selected> Select a Product</option>
+              {% for product in products %}
+              <option value="{{product.id}}">{{product.product.name}} - {{product.color}}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <label class="col-sm-2 col-form-label">Discount Percentage</label>
+          <div class="col-sm-6">
+            <input type="number" min="0" class="form-control" width="100px" name="discount" id="discount" required >
+            <span class="error-message text-danger mt-2" id="price-error"></span>
+          </div>
+        </div>
+        <br><br>
+        <div class="row mb-3">
+          <label class="col-sm-2 col-form-label">Submit</label>
+          <div class="col-sm-10">
+            <button type="submit" class="btn btn-primary">Add Product Offer</button>
+          </div>
+        </div>
+      </form><!-- End General Form Elements -->
+    </div>
+  </div>
+</div>
+</main>
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+
+<script>
+  $(document).ready(function() {
+    $("#productForm").validate({
+      rules: {
+        discount: {
+          required: true,
+          range: [1, 99],
+        },
+      },
+      messages: {
+        discount: {
+          required: "Please enter the discount percentage",
+          range: "Discount percentage must be between 1 and 99",
+        },
+      },
+      errorClass: "is-invalid",
+      errorPlacement: function(error, element) {
+        error.addClass("invalid-feedback");
+        error.insertAfter(element);
+      }
+    });
+  });
+</script>
+
+
+{% endblock content %}

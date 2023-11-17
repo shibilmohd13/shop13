@@ -129,7 +129,68 @@ def offers(request):
     return render(request, 'admin_panel/offers.html')
 
 def product_offers(request):
-    return render(request, 'admin_panel/offers_product.html')
+    products = ColorVarient.objects.filter(product_offer__gt=0)
+    return render(request, 'admin_panel/offers_product.html',{'products':products})
+
+
+
+def add_product_offers(request):
+
+    products = ColorVarient.objects.all().order_by('id')
+
+    if request.method == 'POST':
+
+        product = request.POST.get('product')
+        product_discount = request.POST.get('discount')
+
+        variant = ColorVarient.objects.get(id=product)
+        variant.product_offer = product_discount
+        variant.save()
+        return redirect('product_offers')
+
+    return render(request, 'admin_panel/add_offers_product.html',{'products':products})
+
+def edit_product_offers(request, id):
+    products = ColorVarient.objects.all().order_by('id')
+    item = ColorVarient.objects.get(id=id)
+    if request.method == 'POST':
+        product_discount = request.POST.get('discount')
+
+        item.product_offer = product_discount
+        item.save()
+        return redirect('product_offers')
+
+    return render(request, 'admin_panel/edit_offers_product.html',{'item':item,'products':products})
+
+def cancel_product_offers(request,id):
+    item = ColorVarient.objects.get(id=id)
+    item.product_offer = 0
+    item.save()
+    return redirect('product_offers')
+
 
 def category_offers(request):
-    return render(request, 'admin_panel/offers_category.html')   
+    category = Category.objects.all()
+    return render(request, 'admin_panel/offers_category.html',{'category':category})
+
+
+def add_category_offers(request,id):
+    category = Category.objects.get(id=id)
+    if request.method == 'POST':
+        category_offer_value = request.POST.get('category_offer', 0)
+        print(category_offer_value)
+        color_varients = ColorVarient.objects.filter(product__category=category)
+        color_varients.update(category_offer=category_offer_value)
+        print(color_varients.values())
+
+        return redirect('category_offers')  
+    return render(request, 'admin_panel/add_offers_category.html',{'category':category})
+
+
+def cancel_category_offers(request,id):
+
+    category = Category.objects.get(id=id)
+    color_varients = ColorVarient.objects.filter(product__category=category)
+    color_varients.update(category_offer=0)
+
+    return redirect('category_offers')

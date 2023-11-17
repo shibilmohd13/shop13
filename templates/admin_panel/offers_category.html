@@ -7,7 +7,7 @@
 <main id="main" class="main">
     <div class="d-flex justify-content-between">
         <div class="pagetitle">
-            <h1>Offers</h1>
+            <h1>Category Offers</h1>
             <nav>
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item">Admin</li>
@@ -16,57 +16,76 @@
                 </ol>
             </nav>
         </div><!-- End Page Title -->
-        <a href="{% url "add_coupons" %}" class="btn btn-primary btn-rounded h-50">Add Category Offers</a>
     </div>
-        <!-- Recent Sales -->
-        <div class="col-12">
-            <div class="card recent-sales overflow-auto">
+    <!-- Recent Sales -->
+    <div class="col-12">
+        <div class="card recent-sales overflow-auto">
 
-                <div class="card-body">
-                    <table class="table table-borderless mt-3">
-                        <thead>
+            <div class="card-body">
+                <table class="table table-borderless mt-3">
+                    <thead>
+                        <tr>
+                            <th>Category Name</th>
+                            <th>Category Discount</th>
+                            <th>Offers</th>
+                            <th>Cancel Offer</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        {% for item in category %}
                             <tr>
-                                <th>Coupon Name</th>
-                                <th>Code</th>
-                                <th>Discount</th>
-                                <th>Min. Purchase</th>
-                                <th>Expiry</th>
-                                <th>Limit</th>
-                                <th>Count</th>
-                                <th>List / Unlist</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-            
-                        {% for coupon in coupons %}
-                            <tr>
-                                <td>{{coupon.name}}</td>
-                                <td>{{coupon.code}}</td>
-                                <td>&#8377;{{coupon.discount_value}}</td>
-                                <td>{{coupon.minimum_purchase}}</td>
-                                <td>{{coupon.expiration_date}}</td>
-                                <td>{{coupon.usage_limit}}</td>
-                                <td>{{coupon.used_count}}</td>
-                                {% if coupon.is_active %}
-                                <td class="align-middle"><a href='coupon_status/{{coupon.id}}'><span class="btn btn-danger">Unlist</span></a></td>
-                                {% else %}
-                                <td class="align-middle"><a href='coupon_status/{{coupon.id}}'><span class="btn btn-success">List</span></a></td>
-                                {% endif %}
-                                <td class="align-middle" style='font-size:20px'><a href="edit_coupons/{{coupon.id}}" class="btn btn-warning">Edit</a></td>
-                                
+                                <td class="align-middle">{{item.name}}</td>
+                                <td class="align-middle">{{item.product_set.first.colorvarient_set.first.category_offer}}%</td>
+                                <td class="align-middle"><a href="add_category_offers/{{item.id}}" class="btn btn-primary btn-rounded h-50">Manage Offers</a></td>
+                                <td class="align-middle">
+                                    <button class="btn btn-danger" onclick="confirmCancellation('{{ item.id }}')">Cancel</button>
+                                </td>
                             </tr>
 
-                        
                         {% endfor %}
 
-                        </tbody>
-                    </table>
-
-                </div>
+                    </tbody>
+                </table>
 
             </div>
-        </div><!-- End Recent Sales -->
 
-    </main><!-- End #main -->
+        </div>
+    </div><!-- End Recent Sales -->
+
+
+</main><!-- End #main -->
+
+    
+<!-- Include SweetAlert library -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+<!-- Add script for SweetAlert confirmation -->
+<script>
+    function confirmCancellation(productId) {
+        Swal.fire({
+            title: 'Confirm Cancel Offer',
+            text: 'Are you sure you want to cancel the offer for this product?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes, cancel it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire({
+                    title: 'Cancelled!',
+                    text: 'The offer has been cancelled.',
+                    icon: 'success',
+                    timer: 2000, // 2 seconds
+                    timerProgressBar: true,
+                    showConfirmButton: false
+                }).then(() => {
+                    // Redirect after the delay
+                    window.location.href = "cancel_category_offers/" + productId;
+                });
+            }
+        });
+    }
+</script>
 {% endblock content %}

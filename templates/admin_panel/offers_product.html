@@ -7,7 +7,7 @@
 <main id="main" class="main">
     <div class="d-flex justify-content-between">
         <div class="pagetitle">
-            <h1>Offers</h1>
+            <h1>Product Offers</h1>
             <nav>
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item">Admin</li>
@@ -16,53 +16,86 @@
                 </ol>
             </nav>
         </div><!-- End Page Title -->
-        <a href="{% url "add_coupons" %}" class="btn btn-primary btn-rounded h-50">Add Product Offers</a>
+        <a href="{% url "add_product_offers" %}" class="btn btn-primary btn-rounded h-50">Add Product Offers</a>
     </div>
-        <!-- Recent Sales -->
-        <div class="col-12">
-            <div class="card recent-sales overflow-auto">
+    <!-- Recent Sales -->
+    <div class="col-12">
+        <div class="card recent-sales overflow-auto">
 
-                <div class="card-body">
-                    <table class="table table-borderless mt-3">
-                        <thead>
+            <div class="card-body">
+                <table class="table table-borderless mt-3">
+                    <thead>
+                        <tr>
+                            <th>Prod Image</th>
+                            <th>Prod Name</th>
+                            <th>Price</th>
+                            <th>Prod Discount</th>
+                            <th>Offer Price</th>
+                            <th>Cancel Offer</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        {% for prod in products %}
                             <tr>
-                                <th>Product Name</th>
-                                <th>Offers</th>
-                                <th>Expiry Date</th>
-                                <th>List / Unlist</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-            
-                        {% for coupon in coupons %}
-                            <tr>
-                                <td>{{coupon.name}}</td>
-                                <td>{{coupon.code}}</td>
-                                <td>&#8377;{{coupon.discount_value}}</td>
-                                <td>{{coupon.minimum_purchase}}</td>
-                                <td>{{coupon.expiration_date}}</td>
-                                <td>{{coupon.usage_limit}}</td>
-                                <td>{{coupon.used_count}}</td>
-                                {% if coupon.is_active %}
-                                <td class="align-middle"><a href='coupon_status/{{coupon.id}}'><span class="btn btn-danger">Unlist</span></a></td>
-                                {% else %}
-                                <td class="align-middle"><a href='coupon_status/{{coupon.id}}'><span class="btn btn-success">List</span></a></td>
-                                {% endif %}
-                                <td class="align-middle" style='font-size:20px'><a href="edit_coupons/{{coupon.id}}" class="btn btn-warning">Edit</a></td>
-                                
+                                <td><center><img src="{{prod.productimage_set.last.image.url}}" height="80px"/><center></td>
+                                <td class="align-middle">{{prod.product.name}} - {{prod.color}}</td>
+                                <td class="align-middle">{{prod.price}}</td>
+                                <td class="align-middle">{{prod.product_offer}}%</td>
+                                <td class="align-middle">{{prod.discounted_price}}</td>
+
+                                <td class="align-middle">
+                                    <button class="btn btn-danger" onclick="confirmCancellation('{{ prod.id }}')">Cancel</button>
+                                </td>
+                                <td class="align-middle" style='font-size:20px'>
+                                    <a href="edit_product_offers/{{prod.id}}" class="btn btn-warning">Edit</a>
+                                </td>
+
                             </tr>
 
-                        
                         {% endfor %}
 
-                        </tbody>
-                    </table>
-
-                </div>
+                    </tbody>
+                </table>
 
             </div>
-        </div><!-- End Recent Sales -->
 
-    </main><!-- End #main -->
+        </div>
+    </div><!-- End Recent Sales -->
+
+</main><!-- End #main -->
+
+<!-- Include SweetAlert library -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+<!-- Add script for SweetAlert confirmation -->
+<script>
+    function confirmCancellation(productId) {
+        Swal.fire({
+            title: 'Confirm Cancel Offer',
+            text: 'Are you sure you want to cancel the offer for this product?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes, cancel it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire({
+                    title: 'Cancelled!',
+                    text: 'The offer has been cancelled.',
+                    icon: 'success',
+                    timer: 2000, // 2 seconds
+                    timerProgressBar: true,
+                    showConfirmButton: false
+                }).then(() => {
+                    // Redirect after the delay
+                    window.location.href = "cancel_product_offers/" + productId;
+                });
+            }
+        });
+    }
+</script>
+
 {% endblock content %}
