@@ -30,11 +30,6 @@ def admin_login(request):
     return render(request, 'admin_panel/admin_login.html')
 
 
-# Dashboard with Sales report
-@cache_control(no_cache=True, must_revalidate=True, no_store=True)
-@user_passes_test(lambda u:u.is_superuser, login_url='admin_login')
-def admin_dash(request):
-    return render(request, 'admin_panel/admin_dash.html')
 
 
 # List Users
@@ -194,3 +189,5 @@ def cancel_category_offers(request,id):
     color_varients.update(category_offer=0)
 
     return redirect('category_offers')
+
+

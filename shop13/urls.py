@@ -32,6 +32,8 @@ urlpatterns = [
     path('wallet/',include('wallet.urls')),
     path('coupons/',include('coupons.urls')),
     path('wishlist/',include('wishlist.urls')),
+    path('admin_dash/',include('dashboard.urls')),
+    
     
     
 ]

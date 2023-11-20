@@ -21,20 +21,20 @@ def home(request):
 def shop(request):
     category = request.GET.get('category', 0)
     brand = request.GET.get('brand', 0)
-    price = request.GET.get('pricefilter',0)
+    price = request.GET.get('pricefilter',20000)
     print(price)
 
 
     obj = Product.objects.filter(is_listed=True).order_by('-id')
 
     if category == 0 and brand == 0:
-        obj = obj.all()
+        obj = obj.all().filter(colorvarient__price__lte=price)
     elif category and brand :
-        obj = obj.filter(category=Category.objects.get(id=category), brands=Brand.objects.get(id=brand))
+        obj = obj.filter(category=Category.objects.get(id=category), brands=Brand.objects.get(id=brand)).filter(colorvarient__price__lte=price)
     elif category and not brand:
-        obj = obj.filter(category=Category.objects.get(id=category))
+        obj = obj.filter(category=Category.objects.get(id=category)).filter(colorvarient__price__lte=price)
     else:
-        obj = obj.filter(brands=Brand.objects.get(id=brand))
+        obj = obj.filter(brands=Brand.objects.get(id=brand)).filter(colorvarient__price__lte=price)
 
 
     

@@ -39,7 +39,8 @@
           
           <div class="prod_pg1l1 bg-white p-4 mt-4">
             <h6 class="mb-3">FILTER BY PRICE</h6>
-            <input type="range" class="form-range" id="customRange1" name="pricefilter" />
+            
+            <input type="range" class="form-range" id="customRange1" name="pricefilter"  value="{% if request.GET.pricefilter %}{{ request.GET.pricefilter }}{% endif %}" />
             <h6 class="mb-0 col_light font_13 mt-3">MAX PRICE: &#8377;<span id="maxPriceDisplay">100000</span></h6>
           </div>
           
@@ -181,30 +182,7 @@
   </div>
 </section>
 <!-- Add this script to the end of your HTML file -->
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-      // Get the query parameters from the URL
-      const urlParams = new URLSearchParams(window.location.search);
 
-      // Select the radio button for PRODUCT CATEGORIES based on the 'category' parameter
-      const categoryParam = urlParams.get('category');
-      if (categoryParam) {
-          const categoryRadio = document.querySelector(`input[name="category"][value="${categoryParam}"]`);
-          if (categoryRadio) {
-              categoryRadio.checked = true;
-          }
-      }
-
-      // Select the radio button for PRODUCT BRAND based on the 'brand' parameter
-      const brandParam = urlParams.get('brand');
-      if (brandParam) {
-          const brandRadio = document.querySelector(`input[name="brand"][value="${brandParam}"]`);
-          if (brandRadio) {
-              brandRadio.checked = true;
-          }
-      }
-  });
-</script>
 
 
 <script>
@@ -235,6 +213,40 @@
             maxPriceDisplay.textContent = maxPrice.toLocaleString(); // Format the number with commas
         }
     });
+</script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+      // Get the query parameters from the URL
+      const urlParams = new URLSearchParams(window.location.search);
+
+      // Select the radio button for PRODUCT CATEGORIES based on the 'category' parameter
+      const categoryParam = urlParams.get('category');
+      if (categoryParam) {
+          const categoryRadio = document.querySelector(`input[name="category"][value="${categoryParam}"]`);
+          if (categoryRadio) {
+              categoryRadio.checked = true;
+          }
+      }
+
+      // Select the radio button for PRODUCT BRAND based on the 'brand' parameter
+      const brandParam = urlParams.get('brand');
+      if (brandParam) {
+          const brandRadio = document.querySelector(`input[name="brand"][value="${brandParam}"]`);
+          if (brandRadio) {
+              brandRadio.checked = true;
+          }
+      }
+
+      // Set the pricefilter value based on the 'pricefilter' parameter
+      const priceFilterParam = urlParams.get('pricefilter');
+      console.log(priceFilterParam)
+      const priceFilterInput = document.getElementById('customRange1');
+      console.log(priceFilterInput)
+      if (priceFilterParam && priceFilterInput) {
+          priceFilterInput.value = priceFilterParam;
+      }
+  });
 </script>
 
 {% endblock content %}

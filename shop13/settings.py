@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'wallet',
     'coupons',
     'wishlist',
+    'dashboard',
 
     'allauth',
     'allauth.account',
