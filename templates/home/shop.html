@@ -14,79 +14,59 @@
   </div>
 </section>
 
+
 <section id="prod_pg" class="pb-4 bg_light_1">
   <div class="container-fluid">
     <div class="row prod_pg1">
       <div class="col-md-12 col-lg-3">
+        <form method="get">
         <div class="prod_pg1l">
-          <div class="prod_pg1l1 bg-white p-4">
+          <!-- Replace the existing code with the updated code below -->
+
+          <div class="prod_pg1l1 bg-white p-4 mt-4">
             <h6 class="mb-3">PRODUCT CATEGORIES</h6>
             {% for item in categories_nav %}
-            <div class="prod_pg1l1i row mt-2">
-              <div class="col-md-10 col-10">
-                <div class="prod_pg1l1il">
-                  <h6 class="font_14 fw-normal mt-1">
-                    <a href="#"
-                      ><i class="fa fa-circle-o me-1 col_yell"></i> {{item.name}}</a
-                    >
-                  </h6>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" value="{{ item.id }}" id="{{ item.name }}" name="category" {% if request.GET.category == item.id %} checked {% endif %}>
+                    <label class="form-check-label" for="{{ item.name }}">
+                      {{ item.name }}
+                    </label>
                 </div>
-              </div>
-              {% comment %} <div class="col-md-2 col-2">
-                <div class="prod_pg1l1ir text-end">
-                  <h6 class="d-inline-block bg_light font_13">23</h6>
-                </div>
-              </div> {% endcomment %}
-            </div>
             {% endfor %}
-            
           </div>
+
+          
+          
           <div class="prod_pg1l1 bg-white p-4 mt-4">
             <h6 class="mb-3">FILTER BY PRICE</h6>
-            <input type="range" class="form-range" id="customRange1" />
-            <h6 class="mb-0 col_light font_13 mt-3">PRICE: $42 - $530</h6>
+            <input type="range" class="form-range" id="customRange1" name="pricefilter" />
+            <h6 class="mb-0 col_light font_13 mt-3">MAX PRICE: &#8377;<span id="maxPriceDisplay">100000</span></h6>
           </div>
+          
+
+          <!-- Replace the existing code with the updated code below -->
 
           <div class="prod_pg1l1 bg-white p-4 mt-4">
             <h6 class="mb-3">PRODUCT BRAND</h6>
-            <div class="prod_pg1l1il">
-              <div class="row">
-                {% for item in brands_nav %}
-                <h6 class="font_14 fw-normal mt-3 col-lg-12 col-md-6 col-sm-6">
-                  <a href="#"
-                    ><i class="fa fa-circle-o me-1 col_yell"></i> {{item.name}}</a
-                  >
-                </h6>
-                {% endfor %}
-                
-              </div>
-              <hr />
-            </div>
-            {% comment %}
-            <hr />
-            <h6 class="mb-3">FILTER COLOR</h6>
-             <div class="row m-0">
-              {% for item in colors_nav %}
-              <div class="form-check col-md-6 col-6 col-lg-12 mt-2">
-                <input
-                  type="checkbox"
-                  class="form-check-input"
-                  id="customCheck1"
-                />
-                <label class="form-check-label" for="customCheck1"
-                  ><a href="#">{{item.name}}</a></label
-                >
-              </div>
-              {% endfor %}
-
-            </div> {% endcomment %}
+            {% for item in brands_nav %}
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" value="{{ item.id }}" id="{{ item.name }}" name="brand">
+                    <label class="form-check-label" for="{{ item.name }}">
+                        {{ item.name }}
+                    </label>
+                </div>
+            {% endfor %}
           </div>
+          <button class="button_1 border-0">APPLY FILTER</button>
+
+
         </div>
+      </form>
       </div>
       <div class="col-md-12 col-lg-9">
         <div class="prod_pg1r">
           <div class="prod_pg1r2 row">
-            {% for item in obj %}
+            {% for item in page_obj %}
             <div class="col-md-4 mt-4">
               <div class="prodinm clearfix">
                 <div class="prod_2im position-relative clearfix">
@@ -159,31 +139,102 @@
                 </div>
               </div>
             </div>
+            
             {% endfor %}
 
           </div>
 
+          {% if page_obj.has_previous or page_obj.has_next%}
           <div class="pages mt-4 row text-center bg_light ms-0 me-0 pt-4 pb-4">
             <div class="col-md-12">
               <ul class="mb-0">
+                {% if page_obj.has_previous %}
                 <li>
-                  <a href="#"><i class="fa fa-chevron-left"></i></a>
+                  <a href="?page={{ page_obj.previous_page_number}}"><i class="fa fa-chevron-left"></i></a>
                 </li>
-                <li class="act"><a href="#">1</a></li>
-                <li><a href="#">2</a></li>
-                <li><a href="#">3</a></li>
-                <li><a href="#">4</a></li>
-                <li><a href="#">5</a></li>
-                <li><a href="#">6</a></li>
+                {% else %}
+                <li style="opacity:0.3">
+                  <span><i class="fa fa-chevron-left"></i></span>
+                </li>
+                {% endif %}
+
+                {% for item in page_count %}
+                <li {% if page_obj.number == forloop.counter %}class="act"{% endif %}><a href="?page={{forloop.counter}}">{{forloop.counter}}</a></li>
+                {% endfor %}
+
+                {% if page_obj.has_next %}
                 <li>
-                  <a href="#"><i class="fa fa-chevron-right"></i></a>
+                  <a href="?page={{ page_obj.next_page_number}}"><i class="fa fa-chevron-right"></i></a>
                 </li>
+                {% else %}
+                <li style="opacity:0.3">
+                  <span><i class="fa fa-chevron-right"></i></span>
+                </li>
+                {% endif %}
               </ul>
             </div>
           </div>
+          {% endif %}
         </div>
       </div>
     </div>
   </div>
 </section>
+<!-- Add this script to the end of your HTML file -->
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+      // Get the query parameters from the URL
+      const urlParams = new URLSearchParams(window.location.search);
+
+      // Select the radio button for PRODUCT CATEGORIES based on the 'category' parameter
+      const categoryParam = urlParams.get('category');
+      if (categoryParam) {
+          const categoryRadio = document.querySelector(`input[name="category"][value="${categoryParam}"]`);
+          if (categoryRadio) {
+              categoryRadio.checked = true;
+          }
+      }
+
+      // Select the radio button for PRODUCT BRAND based on the 'brand' parameter
+      const brandParam = urlParams.get('brand');
+      if (brandParam) {
+          const brandRadio = document.querySelector(`input[name="brand"][value="${brandParam}"]`);
+          if (brandRadio) {
+              brandRadio.checked = true;
+          }
+      }
+  });
+</script>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Set the maximum price dynamically
+        const maxPrice = 20000;
+
+        // Set the range of the input dynamically
+        const priceFilterInput = document.getElementById('customRange1');
+        if (priceFilterInput) {
+            priceFilterInput.min = 0;
+            priceFilterInput.max = maxPrice;
+            priceFilterInput.step = 100; // Adjust the step as needed
+
+            // Add an event listener for input change
+            priceFilterInput.addEventListener('input', function () {
+                // Update the displayed maximum price as the input changes
+                const maxPriceDisplay = document.getElementById('maxPriceDisplay');
+                if (maxPriceDisplay) {
+                    maxPriceDisplay.textContent = priceFilterInput.value.toLocaleString(); // Format the number with commas
+                }
+            });
+        }
+
+        // Initial update of displayed maximum price
+        const maxPriceDisplay = document.getElementById('maxPriceDisplay');
+        if (maxPriceDisplay) {
+            maxPriceDisplay.textContent = maxPrice.toLocaleString(); // Format the number with commas
+        }
+    });
+</script>
+
 {% endblock content %}

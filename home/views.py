@@ -7,7 +7,7 @@ from . models import Contact
 from django.contrib.auth import logout
 from django.http import JsonResponse
 from django.db.models import Q,Count
-
+from django.core.paginator import Paginator
 # Create your views here.
 
 
@@ -19,8 +19,38 @@ def home(request):
 
 # View to show products in Shop
 def shop(request):
-    obj = Product.objects.prefetch_related('colorvarient_set__productimage_set').filter(is_listed=True).order_by('id')
-    return render(request, 'home/shop.html', {'obj': obj })
+    category = request.GET.get('category', 0)
+    brand = request.GET.get('brand', 0)
+    price = request.GET.get('pricefilter',0)
+    print(price)
+
+
+    obj = Product.objects.filter(is_listed=True).order_by('-id')
+
+    if category == 0 and brand == 0:
+        obj = obj.all()
+    elif category and brand :
+        obj = obj.filter(category=Category.objects.get(id=category), brands=Brand.objects.get(id=brand))
+    elif category and not brand:
+        obj = obj.filter(category=Category.objects.get(id=category))
+    else:
+        obj = obj.filter(brands=Brand.objects.get(id=brand))
+
+
+    
+    paginator = Paginator(obj,6)
+    page_number = request.GET.get('page')
+    page_obj = Paginator.get_page(paginator,page_number)
+    page_count = page_obj.paginator.num_pages
+
+    context = {
+        'obj': obj,
+        'page_obj' : page_obj,
+        'page_count' : range(page_count)
+    }
+    
+
+    return render(request, 'home/shop.html', context)
 
 
 # View to show the detailed Product detail of each product
@@ -93,6 +123,6 @@ def search(request):
         combined_query, is_listed=True
     )
     print(products_match)
-    return render(request, "home/shop.html", {'obj': products_match})
+    return render(request, "home/shop.html", {'page_obj': products_match})
 
 

@@ -140,7 +140,7 @@
               <ul class="dropdown-menu drop_2 drop_cat" aria-labelledby="navbarDropdown">
                 {% for item in categories_nav %}
                 <li>
-                  <a class="dropdown-item" href="#"><i class="fa fa-caret-right me-1 col_yell"></i>
+                  <a class="dropdown-item" href="../shop/?category={{item.id}}"><i class="fa fa-caret-right me-1 col_yell"></i>
                     {{item.name}}</a>
                 </li>
                 {% endfor %}
@@ -155,7 +155,7 @@
               <ul class="dropdown-menu drop_2 drop_cat" aria-labelledby="navbarDropdown">
                 {% for item in brands_nav %}
                 <li>
-                  <a class="dropdown-item" href="#"><i class="fa fa-caret-right me-1 col_yell"></i>
+                  <a class="dropdown-item" href="../shop/?brand={{item.id}}"><i class="fa fa-caret-right me-1 col_yell"></i>
                     {{item.name}}</a>
                 </li>
                 {% endfor %}
