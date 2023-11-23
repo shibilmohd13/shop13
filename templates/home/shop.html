@@ -140,6 +140,16 @@
                 </div>
               </div>
             </div>
+            {% empty %}
+
+            <div class="empty-cart-message">
+              <center>
+                <i class="fa-solid fa-shopping-cart my-3 opacity-75" style="color: #000000; font-size:100px"></i>
+                <h2 class="cart-heading" >No Products Match</h2>
+                <p class="cart-subheading text-secondary">There are no items match with your filter <br> Search for other items</p>
+                <a href="{% url "shop" %}" class="btn btn-warning rounded-0 shop-now-btn text-light fw-bold px-4 py-2">SHOW ALL PRODUCTS</a>
+              </center>
+            </div>
             
             {% endfor %}
 

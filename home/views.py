@@ -28,13 +28,13 @@ def shop(request):
     obj = Product.objects.filter(is_listed=True).order_by('-id')
 
     if category == 0 and brand == 0:
-        obj = obj.all().filter(colorvarient__price__lte=price)
+        obj = obj.all()
     elif category and brand :
-        obj = obj.filter(category=Category.objects.get(id=category), brands=Brand.objects.get(id=brand)).filter(colorvarient__price__lte=price)
+        obj = obj.filter(category=Category.objects.get(id=category), brands=Brand.objects.get(id=brand))
     elif category and not brand:
-        obj = obj.filter(category=Category.objects.get(id=category)).filter(colorvarient__price__lte=price)
+        obj = obj.filter(category=Category.objects.get(id=category))
     else:
-        obj = obj.filter(brands=Brand.objects.get(id=brand)).filter(colorvarient__price__lte=price)
+        obj = obj.filter(brands=Brand.objects.get(id=brand))
 
 
     

@@ -19,7 +19,7 @@ def orders(request):
 
 # View for providing the Order Confirmed page After placing a Order
 def view_orders(request):
-    order_id = uuid.UUID(request.session['order_id'])
+    order_id = request.session['order_id']
     current_order = Orders.objects.get(order_id=order_id)
     context= {
         "current_order" : current_order

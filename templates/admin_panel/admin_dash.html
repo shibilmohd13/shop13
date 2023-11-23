@@ -2,8 +2,10 @@
 {% load static %}
 {% block title %} Dash{% endblock title %}
 {% block dashboard %}{% endblock dashboard %}
-{% block content %}
+{% block head %}
 
+{% endblock head %}
+{% block content %}
 <main id="main" class="main">
 
     <div class="pagetitle">
@@ -41,15 +43,15 @@
                 </div>
 
                 <div class="card-body">
-                  <h5 class="card-title">Sales <span>| Today</span></h5>
+                  <h5 class="card-title">Orders <span>| Today</span></h5>
 
                   <div class="d-flex align-items-center">
                     <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                       <i class="bi bi-cart"></i>
                     </div>
                     <div class="ps-3">
-                      <h6>145</h6>
-                      <span class="text-success small pt-1 fw-bold">12%</span> <span class="text-muted small pt-2 ps-1">increase</span>
+                      <h6>{{order_count}}</h6>
+                      {% comment  %}<span class="text-danger small pt-1 fw-bold">12%</span>{% endcomment %} <span class="text-muted small pt-2 ps-1">Orders</span>
 
                     </div>
                   </div>
@@ -73,7 +75,7 @@
                     <li><a class="dropdown-item" href="#">This Month</a></li>
                     <li><a class="dropdown-item" href="#">This Year</a></li>
                   </ul>
-                  
+
                 </div>
 
                 <div class="card-body">
@@ -84,8 +86,8 @@
                       <i class="bi bi-currency-rupee"></i>
                     </div>
                     <div class="ps-3">
-                      <h6>&#8377;3,264</h6>
-                      <span class="text-success small pt-1 fw-bold">8%</span> <span class="text-muted small pt-2 ps-1">increase</span>
+                      <h6>&#8377;{{total_revenue}}</h6>
+                      {% comment  %}<span class="text-danger small pt-1 fw-bold">12%</span>{% endcomment %} <span class="text-muted small pt-2 ps-1">Revenue</span>
 
                     </div>
                   </div>
@@ -121,7 +123,7 @@
                     </div>
                     <div class="ps-3">
                       <h6>{{users_count}}</h6>
-                      <span class="text-danger small pt-1 fw-bold">12%</span> <span class="text-muted small pt-2 ps-1">decrease</span>
+                      {% comment  %}<span class="text-danger small pt-1 fw-bold">12%</span>{% endcomment %} <span class="text-muted small pt-2 ps-1">Users</span>
 
                     </div>
                   </div>
@@ -130,6 +132,7 @@
               </div>
 
             </div><!-- End Customers Card -->
+            
 
             <!-- Reports -->
             <div class="col-12">
@@ -231,54 +234,29 @@
                 </div>
 
                 <div class="card-body">
-                  <h5 class="card-title">Recent Sales <span>| Today</span></h5>
+                  <h5 class="card-title">Recent orders <span>| Today</span></h5>
 
                   <table class="table table-borderless datatable">
                     <thead>
                       <tr>
-                        <th scope="col">#</th>
+                        <th scope="col">SI no</th>
                         <th scope="col">Customer</th>
-                        <th scope="col">Product</th>
+                        <th scope="col">Product count</th>
                         <th scope="col">Price</th>
                         <th scope="col">Status</th>
                       </tr>
                     </thead>
                     <tbody>
+                      {% for order in recent_orders %}
                       <tr>
-                        <th scope="row"><a href="#">#2457</a></th>
-                        <td>Brandon Jacob</td>
-                        <td><a href="#" class="text-primary">At praesentium minu</a></td>
-                        <td>$64</td>
-                        <td><span class="badge bg-success">Approved</span></td>
+                        <th scope="row">{{forloop.counter}}</th>
+                        <td>{{order.user.fullname}}</td>
+                        <td><a href="#" class="text-primary">Order contains {{order.ordersitem_set.count}} item(s)  </a></td>
+                        <td>&#8377;{{order.total_amount}}</td>
+                        <td><span class="badge {% if order.payment_method == 'razorpay' %} bg-primary {% elif order.payment_method == 'COD'%}bg-warning {% else %} success{% endif %} bg-success">{{order.payment_method}}</span></td>
                       </tr>
-                      <tr>
-                        <th scope="row"><a href="#">#2147</a></th>
-                        <td>Bridie Kessler</td>
-                        <td><a href="#" class="text-primary">Blanditiis dolor omnis similique</a></td>
-                        <td>$47</td>
-                        <td><span class="badge bg-warning">Pending</span></td>
-                      </tr>
-                      <tr>
-                        <th scope="row"><a href="#">#2049</a></th>
-                        <td>Ashleigh Langosh</td>
-                        <td><a href="#" class="text-primary">At recusandae consectetur</a></td>
-                        <td>$147</td>
-                        <td><span class="badge bg-success">Approved</span></td>
-                      </tr>
-                      <tr>
-                        <th scope="row"><a href="#">#2644</a></th>
-                        <td>Angus Grady</td>
-                        <td><a href="#" class="text-primar">Ut voluptatem id earum et</a></td>
-                        <td>$67</td>
-                        <td><span class="badge bg-danger">Rejected</span></td>
-                      </tr>
-                      <tr>
-                        <th scope="row"><a href="#">#2644</a></th>
-                        <td>Raheem Lehner</td>
-                        <td><a href="#" class="text-primary">Sunt similique distinctio</a></td>
-                        <td>$165</td>
-                        <td><span class="badge bg-success">Approved</span></td>
-                      </tr>
+                      {% endfor %}
+                      
                     </tbody>
                   </table>
 
@@ -287,79 +265,65 @@
               </div>
             </div><!-- End Recent Sales -->
 
-            <!-- Top Selling -->
+          <!-- Top Selling -->
             <div class="col-12">
               <div class="card top-selling overflow-auto">
 
-                <div class="filter">
-                  <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-                  <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                    <li class="dropdown-header text-start">
-                      <h6>Filter</h6>
-                    </li>
+                  <div class="card-body">
+                    <h5 class="card-title">Sales By Brand
+                    </h5>
 
-                    <li><a class="dropdown-item" href="#">Today</a></li>
-                    <li><a class="dropdown-item" href="#">This Month</a></li>
-                    <li><a class="dropdown-item" href="#">This Year</a></li>
-                  </ul>
-                </div>
+                    <!-- Bar Chart -->
+                    <canvas id="barChart" style="max-height: 400px;"></canvas>
+                    <script>
+                      
+                      document.addEventListener("DOMContentLoaded", () => {
+                        new Chart(document.querySelector('#barChart'), {
+                          type: 'bar',
+                          data: {
+                            labels: [{% for item in all_brands %}'{{item}}' ,{% endfor %}],
+                            datasets: [{
+                              label: 'Sales Count',
+                              data: [65, 59, 80, 81, 56, 55, 40 ,10 ],
+                              backgroundColor: [
+                                'rgba(255, 99, 132, 0.2)',
+                                'rgba(255, 159, 64, 0.2)',
+                                'rgba(255, 205, 86, 0.2)',
+                                'rgba(75, 192, 192, 0.2)',
+                                'rgba(54, 162, 235, 0.2)',
+                                'rgba(153, 102, 255, 0.2)',
+                                'rgba(201, 203, 207, 0.2)'
+                              ],
+                              borderColor: [
+                                'rgb(255, 99, 132)',
+                                'rgb(255, 159, 64)',
+                                'rgb(255, 205, 86)',
+                                'rgb(75, 192, 192)',
+                                'rgb(54, 162, 235)',
+                                'rgb(153, 102, 255)',
+                                'rgb(201, 203, 207)'
+                              ],
+                              borderWidth: 1
+                            }]
+                          },
+                          options: {
+                            scales: {
+                              y: {
+                                beginAtZero: true
+                              }
+                            }
+                          }
+                        });
+                      });
+                    </script>
+                    <!-- End Bar CHart -->
 
-                <div class="card-body pb-0">
-                  <h5 class="card-title">Top Selling <span>| Today</span></h5>
+                  </div>
 
-                  <table class="table table-borderless">
-                    <thead>
-                      <tr>
-                        <th scope="col">Preview</th>
-                        <th scope="col">Product</th>
-                        <th scope="col">Price</th>
-                        <th scope="col">Sold</th>
-                        <th scope="col">Revenue</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <th scope="row"><a href="#"><img src="assets/img/product-1.jpg" alt=""></a></th>
-                        <td><a href="#" class="text-primary fw-bold">Ut inventore ipsa voluptas nulla</a></td>
-                        <td>$64</td>
-                        <td class="fw-bold">124</td>
-                        <td>$5,828</td>
-                      </tr>
-                      <tr>
-                        <th scope="row"><a href="#"><img src="assets/img/product-2.jpg" alt=""></a></th>
-                        <td><a href="#" class="text-primary fw-bold">Exercitationem similique doloremque</a></td>
-                        <td>$46</td>
-                        <td class="fw-bold">98</td>
-                        <td>$4,508</td>
-                      </tr>
-                      <tr>
-                        <th scope="row"><a href="#"><img src="assets/img/product-3.jpg" alt=""></a></th>
-                        <td><a href="#" class="text-primary fw-bold">Doloribus nisi exercitationem</a></td>
-                        <td>$59</td>
-                        <td class="fw-bold">74</td>
-                        <td>$4,366</td>
-                      </tr>
-                      <tr>
-                        <th scope="row"><a href="#"><img src="assets/img/product-4.jpg" alt=""></a></th>
-                        <td><a href="#" class="text-primary fw-bold">Officiis quaerat sint rerum error</a></td>
-                        <td>$32</td>
-                        <td class="fw-bold">63</td>
-                        <td>$2,016</td>
-                      </tr>
-                      <tr>
-                        <th scope="row"><a href="#"><img src="assets/img/product-5.jpg" alt=""></a></th>
-                        <td><a href="#" class="text-primary fw-bold">Sit unde debitis delectus repellendus</a></td>
-                        <td>$79</td>
-                        <td class="fw-bold">41</td>
-                        <td>$3,239</td>
-                      </tr>
-                    </tbody>
-                  </table>
-
-                </div>
 
               </div>
             </div><!-- End Top Selling -->
+            
 
           </div>
         </div><!-- End Left side columns -->
@@ -383,57 +347,20 @@
             </div>
 
             <div class="card-body">
-              <h5 class="card-title">Recent Activity <span>| Today</span></h5>
+              <h5 class="card-title">Recent Updations <span>| Today</span></h5>
 
               <div class="activity">
 
-                <div class="activity-item d-flex">
-                  <div class="activite-label">32 min</div>
-                  <i class='bi bi-circle-fill activity-badge text-success align-self-start'></i>
-                  <div class="activity-content">
-                    Quia quae rerum <a href="#" class="fw-bold text-dark">explicabo officiis</a> beatae
-                  </div>
-                </div><!-- End activity item-->
+                {% for item in recent_updations %}
 
                 <div class="activity-item d-flex">
-                  <div class="activite-label">56 min</div>
-                  <i class='bi bi-circle-fill activity-badge text-danger align-self-start'></i>
+                  <div class="activite-label">{{item.modified_time.time}}</div>
+                  <i class='bi bi-circle-fill activity-badge align-self-start {% if item.status == "Cancelled" %}text-danger {% elif item.status == "Delivered" %} text-success {% elif item.status == "Order confirmed" %} text-warning {% else %}text-primary{% endif %}'></i>
                   <div class="activity-content">
-                    Voluptatem blanditiis blanditiis eveniet
+                    {{item.order.user.fullname}}'s order <i>{{item.variant.product.name}}-{{item.variant.color}}</i> is <a href="#" class="fw-bold text-dark">{{item.status}}</a>
                   </div>
                 </div><!-- End activity item-->
-
-                <div class="activity-item d-flex">
-                  <div class="activite-label">2 hrs</div>
-                  <i class='bi bi-circle-fill activity-badge text-primary align-self-start'></i>
-                  <div class="activity-content">
-                    Voluptates corrupti molestias voluptatem
-                  </div>
-                </div><!-- End activity item-->
-
-                <div class="activity-item d-flex">
-                  <div class="activite-label">1 day</div>
-                  <i class='bi bi-circle-fill activity-badge text-info align-self-start'></i>
-                  <div class="activity-content">
-                    Tempore autem saepe <a href="#" class="fw-bold text-dark">occaecati voluptatem</a> tempore
-                  </div>
-                </div><!-- End activity item-->
-
-                <div class="activity-item d-flex">
-                  <div class="activite-label">2 days</div>
-                  <i class='bi bi-circle-fill activity-badge text-warning align-self-start'></i>
-                  <div class="activity-content">
-                    Est sit eum reiciendis exercitationem
-                  </div>
-                </div><!-- End activity item-->
-
-                <div class="activity-item d-flex">
-                  <div class="activite-label">4 weeks</div>
-                  <i class='bi bi-circle-fill activity-badge text-muted align-self-start'></i>
-                  <div class="activity-content">
-                    Dicta dolorem harum nulla eius. Ut quidem quidem sit quas
-                  </div>
-                </div><!-- End activity item-->
+                {% endfor %}
 
               </div>
 
@@ -530,7 +457,7 @@
             </div>
 
             <div class="card-body pb-0">
-              <h5 class="card-title">Website Traffic <span>| Today</span></h5>
+              <h5 class="card-title">Payment Methods <span>| Today</span></h5>
 
               <div id="trafficChart" style="min-height: 400px;" class="echart"></div>
 
@@ -545,7 +472,7 @@
                       left: 'center'
                     },
                     series: [{
-                      name: 'Access From',
+                      name: 'Orders Using',
                       type: 'pie',
                       radius: ['40%', '70%'],
                       avoidLabelOverlap: false,
@@ -564,25 +491,17 @@
                         show: false
                       },
                       data: [{
-                          value: 1048,
-                          name: 'Search Engine'
+                          value: {{razorpay_orders}},
+                          name: 'RazorPay'
                         },
                         {
-                          value: 735,
-                          name: 'Direct'
+                          value: {{cod_orders}},
+                          name: 'Cash on Delivery'
                         },
                         {
-                          value: 580,
-                          name: 'Email'
-                        },
-                        {
-                          value: 484,
-                          name: 'Union Ads'
-                        },
-                        {
-                          value: 300,
-                          name: 'Video Ads'
-                        }
+                          value: {{wallet_orders}},
+                          name: 'Wallet'
+                        },  
                       ]
                     }]
                   });
@@ -594,6 +513,60 @@
 
 
         </div><!-- End Right side columns -->
+                <!-- Recent Sales -->
+                <div class="col-12">
+                  <div class="card recent-sales overflow-auto">
+                      <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                          <h5 style="font-size:25px;" class="card-title">Sales Report</h5>
+                          <a class="icon" href="#" data-bs-toggle="dropdown"><span class="btn btn-outline-primary">Download</span></a>
+                            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                            <li class="dropdown-header text-start">
+                              <h6>Download</h6>
+                            </li>
+
+                            <li><a class="dropdown-item" href="{% url "pdf_download" %}">Download As PDF</a></li>
+                            <li><a class="dropdown-item" href="{% url "download_exel" %}">Download As EXEL</a></li>
+                            <li><a class="dropdown-item" href="{% url "download_csv" %}">Download As CSV</a></li>
+                          </ul>                       
+                        </div>
+                          <table class="table table-borderless datatable mt-3">
+                              <thead>
+                                  <tr>
+                                      <th>SI NO.</th>
+                                      <th>Order ID</th>
+                                      <th>User</th>
+                                      <th>Date</th>
+                                      <th>Time</th>
+                                      <th>Products</th>
+                                      <th>quantity</th>
+                                      <th>Total</th>
+                                      <th>Payment Method</th>
+                                  </tr>
+                              </thead>
+                              <tbody>
+                  
+                              {% for ord in recent_orders %}
+                                  <tr>
+                                      <td class="sales_table">{{forloop.counter}}</td>
+                                      <td class="sales_table">{{ord.order_id|upper}}</td>
+                                      <td class="sales_table">{{ord.user.fullname}}</td>
+                                      <td class="sales_table">{{ord.order_date.date}}</td>
+                                      <td class="sales_table">{{ord.order_date.time}}</td>
+                                      <td class="sales_table" style="min-width: 200px; word-wrap: break-word;">{% for item in ord.ordersitem_set.all %}{{item.variant.product.name}}-{{item.variant.color}}<br>{% endfor %}</td>
+                                      <td class="sales_table">{% for item in ord.ordersitem_set.all %}{{item.quantity}}<br>{% endfor %}</td>                                      
+                                      <td class="sales_table">&#8377;{{ord.total_amount}}</td>
+                                      <td class="sales_table">{{ord.payment_method}}</td>
+                                  </tr>
+                              {% endfor %}
+      
+                              </tbody>
+                          </table>
+      
+                      </div>
+      
+                  </div>
+              </div><!-- End Recent Sales -->
 
       </div>
     </section>
