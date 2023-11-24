@@ -13,9 +13,6 @@
   <link rel="stylesheet" type="text/css" href="{% static 'userlogin/css/login.css' %}">
 </head>
 <body>
-  <script>
-    startTimer(); // Start the timer when the page loads
-</script>
   <main>
     <div class="container-fluid">
       <div class="row">
@@ -36,8 +33,15 @@
               <span id="email-error" class="error-message text-danger">{% if messages %}{% for message in messages %}{{message}}{% endfor %}{% endif %}</span>
             </form>
             <a href="{% url 'send_otp' %}" class="forgot-password-link">Resend OTP</a>
-            <p class="login-wrapper-footer-text">OTP will expire in <span id="total-time-left" class="otp-timer" style="display: inline-block;">00:59</span></p>
-          </div>
+            
+            
+            <p class="login-wrapper-footer-text">
+              OTP Timer : <span id="total-time-left" class="otp-timer" style="display: none;">{{otp_expiry|date:"M d, Y H:i:s"}}</span>
+              <span id="spinner" class="spinner-border text-primary" role="status">
+                <span class="sr-only">Loading...</span>
+              </span>
+            </p>
+                      </div>
         </div>
         <div class="col-sm-6 px-0 d-none d-sm-block">
           <img src="{% static 'userlogin/images/otp.jpg' %}" alt="otp image" class="login-img">
@@ -46,7 +50,45 @@
     </div>
   </main>
 
-  <script src="{% static 'userlogin/js/otptimer.js' %}"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const countdownbox = document.getElementById('total-time-left');
+      const spinner = document.getElementById('spinner');
+  
+      // Initial state: Show spinner, hide countdownbox
+      spinner.style.display = 'inline-block';
+      countdownbox.style.display = 'none';
+  
+      const eventtime = Date.parse(countdownbox.textContent);
+  
+      setInterval(() => {
+        const now = new Date().getTime();
+        const diff = eventtime - now;
+        const m = Math.floor((diff / (1000 * 60)) % 60);
+        const s = Math.floor((diff / 1000) % 60);
+  
+        if (diff > 0) {
+          
+          if(diff < 10){
+            countdownbox.innerHTML = m + ":0" + s;
+          }
+          else{
+            countdownbox.innerHTML = m + ":" + s;
+          }
+        }
+         else {
+          countdownbox.innerHTML = '<span class="text-danger"> OTP Expired </span>';
+        }
+      }, 1000);
+  
+      // After setting up the interval, show countdownbox and hide spinner
+      setTimeout(() => {
+        spinner.style.display = 'none';
+        countdownbox.style.display = 'inline-block';
+      }, 1000); // You can adjust the delay time based on your needs
+    });
+  </script>
+
   <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>

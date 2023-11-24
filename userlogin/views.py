@@ -6,6 +6,7 @@ from userlogin.models import CustomUser
 from wallet.models import Wallet
 import random
 import string
+from datetime import datetime,timezone,timedelta
 
 # Create your views here.
 
@@ -43,11 +44,13 @@ def signup(request):
 
         else:
             otp_sent = str(random.randint(100000,999999))
+            otp_expiry =  datetime.now() + timedelta(seconds=65)
+            print(otp_expiry)
 
             characters = string.digits + string.ascii_uppercase
             referral_code = ''.join(random.choice(characters) for i in range(6))
 
-            user = CustomUser.objects.create_user(username=email, phone=phone, email=email, password=password,fullname=fullname,referral_code=referral_code,is_active=False, otp=otp_sent)
+            user = CustomUser.objects.create_user(username=email, phone=phone, email=email, password=password,fullname=fullname,referral_code=referral_code,is_active=False, otp=otp_sent,otp_expiry=otp_expiry)
             
             if is_referred:
                 balance = 100
@@ -106,17 +109,23 @@ def signin(request):
 
 # check OTP
 def otp(request):
+    user = CustomUser.objects.get(id=request.session['user_id'])
+    otp_expiry = user.otp_expiry
     if request.method == 'POST':
-        user = CustomUser.objects.get(id=request.session['user_id'])
+        otp_expiry = user.otp_expiry
         entered_otp = request.POST['otp']
-        if entered_otp == user.otp:
+        if entered_otp != user.otp:
+            messages.error(request, 'Invalid otp')
+            return redirect('otp')
+        elif datetime.now(timezone.utc) <= user.otp_expiry :
+            messages.error(request, 'Otp Expired! Please Click Resend OTP')
+            return redirect('otp')
+        else :
             user.is_active = True
             user.save()
             return redirect('signin')
-        else:
-            messages.error(request, 'Invalid otp')
-            return redirect('otp')
-    return render(request,'userlogin/otp.html')
+            
+    return render(request,'userlogin/otp.html',{'otp_expiry': otp_expiry})
 
 
 def landing(request):
@@ -126,7 +135,9 @@ def landing(request):
 # resend otp 
 def send_otp(request):
     user = CustomUser.objects.get(id=request.session['user_id'])
-    user.otp = otp_sent = str(random.randint(100000,999999))
+    user.otp = str(random.randint(100000,999999))
+    otp_expiry =  datetime.now() + timedelta(seconds=65)
+    user.otp_expiry = otp_expiry
     user.save()
     return redirect('otp')
 
