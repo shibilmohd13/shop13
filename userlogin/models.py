@@ -14,6 +14,8 @@ class CustomUser(AbstractUser):
     otp = models.CharField(max_length=6, blank=True ,null=True)
     otp_expiry = models.DateTimeField(default=datetime.datetime.now())
     referral_code = models.CharField(max_length=6,blank=True,null=True)
+    forget_password_token = models.CharField(max_length=100, null=True, blank=True)
+    # forget_timeout = models.DateTimeField(auto_now_add=True)
 
     def __str__(self) :
         return self.email

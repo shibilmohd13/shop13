@@ -1,0 +1,93 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Shop13 - Reset Password</title>
+  <link rel="icon" type="image/x-icon" href="{% static 'home/image/13_favicon_logo.jpg' %}">
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.materialdesignicons.com/4.8.95/css/materialdesignicons.min.css">
+  <link rel="stylesheet" href="https://cdn.materialdesignicons.com/4.8.95/css/materialdesignicons.min.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="{% static 'userlogin/css/login.css' %}">
+</head>
+<body>
+  <main>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-6 login-section-wrapper">
+          <div class="brand-wrapper">
+            <img src="{% static 'userlogin/images/logo.png' %}" alt="logo" class='logo'>
+          </div>
+          <div class="login-wrapper my-auto">
+            <h1 class="login-title">Reset Password</h1>
+            <p class="login-text">Enter the New password</p>
+            <form id="passwordForm" action="" method="POST">
+              {% csrf_token %}
+              <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" name="password" id="password" class="form-control" placeholder="Enter your password" required>
+                <div id="password-error" class="error-message text-danger mt-2"></div>
+              </div>
+
+              <div class="form-group mb-4">
+                <label for="confirm-password">Confirm Password</label>
+                <input type="password" name="confirm-password" id="confirm-password" class="form-control" placeholder="Re-enter your Password" required>
+                <div id="confirm-password-error" class="error-message text-danger mt-2"></div>
+              </div>
+
+              <input name="verify" id="verify" class="btn btn-block login-btn" type="submit" value="Set Password">
+              <span id="email-error" class="error-message text-danger">{% if messages %}{% for message in messages %}{{message}}{% endfor %}{% endif %}</span>
+            </form>
+          </div>
+        </div>
+        <div class="col-sm-6 px-0 d-none d-sm-block">
+          <img src="{% static 'userlogin/images/otp.jpg' %}" alt="otp image" class="login-img">
+        </div>
+      </div>
+    </div>
+  </main>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var form = document.getElementById('passwordForm');
+
+      form.addEventListener('submit', function(event) {
+        if (!validatePassword()) {
+          event.preventDefault();
+        }
+      });
+
+      function validatePassword() {
+        var password = document.getElementById("password").value;
+        var confirmPassword = document.getElementById("confirm-password").value;
+        var passwordError = document.getElementById("password-error");
+        var confirmPasswordError = document.getElementById("confirm-password-error");
+
+        // Password pattern: At least 1 capital letter, 1 number, 1 special symbol, and minimum 8 characters
+        var passwordPattern = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{8,}$/;
+
+        if (!passwordPattern.test(password)) {
+          passwordError.textContent = "Password must contain at least 1 capital letter, 1 number, 1 special symbol, and be at least 8 characters long.";
+          return false;
+        } else {
+          passwordError.textContent = "";
+        }
+
+        if (password !== confirmPassword) {
+          confirmPasswordError.textContent = "Password and Confirm Password do not match.";
+          return false;
+        } else {
+          confirmPasswordError.textContent = "";
+        }
+
+        return true;
+      }
+    });
+  </script>
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+</body>
+</html>

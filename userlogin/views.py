@@ -7,6 +7,9 @@ from wallet.models import Wallet
 import random
 import string
 from datetime import datetime,timezone,timedelta
+from django.core.mail import send_mail
+import uuid
+import os
 
 # Create your views here.
 
@@ -140,5 +143,43 @@ def send_otp(request):
     user.otp_expiry = otp_expiry
     user.save()
     return redirect('otp')
+
+def send_forget_password_mail(email, token):
+    subject = "Your forget Password Link"
+    message = f'Hi, click on hte link to reset your password \n Link : http://127.0.0.1:8000/user/reset_password/{token}/'
+    email_from = os.environ.get('SENDER_EMAIL')
+    recipient_list = [email]
+    send_mail(subject,message,email_from,recipient_list)
+    return True
+
+def forget_password(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        if CustomUser.objects.filter(email=email).exists():
+            token = str(uuid.uuid4())
+            user = CustomUser.objects.filter(email=email).first()
+            user.forget_password_token = token
+            user.save()
+            send_forget_password_mail(email, token)
+            messages.success(request, "Email send !! \n Please verify your email")
+            return redirect('forget_password')
+
+        else:
+            messages.error(request, 'Invalid Email')
+            return redirect('forget_password')
+    return render(request, 'userlogin/forget.html')
+
+
+
+
+def reset_password(request, token):
+    user = CustomUser.objects.get(forget_password_token=token)
+    if request.method == 'POST':
+        password = request.POST.get('password')
+        confirm_pass = request.POST.get('confirm-password')
+        user.set_password(password)
+        user.save()
+        return redirect('signin')
+    return render(request, 'userlogin/reset.html')
 
 
