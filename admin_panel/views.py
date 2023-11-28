@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,get_object_or_404
 from django.contrib.auth import authenticate, login
 from userlogin.models import CustomUser
 from django.contrib import messages
@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import user_passes_test
 from django.views.decorators.cache import cache_control
 from orders.models import *
 from wallet.models import Wallet
+from admin_panel.models import Banners
 
 # Create your views here.
 
@@ -191,3 +192,66 @@ def cancel_category_offers(request,id):
     return redirect('category_offers')
 
 
+def banners(request):
+    banners = Banners.objects.all().order_by("id")
+    return render(request, 'admin_panel/banners.html',{'banners' : banners})
+
+def add_banners(request):
+    products = ColorVarient.objects.filter(is_listed=True).order_by("id")
+    if request.method == 'POST':
+        subtitle = request.POST.get('subtitle')
+        title = request.POST.get('title')
+        description = request.POST.get('description')
+        product = request.POST.get('product')
+        image = request.FILES.get('image')
+        variant = get_object_or_404(ColorVarient, pk = product)
+        print(product)
+
+        Banners.objects.create(
+            subtitle=subtitle,
+            title=title,
+            description=description,
+            variant=variant,
+            image=image
+        )
+        return redirect('banners')
+    return render(request, 'admin_panel/add_banners.html',{'products' : products})
+
+
+def edit_banners(request, id):
+    banner = get_object_or_404(Banners, pk=id)
+    products = ColorVarient.objects.filter(is_listed=True).order_by("id")
+
+    if request.method == 'POST':
+        subtitle = request.POST.get('subtitle')
+        title = request.POST.get('title')
+        description = request.POST.get('description')
+        product = request.POST.get('product')
+        image = request.FILES.get('image')
+        variant = get_object_or_404(ColorVarient, pk=product)
+
+        # Update the fields of the existing banner
+        banner.subtitle = subtitle
+        banner.title = title
+        banner.description = description
+        banner.variant = variant
+
+        if image:
+            banner.image = image
+
+        banner.save()
+
+        return redirect('banners')
+
+    return render(request, 'admin_panel/edit_banners.html', {'banner': banner, 'products': products})
+
+
+def status_banner(request, id):
+    banner = Banners.objects.filter(id=id).first()
+    if banner.is_listed == True:
+        banner.is_listed = False
+        banner.save()
+    else:
+        banner.is_listed = True
+        banner.save()
+    return redirect("banners")

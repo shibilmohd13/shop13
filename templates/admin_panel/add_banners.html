@@ -1,0 +1,160 @@
+{% extends 'admin_panel/admin_base.html' %}
+{% load static %}
+{% block title %} Add Banners{% endblock title %}
+{% block banners %}{% endblock banners %}
+{% block content %}
+
+<main id="main" class="main">
+
+  <div class="d-flex justify-content-between">
+    <div class="pagetitle">
+        <h1>Add Banners</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">Admin</li>
+                <li class="breadcrumb-item ">Banners</li>
+                <li class="breadcrumb-item active">Add Banners</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+    <a href="{% url "banners" %}" class="btn btn-danger btn-rounded h-50">Cancel</a>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Add a Banner</h5>
+
+        <!-- General Form Elements -->
+        <form action='' method='POST' id="variantForm" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="row mb-3">
+                <label for="inputText" class="col-sm-2 col-form-label">Subtitle</label>
+                <div class="col-sm-10 col-md-6">
+                    <input type="text" class="form-control" name="subtitle">
+                    <span class="error-message text-danger mt-2" id="subtitle-error"></span>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label for="inputText" class="col-sm-2 col-form-label">Title</label>
+                <div class="col-sm-10 col-md-6">
+                    <input type="text" class="form-control" name="title" id="colorField" required>
+                    <span class="error-message text-danger mt-2" id="color-error"></span>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label for="inputNumber" class="col-sm-2 col-form-label">Description</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" name="description" id="" required>
+                    <span class="error-message text-danger mt-2" id="color-error"></span>
+                </div>
+            </div>
+            
+            <div class="row mb-3">
+                <label for="inputNumber" class="col-sm-2 col-form-label">Images</label>
+                <div class="col-sm-10 col-md-4">
+                    <input class="form-control" type="file" id="formFile" name="image">
+                    <span class="error-message text-danger mt-2" id="images-error"></span>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <label for="inputText" class="col-sm-2 col-form-label">Choose Product</label>
+                <div class="col-sm-10">
+                  <select class="form-select" aria-label="Default select example" name="product" required>
+                    <option disabled selected> Select a Product</option>
+                    {% for product in products %}
+                    <option value="{{product.id}}">{{product.product.name}} - {{product.color}}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+
+            <br><br>
+            <div class="row mb-3">
+                <label class="col-sm-2 col-form-label">Submit</label>
+                <div class="col-sm-10">
+                    <button type="submit" class="btn btn-primary">Add Banners</button>
+                </div>
+            </div>
+
+        </form><!-- End General Form Elements -->
+
+    </div>
+</div>
+
+</div>
+</main>
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $("#variantForm").validate({
+            rules: {
+                color: {
+                    required: true,
+                    minlength: 3,
+                    noConsecutiveSpaces: true
+                },
+                quantity: {
+                    required: true,
+                    min: 0
+                },
+                price: {
+                    required: true,
+                    min: 1
+                },
+                discount: {
+                    required: true,
+                    range: [0, 99.99]
+                },
+                discounted_price: {
+                    required: true,
+                    min: 1
+                },
+                images: {
+                    required: true
+                }
+            },
+            messages: {
+                color: {
+                    required: "Please enter the color",
+                    minlength: "Color must contain at least 3 alphabetical characters",
+                    noConsecutiveSpaces: "Color cannot have consecutive spaces"
+                },
+                quantity: {
+                    required: "Please enter the quantity",
+                    min: "Quantity must be a positive number"
+                },
+                price: {
+                    required: "Please enter the price",
+                    min: "Price must be greater than 0"
+                },
+                discount: {
+                    required: "Please enter the discount",
+                    range: "Discount must be a positive number less than 100"
+                },
+                discounted_price: {
+                    required: "Please enter the discounted price",
+                    min: "Discounted price must be greater than 0"
+                },
+                images: {
+                    required: "Please choose at least one image"
+                }
+            },
+            errorClass: "is-invalid",
+            errorPlacement: function (error, element) {
+                error.addClass("invalid-feedback");
+                error.insertAfter(element);
+            }
+        });
+
+        // Custom validation method
+        $.validator.addMethod("noConsecutiveSpaces", function (value, element) {
+            return !/\s{2,}/.test(value);
+        }, "Color cannot have consecutive spaces");
+    });
+</script>
+
+{% endblock content %}

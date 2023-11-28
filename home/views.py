@@ -8,13 +8,16 @@ from django.contrib.auth import logout
 from django.http import JsonResponse
 from django.db.models import Q,Count
 from django.core.paginator import Paginator
+from admin_panel.models import Banners
 # Create your views here.
 
 
 # View to show the Home page of the Website ( Landing page )
 def home(request):
     obj = Product.objects.prefetch_related('colorvarient_set__productimage_set').filter(is_listed=True).order_by('-id')[:8]
-    return render(request, 'home/home.html', {'obj': obj})
+    banners = Banners.objects.all().exclude(is_listed=False)
+
+    return render(request, 'home/home.html', {'obj': obj, 'banners':banners})
 
 
 # View to show products in Shop

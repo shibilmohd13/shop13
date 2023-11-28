@@ -17,6 +17,11 @@ urlpatterns = [
     path('category_offers', views.category_offers, name="category_offers"),
     path('add_category_offers/<str:id>', views.add_category_offers, name="add_category_offers"),
     path('cancel_category_offers/<str:id>', views.cancel_category_offers, name="cancel_category_offers"),
+    path('banners', views.banners, name="banners"),
+    path('add_banners', views.add_banners, name="add_banners"),
+    path('edit_banners/<str:id>', views.edit_banners, name="edit_banners"),
+    path('status_banner/<str:id>', views.status_banner, name="status_banner"),
+    
 
     
     

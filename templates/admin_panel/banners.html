@@ -1,0 +1,67 @@
+{% extends 'admin_panel/admin_base.html' %}
+{% load static %}
+{% block title %} Banners{% endblock title %}
+{% block banners %}{% endblock banners %}
+{% block content %}
+
+<main id="main" class="main">
+
+    <div class="d-flex justify-content-between">
+        <div class="pagetitle">
+            <h1>Banners</h1>
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">Admin</li>
+                    <li class="breadcrumb-item active">Banners</li>
+                </ol>
+            </nav>
+        </div><!-- End Page Title -->
+        <a href="{% url "add_banners" %}" class="btn btn-primary btn-rounded h-50">Add Banners</a>
+    </div>
+
+        <!-- Recent Sales -->
+        <div class="col-12">
+            <div class="card recent-sales overflow-auto">
+
+                <div class="card-body">
+                    <table class="table table-borderless datatable mt-3">
+                        <thead>
+                            <tr>
+                                <th>Banner image</th>
+                                <th>Title</th>
+                                <th>Subtitle</th>
+                                <th>Description</th>
+                                <th>List / Unlist</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            
+                        {% for banner in banners %}
+                            <tr>
+                                <td><img src="{{banner.image.url}}" height="80px"/></td>
+                                <td>{{banner.title}}</td>
+                                <td>{{banner.subtitle}}</td>
+                                <td>{{banner.description}}</td>                                
+                                {% if banner.is_listed %}
+                                <td><a href='status_banner/{{banner.id}}'><span class="btn btn-danger">Unlist</span></a></td>
+                                {% else %}
+                                <td><a href='status_banner/{{banner.id}}'><span class="btn btn-success">List</span></a></td>
+                                {% endif %}
+                                {% comment %} <td style='font-size:20px'><i class="bi bi-pencil-square text-warning">&nbsp;&nbsp;&nbsp;</i><i class="bi bi-trash-fill text-danger"></i></td> {% endcomment %}
+                                <td style='font-size:20px'><a href="edit_banners/{{banner.id}}" class="btn btn-warning">Edit</a></td>
+                            </tr>
+
+                        
+                        {% endfor %}
+
+                        </tbody>
+                    </table>
+
+                </div>
+
+            </div>
+        </div><!-- End Recent Sales -->
+
+    </main><!-- End #main -->
+{% endblock content %}
