@@ -166,12 +166,12 @@
         </a>
       </li><!-- End Offers Page Nav -->
 
-      <li class="nav-item">
+      {% comment %} <li class="nav-item">
         <a class="nav-link {% block payments %}collapsed{% endblock payments %}" href="#">
           <i class="bi bi-credit-card-fill"></i>
           <span>Payments</span>
         </a>
-      </li><!-- End Payments Page Nav -->
+      </li><!-- End Payments Page Nav --> {% endcomment %}
 
       
     </ul>
@@ -180,7 +180,7 @@
 
   {% block content %}{% endblock content %}
 
-
+  
   <!-- Vendor JS Files -->
   <script src="{% static 'admin_panel/assets/vendor/apexcharts/apexcharts.min.js' %}"></script>
   <script src="{% static 'admin_panel/assets/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>

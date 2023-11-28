@@ -3,6 +3,12 @@
 {% block title %} Dash{% endblock title %}
 {% block dashboard %}{% endblock dashboard %}
 {% block head %}
+<style>
+.sales-table td {
+  text-align: center !important; /* Horizontally center the content within table cells */
+  vertical-align: top !important; /* Vertically center the content within table cells */
+}
+</style>
 
 {% endblock head %}
 {% block content %}
@@ -32,28 +38,27 @@
                 <div class="filter">
                   <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
                   <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                    <li class="dropdown-header text-start">
-                      <h6>Filter</h6>
-                    </li>
-
-                    <li><a class="dropdown-item" href="#">Today</a></li>
-                    <li><a class="dropdown-item" href="#">This Month</a></li>
-                    <li><a class="dropdown-item" href="#">This Year</a></li>
+                      <li class="dropdown-header text-start">
+                          <h6>Filter</h6>
+                      </li>
+      
+                      <li><a class="dropdown-item" href="#" id="todaySales">Today</a></li>
+                      <li><a class="dropdown-item" href="#" id="thisMonthSales">This Month</a></li>
+                      <li><a class="dropdown-item" href="#" id="allSales">All</a></li>
                   </ul>
                 </div>
 
                 <div class="card-body">
-                  <h5 class="card-title">Orders <span>| Today</span></h5>
-
+                  <h5 class="card-title">Orders <span>| <span id="salesDate">All</span></span></h5>
+      
                   <div class="d-flex align-items-center">
-                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                      <i class="bi bi-cart"></i>
-                    </div>
-                    <div class="ps-3">
-                      <h6>{{order_count}}</h6>
-                      {% comment  %}<span class="text-danger small pt-1 fw-bold">12%</span>{% endcomment %} <span class="text-muted small pt-2 ps-1">Orders</span>
-
-                    </div>
+                      <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                          <i class="bi bi-cart"></i>
+                      </div>
+                      <div class="ps-3">
+                          <h6 id="salesCount">{{ order_counts }}</h6>
+                          <span class="text-muted small pt-2 ps-1">Orders</span>
+                      </div>
                   </div>
                 </div>
 
@@ -71,23 +76,23 @@
                       <h6>Filter</h6>
                     </li>
 
-                    <li><a class="dropdown-item" href="#">Today</a></li>
-                    <li><a class="dropdown-item" href="#">This Month</a></li>
-                    <li><a class="dropdown-item" href="#">This Year</a></li>
+                    <li><a class="dropdown-item" href="#" id="todayRevenue">Today</a></li>
+                    <li><a class="dropdown-item" href="#" id="thisMonthRevenue">This Month</a></li>
+                    <li><a class="dropdown-item" href="#" id="allRevenue">All</a></li>
                   </ul>
 
                 </div>
 
                 <div class="card-body">
-                  <h5 class="card-title">Revenue <span>| This Month</span></h5>
+                  <h5 class="card-title">Revenue | <span id="revenueDate">All</span></h5>
 
                   <div class="d-flex align-items-center">
                     <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                       <i class="bi bi-currency-rupee"></i>
                     </div>
                     <div class="ps-3">
-                      <h6>&#8377;{{total_revenue}}</h6>
-                      {% comment  %}<span class="text-danger small pt-1 fw-bold">12%</span>{% endcomment %} <span class="text-muted small pt-2 ps-1">Revenue</span>
+                      <h6 id="revenueCardAmount">&#8377;{{total_revenue}}</h6>
+                      <span class="text-muted small pt-2 ps-1">Revenue</span>
 
                     </div>
                   </div>
@@ -101,7 +106,7 @@
 
               <div class="card info-card customers-card">
 
-                <div class="filter">
+                {% comment %} <div class="filter">
                   <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
                   <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
                     <li class="dropdown-header text-start">
@@ -110,12 +115,12 @@
 
                     <li><a class="dropdown-item" href="#">Today</a></li>
                     <li><a class="dropdown-item" href="#">This Month</a></li>
-                    <li><a class="dropdown-item" href="#">This Year</a></li>
+                    <li><a class="dropdown-item" href="#">All</a></li>
                   </ul>
-                </div>
+                </div> {% endcomment %}
 
                 <div class="card-body">
-                  <h5 class="card-title">Users <span>| This Year</span></h5>
+                  <h5 class="card-title">Users</h5>
 
                   <div class="d-flex align-items-center">
                     <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
@@ -123,7 +128,7 @@
                     </div>
                     <div class="ps-3">
                       <h6>{{users_count}}</h6>
-                      {% comment  %}<span class="text-danger small pt-1 fw-bold">12%</span>{% endcomment %} <span class="text-muted small pt-2 ps-1">Users</span>
+                      <span class="text-muted small pt-2 ps-1">Users</span>
 
                     </div>
                   </div>
@@ -137,7 +142,6 @@
             <!-- Reports -->
             <div class="col-12">
               <div class="card">
-
                 <div class="filter">
                   <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
                   <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
@@ -145,74 +149,43 @@
                       <h6>Filter</h6>
                     </li>
 
-                    <li><a class="dropdown-item" href="#">Today</a></li>
-                    <li><a class="dropdown-item" href="#">This Month</a></li>
-                    <li><a class="dropdown-item" href="#">This Year</a></li>
+                    <li><a class="dropdown-item" href="?orderfilter=W">Last Week</a></li>
+                    <li><a class="dropdown-item" href="?orderfilter=M">Monthly</a></li>
+                    <li><a class="dropdown-item" href="?orderfilter=Y">Yearly</a></li>
                   </ul>
                 </div>
-
                 <div class="card-body">
-                  <h5 class="card-title">Reports <span>/Today</span></h5>
-
+                  <h5 class="card-title">Orders <span>|{% if request.GET.orderfilter == 'M' %} Last Month {% elif request.GET.orderfilter == 'Y' %} Last Year {% else %} Last week{% endif %}</span></h5>
+    
                   <!-- Line Chart -->
-                  <div id="reportsChart"></div>
-
+                  <canvas id="lineChart" style="max-height: 400px;"></canvas>
                   <script>
                     document.addEventListener("DOMContentLoaded", () => {
-                      new ApexCharts(document.querySelector("#reportsChart"), {
-                        series: [{
-                          name: 'Sales',
-                          data: [31, 40, 28, 51, 42, 82, 56],
-                        }, {
-                          name: 'Revenue',
-                          data: [11, 32, 45, 32, 34, 52, 41]
-                        }, {
-                          name: 'Customers',
-                          data: [15, 11, 32, 18, 9, 24, 11]
-                        }],
-                        chart: {
-                          height: 350,
-                          type: 'area',
-                          toolbar: {
-                            show: false
-                          },
+                      new Chart(document.querySelector('#lineChart'), {
+                        type: 'line',
+                        data: {
+                          labels: [{% for day in order_count_data %}'{{ day.0 }}' ,{% endfor %}],
+                          datasets: [{
+                            label: 'Orders count',
+                            data: [{% for data in order_count_data %} {{data.1}} ,{% endfor %}],
+                            fill: false,
+                            borderColor: 'rgb(75, 192, 192)',
+                            tension: 0.1
+                          }]
                         },
-                        markers: {
-                          size: 4
-                        },
-                        colors: ['#4154f1', '#2eca6a', '#ff771d'],
-                        fill: {
-                          type: "gradient",
-                          gradient: {
-                            shadeIntensity: 1,
-                            opacityFrom: 0.3,
-                            opacityTo: 0.4,
-                            stops: [0, 90, 100]
+                        options: {
+                          scales: {
+                            y: {
+                              beginAtZero: true
+                            }
                           }
-                        },
-                        dataLabels: {
-                          enabled: false
-                        },
-                        stroke: {
-                          curve: 'smooth',
-                          width: 2
-                        },
-                        xaxis: {
-                          type: 'datetime',
-                          categories: ["2018-09-19T00:00:00.000Z", "2018-09-19T01:30:00.000Z", "2018-09-19T02:30:00.000Z", "2018-09-19T03:30:00.000Z", "2018-09-19T04:30:00.000Z", "2018-09-19T05:30:00.000Z", "2018-09-19T06:30:00.000Z"]
-                        },
-                        tooltip: {
-                          x: {
-                            format: 'dd/MM/yy HH:mm'
-                          },
                         }
-                      }).render();
+                      });
                     });
                   </script>
-                  <!-- End Line Chart -->
-
+                  <!-- End Line CHart -->
+    
                 </div>
-
               </div>
             </div><!-- End Reports -->
 
@@ -220,7 +193,7 @@
             <div class="col-12">
               <div class="card recent-sales overflow-auto">
 
-                <div class="filter">
+                {% comment %} <div class="filter">
                   <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
                   <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
                     <li class="dropdown-header text-start">
@@ -231,10 +204,10 @@
                     <li><a class="dropdown-item" href="#">This Month</a></li>
                     <li><a class="dropdown-item" href="#">This Year</a></li>
                   </ul>
-                </div>
+                </div> {% endcomment %}
 
                 <div class="card-body">
-                  <h5 class="card-title">Recent orders <span>| Today</span></h5>
+                  <h5 class="card-title">Recent orders</h5>
 
                   <table class="table table-borderless datatable">
                     <thead>
@@ -281,10 +254,10 @@
                         new Chart(document.querySelector('#barChart'), {
                           type: 'bar',
                           data: {
-                            labels: [{% for item in all_brands %}'{{item}}' ,{% endfor %}],
+                            labels: [{% for item in sales_data %}'{{item.0}}' ,{% endfor %}],
                             datasets: [{
                               label: 'Sales Count',
-                              data: [65, 59, 80, 81, 56, 55, 40 ,10 ],
+                              data: [{% for item in sales_data %}{{item.1}} ,{% endfor %}],
                               backgroundColor: [
                                 'rgba(255, 99, 132, 0.2)',
                                 'rgba(255, 159, 64, 0.2)',
@@ -333,18 +306,6 @@
 
           <!-- Recent Activity -->
           <div class="card">
-            <div class="filter">
-              <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-              <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                <li class="dropdown-header text-start">
-                  <h6>Filter</h6>
-                </li>
-
-                <li><a class="dropdown-item" href="#">Today</a></li>
-                <li><a class="dropdown-item" href="#">This Month</a></li>
-                <li><a class="dropdown-item" href="#">This Year</a></li>
-              </ul>
-            </div>
 
             <div class="card-body">
               <h5 class="card-title">Recent Updations <span>| Today</span></h5>
@@ -369,81 +330,42 @@
 
           <!-- Budget Report -->
           <div class="card">
-            <div class="filter">
-              <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-              <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                <li class="dropdown-header text-start">
-                  <h6>Filter</h6>
-                </li>
+            <div class="card-body">
+              <h5 class="card-title">Most sold products</h5>
 
-                <li><a class="dropdown-item" href="#">Today</a></li>
-                <li><a class="dropdown-item" href="#">This Month</a></li>
-                <li><a class="dropdown-item" href="#">This Year</a></li>
-              </ul>
-            </div>
-
-            <div class="card-body pb-0">
-              <h5 class="card-title">Budget Report <span>| This Month</span></h5>
-
-              <div id="budgetChart" style="min-height: 400px;" class="echart"></div>
-
+              <!-- Polar Area Chart -->
+              <canvas id="polarAreaChart" style="max-height: 400px;"></canvas>
               <script>
                 document.addEventListener("DOMContentLoaded", () => {
-                  var budgetChart = echarts.init(document.querySelector("#budgetChart")).setOption({
-                    legend: {
-                      data: ['Allocated Budget', 'Actual Spending']
-                    },
-                    radar: {
-                      // shape: 'circle',
-                      indicator: [{
-                          name: 'Sales',
-                          max: 6500
-                        },
-                        {
-                          name: 'Administration',
-                          max: 16000
-                        },
-                        {
-                          name: 'Information Technology',
-                          max: 30000
-                        },
-                        {
-                          name: 'Customer Support',
-                          max: 38000
-                        },
-                        {
-                          name: 'Development',
-                          max: 52000
-                        },
-                        {
-                          name: 'Marketing',
-                          max: 25000
-                        }
-                      ]
-                    },
-                    series: [{
-                      name: 'Budget vs spending',
-                      type: 'radar',
-                      data: [{
-                          value: [4200, 3000, 20000, 35000, 50000, 18000],
-                          name: 'Allocated Budget'
-                        },
-                        {
-                          value: [5000, 14000, 28000, 26000, 42000, 21000],
-                          name: 'Actual Spending'
-                        }
-                      ]
-                    }]
+                  new Chart(document.querySelector('#polarAreaChart'), {
+                    type: 'polarArea',
+                    data: {
+                      labels: [
+                      {% for data in product_sales_data %}'{{data.0}}-{{data.1}}' ,{% endfor %}
+                      ],
+                      datasets: [{
+                        label: 'My First Dataset',
+                        data: [{% for data in product_sales_data %}{{data.2}},{% endfor %}],
+                        backgroundColor: [
+                          'rgb(255, 99, 132)',
+                          'rgb(75, 192, 192)',
+                          'rgb(255, 205, 86)',
+                          'rgb(201, 203, 207)',
+                          'rgb(54, 162, 235)'
+                        ]
+                      }]
+                    }
                   });
                 });
               </script>
+              <!-- End Polar Area Chart -->
 
             </div>
-          </div><!-- End Budget Report -->
+          </div>
 
           <!-- Website Traffic -->
           <div class="card">
-            <div class="filter">
+            {% comment %} <div class="filter">
               <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
               <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
                 <li class="dropdown-header text-start">
@@ -454,7 +376,7 @@
                 <li><a class="dropdown-item" href="#">This Month</a></li>
                 <li><a class="dropdown-item" href="#">This Year</a></li>
               </ul>
-            </div>
+            </div> {% endcomment %}
 
             <div class="card-body pb-0">
               <h5 class="card-title">Payment Methods <span>| Today</span></h5>
@@ -518,19 +440,32 @@
                   <div class="card recent-sales overflow-auto">
                       <div class="card-body">
                         <div class="d-flex justify-content-between align-items-center">
+              
                           <h5 style="font-size:25px;" class="card-title">Sales Report</h5>
+                          
+                          <form action="" method="get">
+                          <div class="d-flex justify-content-end align-items-center">
+                            <label for="sales_from" class="mx-3">From: </label>
+                            <input type="date" class="form-control" name="sales_from">
+                            <label for="sales_to" class="mx-3">To: </label>
+                            <input type="date" class="form-control" name="sales_to">
+                            <button type="submit" class="ms-3 btn btn-outline-secondary">Filter</button>
+                          </div>
+                          </form>
+                          
+                          
                           <a class="icon" href="#" data-bs-toggle="dropdown"><span class="btn btn-outline-primary">Download</span></a>
                             <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
                             <li class="dropdown-header text-start">
                               <h6>Download</h6>
                             </li>
 
-                            <li><a class="dropdown-item" href="{% url "pdf_download" %}">Download As PDF</a></li>
-                            <li><a class="dropdown-item" href="{% url "download_exel" %}">Download As EXEL</a></li>
-                            <li><a class="dropdown-item" href="{% url "download_csv" %}">Download As CSV</a></li>
+                            <li><a class="dropdown-item" href="{% url "pdf_download" %}?sales_from={{ request.GET.sales_from }}&sales_to={{ request.GET.sales_to }}">Download As PDF</a></li>
+                            <li><a class="dropdown-item" href="{% url "download_exel" %}?sales_from={{ request.GET.sales_from }}&sales_to={{ request.GET.sales_to }}">Download As EXEL</a></li>
+                            <li><a class="dropdown-item" href="{% url "download_csv" %}?sales_from={{ request.GET.sales_from }}&sales_to={{ request.GET.sales_to }}">Download As CSV</a></li>
                           </ul>                       
                         </div>
-                          <table class="table table-borderless datatable mt-3">
+                          <table class="table table-borderless datatable mt-3 sales-table">
                               <thead>
                                   <tr>
                                       <th>SI NO.</th>
@@ -546,7 +481,7 @@
                               </thead>
                               <tbody>
                   
-                              {% for ord in recent_orders %}
+                              {% for ord in sales_report %}
                                   <tr>
                                       <td class="sales_table">{{forloop.counter}}</td>
                                       <td class="sales_table">{{ord.order_id|upper}}</td>
@@ -558,6 +493,7 @@
                                       <td class="sales_table">&#8377;{{ord.total_amount}}</td>
                                       <td class="sales_table">{{ord.payment_method}}</td>
                                   </tr>
+                                  
                               {% endfor %}
       
                               </tbody>
@@ -572,5 +508,81 @@
     </section>
 
   </main><!-- End #main -->
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  <script>
+    function updateRevenue(url) {
+      $.ajax({
+        url: url,
+        type: 'GET',
+        dataType: 'json',
+        success: function (data) {
+          // Update the revenue content with the received data
+          $('#revenueCardAmount').html('&#8377;' + data.todayRevenue);
+          $('#revenueDate').html(data.date);
+        },
+        error: function () {
+          console.log('Error fetching revenue');
+        }
+      });
+    }
+  
+    $(document).ready(function () {
+      // Add a click event listener to the "Today" dropdown item
+      $('#todayRevenue').click(function (e) {
+        e.preventDefault();
+        updateRevenue('{% url "today_revenue" %}');
+      });
+  
+      // Add a click event listener to the "This Month" dropdown item
+      $('#thisMonthRevenue').click(function (e) {
+        e.preventDefault();
+         updateRevenue('{% url "this_month_revenue" %}');
+      });
 
+      $('#allRevenue').click(function (e) {
+        e.preventDefault();
+         updateRevenue('{% url "all_revenue" %}');
+      });
+    });
+  </script>
+
+  <script>
+    function updateSales(url) {
+        $.ajax({
+            url: url,
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                // Update the sales content with the received data
+                $('#salesCount').html(data.todaySales);
+                $('#salesDate').html(data.date);
+            },
+            error: function () {
+                console.log('Error fetching sales');
+            }
+        });
+    }
+
+    $(document).ready(function () {
+        // Add a click event listener to the "Today" dropdown item for sales
+        $('#todaySales').click(function (e) {
+            e.preventDefault();
+            updateSales('{% url "today_sales" %}');
+        });
+
+        // Add a click event listener to the "This Month" dropdown item for sales
+        $('#thisMonthSales').click(function (e) {
+            e.preventDefault();
+            updateSales('{% url "this_month_sales" %}');
+        });
+
+        // Add a click event listener to the "All" dropdown item for sales
+        $('#allSales').click(function (e) {
+            e.preventDefault();
+            console.error("clicked")
+            updateSales('{% url "all_sales" %}');
+        });
+    });
+</script>
+  
   {% endblock content %}
