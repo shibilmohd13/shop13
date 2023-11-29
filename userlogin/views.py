@@ -47,7 +47,7 @@ def signup(request):
 
         else:
             otp_sent = str(random.randint(100000,999999))
-            otp_expiry =  datetime.now() + timedelta(seconds=65)
+            otp_expiry =  datetime.now() + timedelta(seconds=60)
             print(otp_expiry)
 
             characters = string.digits + string.ascii_uppercase
@@ -120,7 +120,9 @@ def otp(request):
         if entered_otp != user.otp:
             messages.error(request, 'Invalid otp')
             return redirect('otp')
-        elif datetime.now(timezone.utc) <= user.otp_expiry :
+        elif (datetime.now(timezone.utc) + timedelta(hours=5, minutes=30)) > user.otp_expiry :
+            print(datetime.now(timezone.utc) + timedelta(hours=5, minutes=30))
+            print(user.otp_expiry)
             messages.error(request, 'Otp Expired! Please Click Resend OTP')
             return redirect('otp')
         else :

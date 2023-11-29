@@ -396,9 +396,6 @@ def place_order_wallet(request):
     return JsonResponse({"error": 'User not authenticated'})
 
 
-# views.py
-
-
 def apply_coupons(request):
     if request.method == 'POST':
         email = request.session.get("email")

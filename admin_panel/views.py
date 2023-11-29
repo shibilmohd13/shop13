@@ -81,7 +81,6 @@ def view_order_details(request, id):
     return render(request,'admin_panel/order_details.html',{'obj':obj})
 
 
-
 # Change order status
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 @user_passes_test(lambda u: u.is_superuser, login_url='admin_login')
@@ -121,15 +120,24 @@ def change_order_status(request, id):
     return redirect('view_order_details',id=id)
 
 
+# Display Product/Category offers in admin side
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@user_passes_test(lambda u:u.is_superuser, login_url='admin_login')
 def offers(request):
     return render(request, 'admin_panel/offers.html')
 
+
+# Display all Product offers in admin side
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@user_passes_test(lambda u:u.is_superuser, login_url='admin_login')
 def product_offers(request):
     products = ColorVarient.objects.filter(product_offer__gt=0)
     return render(request, 'admin_panel/offers_product.html',{'products':products})
 
 
-
+# Add product offers in admin side
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@user_passes_test(lambda u:u.is_superuser, login_url='admin_login')
 def add_product_offers(request):
 
     products = ColorVarient.objects.all().order_by('id')
@@ -146,6 +154,10 @@ def add_product_offers(request):
 
     return render(request, 'admin_panel/add_offers_product.html',{'products':products})
 
+
+# Edit product offers
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@user_passes_test(lambda u:u.is_superuser, login_url='admin_login')
 def edit_product_offers(request, id):
     products = ColorVarient.objects.all().order_by('id')
     item = ColorVarient.objects.get(id=id)
@@ -158,6 +170,10 @@ def edit_product_offers(request, id):
 
     return render(request, 'admin_panel/edit_offers_product.html',{'item':item,'products':products})
 
+
+# Cancel Product offers
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@user_passes_test(lambda u:u.is_superuser, login_url='admin_login')
 def cancel_product_offers(request,id):
     item = ColorVarient.objects.get(id=id)
     item.product_offer = 0
@@ -165,14 +181,23 @@ def cancel_product_offers(request,id):
     return redirect('product_offers')
 
 
+# Display all Category offers
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@user_passes_test(lambda u:u.is_superuser, login_url='admin_login')
 def category_offers(request):
     category = Category.objects.all()
     return render(request, 'admin_panel/offers_category.html',{'category':category})
 
 
+# Add category offer
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@user_passes_test(lambda u:u.is_superuser, login_url='admin_login')
 def add_category_offers(request,id):
+
     category = Category.objects.get(id=id)
+
     if request.method == 'POST':
+
         category_offer_value = request.POST.get('category_offer', 0)
         print(category_offer_value)
         color_varients = ColorVarient.objects.filter(product__category=category)
@@ -183,6 +208,9 @@ def add_category_offers(request,id):
     return render(request, 'admin_panel/add_offers_category.html',{'category':category})
 
 
+# Cancel catetory Offers
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@user_passes_test(lambda u:u.is_superuser, login_url='admin_login')
 def cancel_category_offers(request,id):
 
     category = Category.objects.get(id=id)
@@ -192,10 +220,17 @@ def cancel_category_offers(request,id):
     return redirect('category_offers')
 
 
+# Display Banners
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@user_passes_test(lambda u:u.is_superuser, login_url='admin_login')
 def banners(request):
     banners = Banners.objects.all().order_by("id")
     return render(request, 'admin_panel/banners.html',{'banners' : banners})
 
+
+# Add Banners
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@user_passes_test(lambda u:u.is_superuser, login_url='admin_login')
 def add_banners(request):
     products = ColorVarient.objects.filter(is_listed=True).order_by("id")
     if request.method == 'POST':
@@ -218,6 +253,9 @@ def add_banners(request):
     return render(request, 'admin_panel/add_banners.html',{'products' : products})
 
 
+# Edit banners
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@user_passes_test(lambda u:u.is_superuser, login_url='admin_login')
 def edit_banners(request, id):
     banner = get_object_or_404(Banners, pk=id)
     products = ColorVarient.objects.filter(is_listed=True).order_by("id")
@@ -246,12 +284,18 @@ def edit_banners(request, id):
     return render(request, 'admin_panel/edit_banners.html', {'banner': banner, 'products': products})
 
 
+# Change status of a banner
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@user_passes_test(lambda u:u.is_superuser, login_url='admin_login')
 def status_banner(request, id):
     banner = Banners.objects.filter(id=id).first()
+
     if banner.is_listed == True:
         banner.is_listed = False
         banner.save()
+
     else:
         banner.is_listed = True
         banner.save()
+
     return redirect("banners")
