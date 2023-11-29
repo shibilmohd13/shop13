@@ -206,15 +206,17 @@ def download_csv(request):
 
 
     # Retrieve the 'sales_from' parameter from the request, or use the default value
-    sales_from = request.GET.get('sales_from')
+    sales_from = request.GET.get('sales_from',0)
+    print(type(sales_from))
 
-    sales_to = request.GET.get('sales_to')
+    sales_to = request.GET.get('sales_to',0)
+    print(type(sales_to))
 
-    if not sales_from:
+    if sales_from == "":
         sales_from = datetime.now() - timedelta(days=3 * 365)
     
-    if not sales_to:
-        sales_from = datetime.now()
+    if sales_to == "":
+        sales_to = datetime.now()
 
     orders = Orders.objects.all().order_by('-order_date').filter(order_date__range=[sales_from, sales_to])
     si_no = 1
@@ -250,7 +252,7 @@ def download_exel(request):
         sales_from = datetime.now() - timedelta(days=3 * 365)
     
     if not sales_to:
-        sales_from = datetime.now()
+        sales_to = datetime.now()
 
     orders = Orders.objects.all().order_by('-order_date').filter(order_date__range=[sales_from, sales_to]).values_list('order_id','user__fullname','order_date__date','order_date__time','ordersitem__variant__product__name','ordersitem__variant__color','ordersitem__quantity','ordersitem__price','payment_method')
     print(orders)
@@ -296,10 +298,10 @@ class DownloadPDF(View):
 
 		sales_from = request.GET.get('sales_from')
 		sales_to = request.GET.get('sales_to')
-		if not sales_from:
+		if sales_from == "":
 			sales_from = datetime.now() - timedelta(days=3 * 365)
-		if not sales_to:
-			sales_from = datetime.now()
+		if sales_to == "":
+			sales_to = datetime.now()
 		
 		
 		orders = Orders.objects.all().order_by('-order_date').filter(order_date__range=[sales_from, sales_to])
@@ -307,8 +309,8 @@ class DownloadPDF(View):
 		data = {
             "company": "SHOP 13",
             "address": sales_from,
-            "city": "Vancouver",
-            "state": "WA",
+            "city": "Malappuram",
+            "state": "Kerala",
             "zipcode": "676505",
             'orders': orders,
             "phone": sales_to,

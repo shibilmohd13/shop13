@@ -27,6 +27,15 @@ def view_orders(request):
     return render(request, 'home/order_success.html', context)
 
 
+def view_invoice(request):
+    order_id = request.session['order_id']
+    current_order = Orders.objects.get(order_id=order_id)
+    context= {
+        "current_order" : current_order
+    }
+    return render(request, 'home/invoice.html',context)
+
+
 def cancel_order(request, id):
     email = request.session['email']
     user = CustomUser.objects.get(email=email)

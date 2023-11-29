@@ -33,8 +33,8 @@
         <div class="row mb-3">
           <label class="col-sm-2 col-form-label">Discount Percentage</label>
           <div class="col-sm-6">
-            <input type="number" min="0" class="form-control" width="100px"  value="{{category.product_set.first.colorvarient_set.first.category_offer}}" name="category_offer" id="discount" required >
-            <span class="error-message text-danger mt-2" id="price-error"></span>
+            <input type="number" min="0" max="99" class="form-control" width="100px"  value="{{category.product_set.first.colorvarient_set.first.category_offer}}" name="category_offer" id="discount" required >
+            <span class="error-message text-danger mt-2" id="discount-error"></span>
           </div>
         </div>
         <br><br>
@@ -76,6 +76,5 @@
     });
   });
 </script>
-
 
 {% endblock content %}

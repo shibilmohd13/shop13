@@ -104,7 +104,12 @@
                       {{i.description}}
                   </p>
                   <h6 class="text-uppercase mt-4 mb-0">
-                      <a class="button" href="../product_details/{{i.variant.id}}">SHOP NOW</a>
+                    {% if i.variant %}
+                    <a class="button" href="../product_details/{{i.variant.id}}">SHOP NOW</a>
+                    {% else %}
+                    <a class="button" href="{% url "shop" %}">SHOP NOW</a>
+                    {% endif %}
+                      
                   </h6>
                 </div>
               </center>

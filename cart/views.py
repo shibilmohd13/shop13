@@ -126,7 +126,7 @@ def checkout(request):
         address = Address.objects.filter(user=user,is_present=True)
         cart_items = Cart.objects.filter(user=user)
         total = sum(cart_items.values_list('cart_price',flat=True))
-        coupons = Coupons.objects.all()
+        coupons = Coupons.objects.filter(is_active=True).filter(expiration_date__gte=timezone.now())
 
         return render(request, "cart/checkout.html" , {'addresses' : address , 'cart_items' : cart_items , 'total' : total , 'coupons': coupons})
     return redirect('signin')

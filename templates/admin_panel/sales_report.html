@@ -119,7 +119,7 @@
             <td>{{item.order_date.time}}</td>
             <td>{% for ord in item.ordersitem_set.all %} {{ord.variant.product.name}}-{{ord.variant.color}}<br> {% endfor %}</td>
             <td>{% for ord in item.ordersitem_set.all %} {{ord.quantity}} <br> {% endfor %}</td>
-            <td>${{item.total_amount}}</td>
+            <td>Rs. {{item.total_amount}}</td>
             <td>{{item.payment_method}}</td>
         </tr>
         {% endfor %}
@@ -127,7 +127,7 @@
 
     <hr>
 
-    <p><strong>Total: $8878.28</strong></p>
+    <p><strong>Total: Rs. </strong></p>
 
     <div id="footer_content">(c) - page <pdf:pagenumber> of <pdf:pagecount></div>
 </body>

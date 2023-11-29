@@ -54,7 +54,10 @@
 <section id="cart_page" class="cart pt-4 pb-4">
   <div class="container-xl">
     <div class="order-details">
+      <div class="d-flex justify-content-between align-items-center">
       <h2>Order Details</h2>
+      <a class="btn btn-outline-secondary" href="{% url "view_invoice" %}">View invoice</a>
+    </div>
       <p><strong>Order ID:</strong> {{current_order.order_id}}</p>
       <p><strong>Order Date:</strong> {{current_order.order_date}}</p>
       <p><strong>Order Amount:</strong> {{current_order.total_amount}}</p>
