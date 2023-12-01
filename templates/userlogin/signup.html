@@ -54,7 +54,7 @@
               <div class="form-group mb-4">
                 <label for="confirm_password">Re-enter Password</label>
                 <input type="password" name="confirm_password" id="confirm_password" class="form-control" placeholder="Confirm your password">
-                <span id="confirm_password-error" class="error-message text-danger"></span>
+                <span id="confirm_password-error" class="error-message text-danger text-sm"></span>
               </div>
               <input name="signup" id="signup" class="btn btn-block login-btn" type="submit" value="Create account">
             </form>
@@ -116,7 +116,7 @@
           $('#password-error').html('Password is required.');
         } else if (!isValidPassword(password)) {
           isValid = false;
-          $('#password-error').html('Password must be <br>- at least 8 characters long<br>- contain at least one uppercase letter, one lowercase letter<br>- Contain one number, and one special character.');
+          $('#password-error').html('Password must contain <br>- 8 characters<br>- One Uppercase & lowercase letter<br>- One number & special character.');
         }
   
         if (confirm_password === '') {

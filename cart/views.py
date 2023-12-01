@@ -9,6 +9,7 @@ from django.utils import timezone  # Import timezone module
 from datetime import timedelta,datetime
 from coupons.models import CouponUsage, Coupons
 import razorpay
+from decouple import config
 
 # Create your views here.
 
@@ -265,7 +266,7 @@ def place_order(request):
     return JsonResponse({"error": 'User not authenticated'})
 
 
-client = razorpay.Client(auth=("rzp_test_364uDI7fwiadCE", "ePLDxAKYVU5LybscC7YNuTqL"))
+client = razorpay.Client(auth=(config("KEY_ID"), config("KEY_SECRET")))
 
 
 def place_order_razorpay(request):

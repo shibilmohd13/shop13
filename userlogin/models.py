@@ -6,6 +6,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 import os
 import datetime
+from decouple import config
 
 # CustomUser inherited from django's User model
 class CustomUser(AbstractUser):
@@ -21,11 +22,11 @@ class CustomUser(AbstractUser):
         return self.email
 
 
-# signal for sending otp when a user is created
+# signal for sending otp when a user is create
 @receiver(post_save, sender=CustomUser)
 def send_otp_signal(sender, instance, **kwargs):
-    sender_email = os.environ.get("SENDER_EMAIL")
-    sender_pass =  os.environ.get("SENDER_PASS")
+    sender_email = config("SENDER_EMAIL")
+    sender_pass =  config("SENDER_PASS")
     connection = smtplib.SMTP('smtp.gmail.com', 587)
     connection.starttls()
     connection.login(user=sender_email, password=sender_pass)
