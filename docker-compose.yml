@@ -1,0 +1,26 @@
+version: "3.8"
+services:
+  postgres_db:
+    image: postgres:latest
+    container_name: postgres_container
+    environment:
+      POSTGRES_DB: 'shop13'
+      POSTGRES_USER: 'postgres'
+      POSTGRES_PASSWORD: '123'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  app:
+    build: .
+    volumes:
+      - .:/app
+    container_name: shop13_container
+    ports:
+      - 8090:8000
+    image: app:shop13
+    command: bash -c "apt-get update && apt-get install -y postgresql-client && gunicorn --bind 0.0.0.0:8000 shop13.wsgi:application"
+    depends_on:
+      - postgres_db
+  
+volumes:
+  postgres_data:
