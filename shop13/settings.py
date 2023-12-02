@@ -207,3 +207,11 @@ EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = config('SENDER_EMAIL')
 EMAIL_HOST_PASSWORD = config('SENDER_PASS')
+
+
+# settings.py
+
+import multiprocessing
+
+bind = "0.0.0.0:8000"
+workers = multiprocessing.cpu_count() * 2 + 1
