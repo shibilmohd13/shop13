@@ -18,7 +18,7 @@ services:
     ports:
       - 8090:8000
     image: app:shop13
-    command: bash -c "apt-get update && apt-get install -y postgresql-client && gunicorn --bind 0.0.0.0:8000 shop13.wsgi:application"
+    command: bash -c "apt-get update && apt-get install -y postgresql-client && gunicorn --bind 0.0.0.0:8000 shop13.wsgi:application && python manage.py migrate"
     depends_on:
       - postgres_db
   
