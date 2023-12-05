@@ -13,7 +13,7 @@ class CustomUser(AbstractUser):
     phone = models.CharField(max_length=50)
     fullname = models.CharField(max_length=100)
     otp = models.CharField(max_length=6, blank=True ,null=True)
-    otp_expiry = models.DateTimeField()
+    otp_expiry = models.DateTimeField(null=True)
     referral_code = models.CharField(max_length=6,blank=True,null=True)
     forget_password_token = models.CharField(max_length=100, null=True, blank=True)
     # forget_timeout = models.DateTimeField(auto_now_add=True)
