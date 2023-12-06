@@ -16,7 +16,6 @@ from admin_panel.models import Banners
 def home(request):
     obj = Product.objects.prefetch_related('colorvarient_set__productimage_set').filter(is_listed=True).order_by('-id')[:8]
     banners = Banners.objects.all().exclude(is_listed=False)
-
     return render(request, 'home/home.html', {'obj': obj, 'banners':banners})
 
 
@@ -25,8 +24,6 @@ def shop(request):
     category = request.GET.get('category', 0)
     brand = request.GET.get('brand', 0)
     price = request.GET.get('pricefilter',20000)
-    print(price)
-
 
     obj = Product.objects.filter(is_listed=True).order_by('-id')
 

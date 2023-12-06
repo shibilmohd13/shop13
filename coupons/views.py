@@ -13,9 +13,12 @@ def coupons(request):
     context={'coupons':coupons}
     return render(request,'admin_panel/coupons.html', context)
 
+
+# Add coupons
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 @user_passes_test(lambda u: u.is_superuser, login_url='admin_login')
 def add_coupons(request):
+
     if request.method == "POST":
         name=request.POST['name']
         code=request.POST['code']
@@ -32,7 +35,6 @@ def add_coupons(request):
             messages.error(request, 'Code already exists')
             return redirect('add_coupons')
 
-
         Coupons.objects.create(
             name=name,
             code=code,
@@ -45,6 +47,8 @@ def add_coupons(request):
         
     return render(request,'admin_panel/add_coupons.html')
 
+
+# Edit coupons
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 @user_passes_test(lambda u: u.is_superuser, login_url='admin_login')
 def edit_coupons(request, id):
@@ -77,6 +81,8 @@ def edit_coupons(request, id):
 
     return render(request, 'admin_panel/edit_coupons.html', {'coupon': coupon})
 
+
+# coupon Status
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 @user_passes_test(lambda u: u.is_superuser, login_url='admin_login')
 def coupon_status(request, id):

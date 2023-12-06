@@ -121,6 +121,8 @@ def edit_address(request, id):
 
     return redirect('profile')
 
+
+# Delete Address
 def delete_address(request, id):
     address = Address.objects.get(id=id)
     address.is_present = False

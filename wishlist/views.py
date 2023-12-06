@@ -4,6 +4,8 @@ from userlogin.models import CustomUser
 from wishlist.models import Wishlist
 from django.http import JsonResponse
 # Create your views here.
+
+# show wishlist
 def wishlist(request):
     if "email" in request.session:
         email = request.session['email']
@@ -13,13 +15,15 @@ def wishlist(request):
 
     return redirect("signin")
 
+
+# Remove wishlist
 def remove_wishlist(request, id):
     item = Wishlist.objects.get(id=id)
     item.delete()
     return redirect("wishlist")
 
 
-
+# Add to wishlist
 def addtowishlist(request):
     if request.method == 'POST':
         if 'email' in request.session:

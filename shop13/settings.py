@@ -116,7 +116,7 @@ DATABASES = {
         'NAME': 'shop13',
         'USER': 'postgres',
         'PASSWORD': '123',
-        'HOST': 'postgres_db',  # Or your database server's address
+        'HOST': 'localhost',  # Or your database server's address
         'PORT': '5432',       # Default PostgreSQL port
     }
 }

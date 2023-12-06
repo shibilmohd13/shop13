@@ -32,7 +32,6 @@ def admin_login(request):
 
 
 
-
 # List Users
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 @user_passes_test(lambda u:u.is_superuser, login_url='admin_login')

@@ -36,10 +36,7 @@
             
             
             <p class="login-wrapper-footer-text">
-              OTP Timer : <span id="total-time-left" class="otp-timer" style="display: none;">{{otp_expiry|date:"M d, Y H:i:s"}}</span>
-              <span id="spinner" class="spinner-border text-primary" role="status">
-                <span class="sr-only">Loading...</span>
-              </span>
+              OTP Timer : <span id="total-time-left" class="otp-timer"></span>
             </p>
                       </div>
         </div>
@@ -49,43 +46,33 @@
       </div>
     </div>
   </main>
-
+  
   <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      const countdownbox = document.getElementById('total-time-left');
-      const spinner = document.getElementById('spinner');
-  
-      // Initial state: Show spinner, hide countdownbox
-      spinner.style.display = 'inline-block';
-      countdownbox.style.display = 'none';
-  
-      const eventtime = Date.parse(countdownbox.textContent);
-  
-      setInterval(() => {
-        const now = new Date().getTime();
-        const diff = eventtime - now;
-        const m = Math.floor((diff / (1000 * 60)) % 60);
-        const s = Math.floor((diff / 1000) % 60);
-  
-        if (diff > 0) {
-          
-          if(diff < 10){
-            countdownbox.innerHTML = m + ":0" + s;
-          }
-          else{
-            countdownbox.innerHTML = m + ":" + s;
-          }
-        }
-         else {
-          countdownbox.innerHTML = '<span class="text-danger"> OTP Expired </span>';
+    // Function to start the timer
+    function startTimer(duration, display) {
+      var timer = duration, minutes, seconds;
+      var intervalId = setInterval(function () {
+        minutes = parseInt(timer / 60, 10);
+        seconds = parseInt(timer % 60, 10);
+
+        minutes = minutes < 10 ? "0" + minutes : minutes;
+        seconds = seconds < 10 ? "0" + seconds : seconds;
+
+        display.textContent = minutes + ":" + seconds;
+
+        if (--timer < 0) {
+          clearInterval(intervalId);
+          display.textContent = "OTP Expired";
+          // You can add additional logic here, such as disabling the form or redirecting the user.
         }
       }, 1000);
-  
-      // After setting up the interval, show countdownbox and hide spinner
-      setTimeout(() => {
-        spinner.style.display = 'none';
-        countdownbox.style.display = 'inline-block';
-      }, 1000); // You can adjust the delay time based on your needs
+    }
+
+    // Function to set the timer when the page is loaded
+    document.addEventListener("DOMContentLoaded", function () {
+      var totalTime = 300; // Set the total time in seconds
+      var display = document.querySelector('#total-time-left');
+      startTimer(totalTime, display);
     });
   </script>
 

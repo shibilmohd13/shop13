@@ -5,6 +5,8 @@ from django.http import JsonResponse
 import razorpay
 # Create your views here.
 
+
+# Wallet view
 def wallet(request):
     email = request.session['email']
     user_name = CustomUser.objects.get(email=email)
@@ -18,6 +20,8 @@ def wallet(request):
 
 client = razorpay.Client(auth=("rzp_test_364uDI7fwiadCE", "ePLDxAKYVU5LybscC7YNuTqL"))
 
+
+# Add to wallet
 def add_to_wallet(request):
     amount = int(request.POST.get('amount')) * 100
     print(amount)
@@ -29,6 +33,8 @@ def add_to_wallet(request):
         "success" : True, 'payment' : payment,'payment_id': payment['id'], 'amount' : amount,
     })
 
+
+# Update Wallet
 def update_wallet(request):
     email = request.session['email']
     amount = request.session['amount']

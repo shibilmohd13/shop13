@@ -185,7 +185,6 @@ def edit_categories(request, id):
     return render(request, 'admin_panel/edit_categories.html', {'cat': cat})
 
 
-
 # Edit Brands
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 @user_passes_test(lambda u: u.is_superuser, login_url='admin_login')
@@ -204,7 +203,6 @@ def edit_brands(request, id):
             return redirect('brands')
 
     return render(request, 'admin_panel/edit_brands.html', {'brand': brand})
-
 
 
 # show all categories
@@ -291,7 +289,6 @@ def add_varients(request, id):
         return redirect('varient_details', id=id)
 
     return render(request, 'admin_panel/add_varients.html', {"product" : product})
-
 
 
 # Edit varients

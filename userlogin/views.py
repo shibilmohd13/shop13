@@ -120,11 +120,11 @@ def otp(request):
         if entered_otp != user.otp:
             messages.error(request, 'Invalid otp')
             return redirect('otp')
-        elif (datetime.now(timezone.utc) + timedelta(hours=5, minutes=30)) > user.otp_expiry :
-            print(datetime.now(timezone.utc) + timedelta(hours=5, minutes=30))
-            print(user.otp_expiry)
-            messages.error(request, 'Otp Expired! Please Click Resend OTP')
-            return redirect('otp')
+        # elif (datetime.now(timezone.utc) + timedelta(hours=5, minutes=30)) > user.otp_expiry :
+        #     print(datetime.now(timezone.utc) + timedelta(hours=5, minutes=30))
+        #     print(user.otp_expiry)
+        #     messages.error(request, 'Otp Expired! Please Click Resend OTP')
+        #     return redirect('otp')
         else :
             user.is_active = True
             user.save()
@@ -146,6 +146,8 @@ def send_otp(request):
     user.save()
     return redirect('otp')
 
+
+# Send forgot
 def send_forget_password_mail(email, token):
     subject = "Your forget Password Link"
     message = f'Hi, click on hte link to reset your password \n Link : http://127.0.0.1:8000/user/reset_password/{token}/'
@@ -154,6 +156,8 @@ def send_forget_password_mail(email, token):
     send_mail(subject,message,email_from,recipient_list)
     return True
 
+
+# Forget password
 def forget_password(request):
     if request.method == 'POST':
         email = request.POST.get('email')
@@ -172,8 +176,7 @@ def forget_password(request):
     return render(request, 'userlogin/forget.html')
 
 
-
-
+# Reset Pass
 def reset_password(request, token):
     user = CustomUser.objects.get(forget_password_token=token)
     if request.method == 'POST':

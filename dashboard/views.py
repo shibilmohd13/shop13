@@ -80,14 +80,11 @@ def admin_dash(request):
             last_seven_years.append(current_date.strftime('%Y'))
 
         # Print the list of the last 7 years
-        print(last_seven_years)
 
         dict1 = dict(order_data)
 
         # Create the result list
         order_count_data = [(item, dict1.get(item, 0)) for item in last_seven_years][::-1]
-
-        
 
     elif order_filter == "M":
 
@@ -120,7 +117,6 @@ def admin_dash(request):
             last_seven_months.append(current_date.strftime('%Y-%m'))
 
         # Print the list of the last 7 months
-        print(last_seven_months)
 
         dict1 = dict(order_data)
 
@@ -176,7 +172,6 @@ def admin_dash(request):
 
     # Pass both sets of data to the template
 
-    print(order_count_data)
     context = {
 
         'users_count' : users_count,
@@ -192,12 +187,12 @@ def admin_dash(request):
         'product_sales_data': product_sales_data,
         'order_count_data' : order_count_data,
 
-
     }
     
     return render(request, 'admin_panel/admin_dash.html',context)
 
 
+# Download Csv
 def download_csv(request):
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename=SalesReport-'+ str(datetime.now())+'-.csv' 
@@ -207,10 +202,8 @@ def download_csv(request):
 
     # Retrieve the 'sales_from' parameter from the request, or use the default value
     sales_from = request.GET.get('sales_from',0)
-    print(type(sales_from))
 
     sales_to = request.GET.get('sales_to',0)
-    print(type(sales_to))
 
     if sales_from == "":
         sales_from = datetime.now() - timedelta(days=3 * 365)
@@ -231,6 +224,7 @@ def download_csv(request):
     return response
 
 
+# Download Exel
 def download_exel(request):
     response = HttpResponse(content_type='application/ms-excel')
     response['Content-Disposition'] = 'attachment; filename=SalesReport-'+ str(datetime.now())+'-.xls' 
@@ -265,10 +259,6 @@ def download_exel(request):
     wb.save(response)
 
     return response
-
-def download_pdf(request):
-
-    return request
 
 
 from django.shortcuts import render
@@ -327,6 +317,7 @@ class DownloadPDF(View):
 		return response
 
 
+# Todays revenue
 def today_revenue(request):
     today = timezone.now().date()
 
@@ -340,6 +331,9 @@ def today_revenue(request):
     )
     dates = "Today"
     return JsonResponse({'success': True , 'todayRevenue': total_revenue, 'date': dates })
+
+
+# This month revenue
 def this_month_revenue(request):
 
     today = timezone.now().date()
@@ -355,6 +349,9 @@ def this_month_revenue(request):
     )
     dates = "This Month"
     return JsonResponse({'success': True , 'todayRevenue': total_revenue, 'date': dates })
+
+
+# All revenue
 def all_revenue(request):
     total_revenue = round(
         OrdersItem.objects
@@ -367,11 +364,16 @@ def all_revenue(request):
     dates = "All"
     return JsonResponse({'success': True , 'todayRevenue': total_revenue, 'date': dates })
 
+
+# Today sales
 def today_sales(request):
     today = timezone.now().date()
     sales_today = Orders.objects.all().filter(order_date__gte=today).count()
     date = "Today"
     return JsonResponse({'success': True , 'todaySales' : sales_today , 'date' : date})
+
+
+# this month sales
 def this_month_sales(request):
     today = timezone.now().date()
     first_day_of_month = today.replace(day=1)
@@ -379,6 +381,8 @@ def this_month_sales(request):
     date = "This Month"
     return JsonResponse({'success': True , 'todaySales' : sales_today , 'date' : date})
 
+
+# All sales
 def all_sales(request):
     print("get")
     sales_today = Orders.objects.all().count()
