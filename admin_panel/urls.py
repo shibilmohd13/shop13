@@ -21,9 +21,5 @@ urlpatterns = [
     path('add_banners', views.add_banners, name="add_banners"),
     path('edit_banners/<str:id>', views.edit_banners, name="edit_banners"),
     path('status_banner/<str:id>', views.status_banner, name="status_banner"),
-    
-
-    
-    
-    
-]
+        
+    ]
