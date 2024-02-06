@@ -396,7 +396,7 @@ class DownloadPDF(View):
 
         response = HttpResponse(pdf, content_type="application/pdf")
         filename = f"Sales_report_{datetime.now()}.pdf"
-        content = "attachment; filename='%s'" % (filename)
+        content = "attachment; filename=%s" % (filename)
         response["Content-Disposition"] = content
         return response
 
