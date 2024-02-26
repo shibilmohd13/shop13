@@ -10,7 +10,7 @@ urlpatterns = [
     path('contact/',views.contact, name='contact'),
     path('logout/',views.logout_view, name='logout'),
     path('search/',views.search, name='search'),
-    path('get_color_variant_details/<str:id>',views.get_color_variant_details,name='get_color_variant_details')
-    
+    path('get_color_variant_details/<str:id>',views.get_color_variant_details,name='get_color_variant_details'),
+
 
 ]

@@ -93,6 +93,7 @@ def get_color_variant_details(request, id):
 # View for Logout the User
 def logout_view(request):
     request.session.flush()
+    logout(request)
     return redirect("home")
 
 

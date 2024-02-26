@@ -10,6 +10,8 @@ from datetime import datetime, timezone, timedelta
 from django.core.mail import send_mail
 import uuid
 import os
+from django.dispatch import receiver
+from allauth.account.signals import user_logged_in
 
 # Create your views here.
 
@@ -197,3 +199,9 @@ def reset_password(request, token):
         user.save()
         return redirect("signin")
     return render(request, "userlogin/reset.html")
+
+
+
+@receiver(user_logged_in)
+def set_email_in_session(sender, request, user, **kwargs):
+    request.session['email'] = user.email

@@ -10,10 +10,10 @@ from decouple import config
 
 # CustomUser inherited from django's User model
 class CustomUser(AbstractUser):
-    phone = models.CharField(max_length=50)
+    phone = models.CharField(max_length=50,null=True,blank=True)
     fullname = models.CharField(max_length=100)
     otp = models.CharField(max_length=6, blank=True ,null=True)
-    otp_expiry = models.DateTimeField(null=True)
+    otp_expiry = models.DateTimeField(null=True,blank=True,default=datetime.datetime.now())
     referral_code = models.CharField(max_length=6,blank=True,null=True)
     forget_password_token = models.CharField(max_length=100, null=True, blank=True)
     # forget_timeout = models.DateTimeField(auto_now_add=True)

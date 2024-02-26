@@ -31,7 +31,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-SITE_ID = 2
+SITE_ID = 3
 
 # Application definition
 
@@ -64,11 +64,14 @@ INSTALLED_APPS = [
 
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
-        'SCOPE' : [
+        'SCOPE': [
             'profile',
-            'email'
+            'email',
         ],
-        "AUTH_PARAMS" : { "access_type" : "online" }
+        'AUTH_PARAMS': {
+            'access_type': 'online',
+        },
+        'OAUTH_PKCE_ENABLED': True,
     }
 }
 
@@ -196,9 +199,12 @@ AUTHENTICATION_BACKENDS = (
 )
 
 LOGIN_DIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL ='/'
 
 SECURE_CROSS_ORIGIN_OPENER_POLICY = "same-origin-allow-popups"
+
+SOCIALACCOUNT_LOGIN_ON_GET=True
 
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
