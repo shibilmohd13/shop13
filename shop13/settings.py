@@ -117,8 +117,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'shop13',
-        'USER': 'postgres',
-        'PASSWORD': '123',
+        'USER': 'shibil',
+        'PASSWORD': '',  # No password since it's using peer authentication
         'HOST': 'localhost',  # Or your database server's address
         'PORT': '5432',       # Default PostgreSQL port
     }
